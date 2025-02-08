@@ -1,0 +1,57 @@
+/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,500&family=Poppins:ital,wght@0,300;0,500;0,600;0,700;0,800;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("styles/colors.scss");
+@import url("styles/icon.scss");
+@import url("styles/toastr.scss");
+@import url("styles/tooltip.scss");
+@import '@fontsource/mukta';
+@import 'ngx-toastr/toastr';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    font-family: "Open Sans", Inter, sans-serif;
+
+    &,
+    &:before,
+    &:after {
+        box-sizing: border-box;
+    }
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg-app) !important;
+    overflow: hidden;
+}
+
+.header {
+    grid-area: header;
+}
+
+.aside {
+    grid-area: aside;
+}
+
+.container {
+    grid-area: main;
+    position: relative;
+    height: calc(92vh);
+    transition: all 0.5s ease;
+}
+
+.app {
+    display: grid;
+    grid-template-areas:
+        "aside header header header header header"
+        "aside main main main main main";
+    padding: 0;
+}

@@ -1,0 +1,19 @@
+<div class="item-list flex justify-between items-center">
+  <div class="flex gap-2 items-center my-2">
+    <i class="icon {{ item.icon }} w-12 h-12"></i>
+    <div class="description flex-col">
+      <span class="text-primary font-inter text-[16px] font-semibold">{{
+        item.title
+      }}</span>
+      <div class="flex items-center gap-1">
+        <span class="w-2 h-2 bg-error rounded-full"></span>
+        <span class="font-inter text-[10px] font-bold text-[#7A859B]"
+          >{{ item.description }}: {{ item.total }}</span
+        >
+      </div>
+    </div>
+  </div>
+  <button (click)="respond(item.type)" class="active:scale-95" title="Visualizar {{item.title.toLowerCase()}}">
+    <i class="icon icon-link-upload w-8 h-8 cursor-pointer"></i>
+  </button>
+</div>

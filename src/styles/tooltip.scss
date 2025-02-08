@@ -1,0 +1,28 @@
+.tooltip {
+    background-color: #333;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    text-align: center;
+    position: fixed;
+    pointer-events: none;
+    white-space: nowrap;
+    transition: opacity 0.2s ease;
+}
+
+.tooltip-top {
+    transform: translateY(-100%);
+}
+
+.tooltip-bottom {
+    transform: translateY(0%);
+}
+
+.tooltip-left {
+    transform: translateX(-100%);
+}
+
+.tooltip-right {
+    transform: translateX(0%);
+}

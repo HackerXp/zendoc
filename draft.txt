@@ -1,0 +1,56 @@
+<aside class="side-menu md:w-[280px] w-[100px] h-[100vh] flex-col bg-white border-r">
+    <div class="h-16 border-b items-center justify-center flex p-1">
+        <div class="w-36 h-14 bg-[#90CAF9]/10 rounded-md items-center justify-center flex gap-2">
+            <div class="flex gap-2">
+                <img src="img-logo.png" alt="logo" class="w-6 h-8">
+                <h3 class="font-bold text-logo uppercase hidden md:block">DOCZEN</h3>
+            </div>
+        </div>
+    </div>
+    <div class="menu flex flex-col gap-3 select-none">
+        <div class="py-1 px-3">
+            <span class="text-menu/40 font-medium text-[14px]">Menu</span>
+            <div class="flex flex-col gap-2 mb-5">
+                <div
+                    class="item-menu flex items-center gap-1 cursor-pointer hover:bg-[#3570EF] rounded-2xl py-3 active:scale-95">
+                    <i class="icon icon-dashboard w-5 h-5"></i>
+                    <span
+                        class="text-[#263238] font-medium text-[12px] hover:text-white transition-colors duration-200">Dashboard</span>
+                </div>
+                <div
+                    class="item-menu flex items-center gap-1 cursor-pointer hover:bg-[#3570EF] rounded-2xl py-3 active:scale-95">
+                    <i class="icon icon-menu-doc w-5 h-5"></i>
+                    <span
+                        class="text-[#263238] font-medium text-[12px] hover:text-white transition-colors duration-200">Documentos</span>
+                </div>
+                <div
+                    class="item-menu flex items-center gap-1 cursor-pointer hover:bg-[#3570EF] rounded-2xl py-3 active:scale-95">
+                    <i class="icon icon-settings w-5 h-5"></i>
+                    <span
+                        class="text-[#263238] font-medium text-[12px] hover:text-white transition-colors duration-200">Configurações</span>
+                </div>
+            </div>
+
+            <div class="flex p-1 border flex-col items-center">
+                <i class="icon icon-rafiki h-32 w-32"></i>
+                <span class="text-[#7A859B] font-inter text-[12px] text-center">Armazene os seus documentos
+                    de forma organizada e segura.</span>
+            </div>
+        </div>
+        <div class="user grid grid-cols-1 sm:grid-cols-3 items-center gap-4 absolute bottom-1">
+            <div class="sm:col-span-2 p-0 flex gap-1">
+                <div class="">
+                    <img src="user.jpg" alt="user-foto" class="w-9 h-9 rounded-full">
+                </div>
+                <div class="user-perfil flex-col hidden md:flex">
+                    <span class="user-name text-[12px] text-[#485368] font-semibold font-inter">Élvio de Sousa</span>
+                    <span class="user-email text-[12px] text-[#7A859B] font-inter">helviosadoc&#64;gmail.com</span>
+                </div>
+            </div>
+            <div class="sm:col-span-1 flex  justify-end">
+                <fa-icon [icon]="faSignOutAlt" title="Terminar a sessão"
+                    class="cursor-pointer toogleBtn  text-danger self-end"></fa-icon>
+            </div>
+        </div>
+    </div>
+</aside>

@@ -1,0 +1,19 @@
+<div (click)="onBackdropClick($event)"
+    class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start z-50">
+    <div (click)="$event.stopPropagation()" class="bg-white rounded-lg shadow-lg w-full max-w-md mt-10">
+        <div class="p-2 flex justify-between items-center shadow-sm">
+            <input type="text" autofocus
+                class="w-full px-0 text-[12px] font-medium py-2 border-0 outline-none rounded-lg"
+                placeholder="Procure por qualquer documento..." [(ngModel)]="searchInput" (input)="onSearch($event)" />
+            <fa-icon [icon]="faSearch" class="text-menu"></fa-icon>
+        </div>
+        <!-- Resultados -->
+        <div *ngIf="searchResults.length > 0" class="p-2 border-t max-h-[250px] overflow-y-auto">
+            <div *ngFor="let result of searchResults"
+                class="flex justify-between items-center cursor-pointer select-none hover:bg-[#90CAF9]/10 border-b py-3 px-1">
+                <span class="text-[12px] text-menu font-medium">{{ result.name }}</span>
+                <span class="text-[10px] text-menu/40 ">{{ result.area }}</span>
+            </div>
+        </div>
+    </div>
+</div>

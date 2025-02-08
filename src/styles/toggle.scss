@@ -1,0 +1,107 @@
+//toggle the display
+.side-menu.toggle {
+  width: 100px !important;
+
+  .top-aside {
+    .img-logo {
+      display: none !important;
+    }
+
+    .img-menu {
+      display: none !important;
+    }
+
+    .img-shrink {
+      width: 61px !important;
+      height: 31px !important;
+      display: block !important;
+      margin-left: 22px !important;
+      background-image: url(/assets/icons/icone-logo-shrink.svg) !important;
+      background-repeat: no-repeat !important;
+      background-size: cover;
+      transition: all 0.5s ease;
+    }
+  }
+
+  .description-inst {
+    width: 72px !important;
+    height: 66px !important;
+    background-repeat: no-repeat !important;
+    background-size: cover;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.5s ease;
+    overflow: hidden !important;
+    padding-right: 16px;
+
+    .img-logo {
+      width: 40px !important;
+      height: 38.31px !important;
+    }
+
+    .nome-inst {
+      display: none;
+    }
+  }
+
+  .menu-aside {
+    width: 72px !important;
+    transition: all 0.6s ease;
+
+    .menu {
+      margin-left: 5%;
+
+      .item {
+        a {
+          width: 80% !important;
+
+          i {
+            margin-left: 10%;
+          }
+        }
+
+        a.sub-btn {
+          i.dropdown {
+            display: none;
+          }
+        }
+
+        .sub-menu {
+          display: none !important;
+        }
+      }
+
+      a {
+        span {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.navbar.toggle {
+  width: calc(100vw - 100px) !important;
+  left: 100px !important;
+}
+
+.user-perfil.toggle,
+.div-img.toggle,
+.span-menu.toggle {
+  display: none;
+}
+
+.item-menu.toggle {
+  justify-content: center !important;
+}
+
+.main.toggle {
+  left: 93px !important;
+  width: calc(100vw - 100px);
+}
+
+
+.toogleBtn.toggle {
+  transform: rotate(180deg) !important;
+}

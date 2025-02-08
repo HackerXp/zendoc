@@ -1,0 +1,23 @@
+.navbar {
+    width: calc(100vw - 280px);
+    left: 280px;
+    transition: all 0.5s ease;
+    top: 0;
+    z-index: 5;
+    box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+
+    .btn-add {
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .icon-btn{
+            color: #fff;
+        }
+        span {
+            font-size: 14px;
+            color: #fff;
+        }
+    }
+}

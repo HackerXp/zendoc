@@ -1,0 +1,50 @@
+<div class="grid h-screen grid-cols-1 md:grid-cols-2 overflow-auto">
+    <div class="flex h-screen w-full flex-col bg-[url('/bg-login.png')] bg-cover bg-center px-32 py-44 gap-y-4">
+        <div class="flex flex-wrap items-center">
+            <h3 class="font-semibold text-[18px] text-white">Organize os seus arquivos de forma rápida, fácil e segura
+                com a DocZen</h3>
+        </div>
+        <p class="text-[14px] text-[#F6F6F6]">DocZen: Organize seus arquivos em um piscar de olhos.</p>
+        <div class="grid grid-cols-2 gap-4">
+            <img src="img-video.png" class="w-3/4">
+            <img src="img-file.png" class="w-3/4">
+            <img src="img-photo.png" class="w-3/4">
+            <img src="img-music.png" class="w-3/4">
+        </div>
+    </div>
+    <div class="flex flex-col px-36 py-12 gap-y-5">
+        <div class="header flex flex-col justify-center text-center">
+            <img src="logo-description.png" alt="logo" class="w-48 h-16 self-center">
+            <span class="text-menu text-[14px]"> Organize seus arquivos em um piscar de olhos.</span>
+        </div>
+        <div class="form-content flex flex-col bg-[#E1E9F933]/20 py-12 px-8 gap-y-4">
+            <div>
+                <h3 class="text-[#27272D] font-semibold text-[20px]">Faça login na sua conta</h3>
+                <p class="text-[#7F7F7F] text-[12px] font-medium">Faça o seu login e comece a organizar seus arquivos.
+                </p>
+            </div>
+            <form class="flex flex-col gap-4" (ngSubmit)="authenticate()" [formGroup]="formLogin">
+                <input type="text" formControlName="usuario" placeholder="E-mail ou username"
+                    class="w-full h-12 rounded-lg border-[#E1E9F9] px-5 text-[12px] outline-none focus:border">
+                <input type="password" formControlName="senha" placeholder="Password"
+                    class="w-full h-12 rounded-lg border-[#E1E9F9] px-5 text-[12px] outline-none focus:border">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-x-2">
+                        <input type="checkbox" name="remember" id="remember" class="peer hidden">
+                        <label for="remember"
+                            class="cursor-pointer peer-checked:text-white text-[#E1E9F933]/20 text-[13px] w-5 h-5 border border-gray-400 flex items-center justify-center rounded-md peer-checked:bg-warning peer-checked:border-wabg-warning">
+                            ✔
+                        </label>
+                        <label for="remember"
+                            class="cursor-pointer active:scale-95 text-[#A3A3A3] text-[13px]">Lembrar-me</label>
+                    </div>
+                    <span class="text-[#616161] text-[13px] cursor-pointer active:scale-95">Esqueci-me a senha?</span>
+                </div>
+
+                <button type="submit" [disabled]="formLogin.invalid"
+                    class="w-full bg-[#3570EF]/90 hover:bg-[#3570EF] py-3 rounded-lg text-white font-semibold text-[15px] active:scale-95 disabled:cursor-not-allowed">Entrar</button>
+
+            </form>
+        </div>
+    </div>
+</div>

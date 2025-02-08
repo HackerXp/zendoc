@@ -1,0 +1,78 @@
+<div class="flex flex-col relative">
+    <div [class.hidden]="!show.details" [class.opacity-0]="!show.details" [class.opacity-100]="show.details"
+        [class.scale-95]="!show.details" [class.scale-100]="show.details"
+        class="flex -top-14 p-3 -mr-5 absolute  self-end w-full flex-col gap-1 right-0 bg-white shadow-lg rounded-lg z-10 transition-all duration-200 ease-in-out">
+        <div class="flex flex-col">
+            <button title="Fechar detalhes" (click)="close()"
+                class="text-black active:scale-95 self-end bg-[#3570EF]/10 w-4 h-4 flex items-center justify-center font-semibold rounded-full">
+                &times;
+            </button>
+            <h3 class="self-center text-menu text-[16px] font-inter font-semibold">Detalhes</h3>
+        </div>
+        <div class="body flex flex-col gap-2">
+            <div class="flex border rounded p-2 items-center gap-2">
+                <i class="icon icon-figma w-9 h-9"></i>
+                <div class="flex flex-col">
+                    <h4 class="text-menu font-inter font-semibold text-[12px] truncate">{{document.name}}</h4>
+                    <span class="text-menu/60 font-inter text-[12px]">{{fileSize(document.size!)}} -
+                        {{document.time}}</span>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="sm:col-span-1 flex flex-col">
+                    <span class="text-[12px] font-inter font-medium text-menu/40">Formato: </span>
+                    <span class="text-[12px] font-inter font-medium text-menu/40">Tamanho: </span>
+                    <span class="text-[12px] font-inter font-medium text-menu/40">Data: </span>
+                    <span class="text-[12px] font-inter font-medium text-menu/40">Área: </span>
+                    <span class="text-[12px] font-inter font-medium text-menu/40">Utilizador: </span>
+                </div>
+                <div class="sm:col-span-2 flex flex-col">
+                    <span class="text-[12px] font-inter font-semibold text-primary">{{document.ext}}</span>
+                    <span class="text-[12px] font-inter font-semibold text-primary">{{fileSize(document.size!)}}</span>
+                    <span class="text-[12px] font-inter font-semibold text-primary">{{document.date}}</span>
+                    <span class="text-[12px] font-inter font-semibold text-primary">{{document.area}}</span>
+                    <span class="text-[12px] font-inter font-semibold text-primary">{{document.user}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div [class.hidden]="!show.options" [class.opacity-0]="!show.options" [class.opacity-100]="show.options"
+        [class.scale-95]="!show.options" [class.scale-100]="show.options"
+        class="flex -top-8 -mr-5 absolute more-options self-end p-2 text-right flex-col items-center gap-1 right-0 bg-white shadow-lg rounded-lg z-10 transition-all duration-200 ease-in-out">
+        <i class="cursor-pointer active:scale-95 icon icon-trash h-5 w-5" title="Remover"
+            (click)="showHide('dialog')"></i>
+        <div class="border w-full bg-[#0F2045]"></div>
+        <i class="cursor-pointer active:scale-95 icon icon-info h-5 w-5" title="Ver detalhes"
+            (click)="showHide('details')"></i>
+        <div class="border w-full bg-[#0F2045]"></div>
+        <fa-icon [icon]="faEye" class="text-menu/80 cursor-pointer h-5 w-5 active:scale-95"
+            title="Visualizar"></fa-icon>
+    </div>
+
+    <div class="card w-full bg-white shadow-sm rounded-lg p-4 flex flex-col gap-2">
+
+        <div class="flex justify-between items-center">
+            <i class="icon icon-pdf h-14 w-14"></i>
+            <div class="flex flex-col items-center">
+                <i class="icon icon-dots h-4 w-1 cursor-pointer active:scale-95" (click)="showHide('options')"></i>
+                <span class="text-menu text-[12px] font-semibold font-inter">{{fileSize(document.size!)}}</span>
+            </div>
+        </div>
+
+        <div class="flex flex-col py-3 gap-1">
+            <span class="text-[#90CAF9] font-semibold text-[12px] font-inter">{{document.type}}</span>
+            <h3 class="text-menu font-semibold text-[14px] font-inter truncate">{{document.name}}</h3>
+            <div class="flex gap-1 items-center">
+                <i class="icon icon-calendar h-4 w-4"></i>
+                <span class="text-[12px] text-menu font-inter font-medium">{{document.date}}</span>
+            </div>
+            <div class="flex gap-1 items-center">
+                <i class="icon icon-time h-4 w-4"></i>
+                <span class="text-[12px] text-menu font-inter font-medium">{{document.time}}</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<modal-info [isOpen]="show.dialog!" (close)="close()" [file]="document.name!" />

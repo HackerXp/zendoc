@@ -1,0 +1,37 @@
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" *ngIf="modal.isOpen"
+  (click)="close()"></div>
+<div class="fixed inset-0 flex items-center justify-center z-50 overflow-auto" *ngIf="modal.isOpen">
+  <div class="bg-white rounded-lg shadow-lg w-11/12 sm: {{modal.size}}" (click)="$event.stopPropagation()">
+    <!-- Cabeçalho -->
+    <div class="px-4 py-3 border-b flex justify-between">
+      <div class="flex items-center gap-1">
+        <i class="icon {{modal.icon}} w-12 h-12"></i>
+        <div class="flex flex-col">
+          <h2 class="text-lg font-semibold text-primary">{{ modal.title }}</h2>
+          <span class="text-[#7A859B] text-[12px] font-inter font-normal">{{ modal.description }}</span>
+        </div>
+      </div>
+      <button title="Fechar modal"
+        class="text-black active:scale-95 bg-[#3570EF]/10 w-5 h-5 flex items-center justify-center font-semibold rounded-full"
+        (click)="close()">
+        &times;
+      </button>
+    </div>
+
+    <!-- Corpo -->
+    <div class="px-4 py-5">
+      <ng-content></ng-content>
+    </div>
+
+    <!-- Rodapé -->
+    <div class="px-4 py-3 border-t border-gray-200 flex justify-between space-x-2">
+      <button class="p-2 bg-gray-300 text-[12px] text-gray-700 rounded hover:bg-gray-400" (click)="close()">
+        {{modal.btnCancel}}
+      </button>
+      <button [disabled]="form.invalid" class="p-2 text-[12px] text-white rounded bg-[#3570EF] hover:bg-blue-700 cursor-pointer 
+         disabled:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-50" (click)="confirm()">
+        {{ modal.btnOK }}
+      </button>
+    </div>
+  </div>
+</div>

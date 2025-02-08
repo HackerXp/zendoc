@@ -1,0 +1,17 @@
+<div
+    class="flex mt-1 items-center border px-4 h-10 focus:border-[#3570EF] border-[#76B3D1] rounded-md text-[12px] font-medium text-[#7A859B] space-x-2 flex-wrap">
+    <!-- Chips -->
+    <div *ngFor="let chip of chips; let i = index"
+        class="flex items-center bg-[#3570EF] gap-1 text-white text-[12px] font-medium px-2 py-1 rounded-md">
+        <span>{{ chip }}</span>
+        <button title="Remove tag"
+            class="text-black bg-white/50 active:scale-95 hover:bg-white/80 w-4 h-4 flex items-center justify-center font-semibold rounded-full"
+            (click)="removeChip(i)">
+            &times;
+        </button>
+    </div>
+
+    <!-- Input -->
+    <input type="text" [(ngModel)]="inputValue" (keypress)="validateInput($event)" (keydown.space)="addChip()"
+        class="flex-grow border-0 outline-none" placeholder="Insira as tags..." />
+</div>

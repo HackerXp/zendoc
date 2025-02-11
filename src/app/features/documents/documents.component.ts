@@ -1,9 +1,8 @@
-import { Component, HostListener, inject } from '@angular/core';
+import { Component, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
 import { CardDocComponent } from "../../shared/components/card-doc/card-doc.component";
 import { NgIf } from '@angular/common';
-import { Document } from '@shared/interfaces/document';
+import { Data } from '@shared/interfaces/document';
 import prettyBytes from 'pretty-bytes';
-import { DummyService } from '@core/services/dummy.service';
 import { ApiService } from '@core/services/api.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
@@ -14,22 +13,21 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './documents.component.html',
   styleUrl: './documents.component.scss'
 })
-export class DocumentsComponent {
+export class DocumentsComponent implements OnInit, OnDestroy {
   private apiService = inject(ApiService);
   private toastr = inject(ToastrService);
   unsubscribeSubject = new Subject();
 
-  cards: Document[] = [];
-  total: number = 0;
-  currentPage: number = 1;
-  cardsPerPage: number = 1;
-  constructor(private dummy: DummyService) { }
+  cards: Data[] = [];
+  total = 0;
+  currentPage = 1;
+  cardsPerPage = 1;
 
   ngOnInit(): void {
     this.updateCardsPerPage();
     this.getDocuments();
-    this.cards = this.dummy.documents;
-    this.total = this.cards.reduce((acc, item) => acc + item.size!, 0);
+    // this.cards = this.dummy.documents;
+    // this.total = this.cards.reduce((acc, item) => acc + item.size!, 0);
   }
 
   // Atualiza os cards por página com base no tamanho da tela
@@ -51,7 +49,7 @@ export class DocumentsComponent {
   }
 
   // Obtém os cards da página atual
-  get paginatedCards(): any[] {
+  get paginatedCards() {
     const startIndex = (this.currentPage - 1) * this.cardsPerPage;
     const endIndex = startIndex + this.cardsPerPage;
     return this.cards.slice(startIndex, endIndex);
@@ -70,7 +68,8 @@ export class DocumentsComponent {
   }
 
   fileSize = (size: number) => {
-    return prettyBytes(size);
+    const sizeInBytes = size * 1048576;
+    return prettyBytes(sizeInBytes);
   }
 
 
@@ -78,17 +77,29 @@ export class DocumentsComponent {
     this.apiService.getDocuments()
       .pipe(takeUntil(this.unsubscribeSubject)).subscribe({
         next: (cb) => {
-          console.log(cb);
+          this.cards = cb.data;
+          this.total = this.calculateTotal();
 
         },
-        error: (error) => {
+        error: () => {
           this.toastr.error('Erro ao carregar documentos', 'Erro');
         }
       });
   }
-  sortByName(array: Document[]) {
-    this.cards = array.sort((a, b) => a.name!.localeCompare(b.name!));
+  sortByName(array: Data[]) {
+    this.cards = array.sort((a, b) => a.titulo!.localeCompare(b.titulo!));
   }
+
+  calculateTotal = () => this.cards.reduce((acc, item) => {
+    if (Array.isArray(item.files)) {
+      const sizeSum = item.files.reduce((fileAcc, file) => {
+        const sizeInMb = parseFloat(file.size.replace('Mb', ''));
+        return fileAcc + sizeInMb;
+      }, 0);
+      return acc + sizeSum;
+    }
+    return acc;
+  }, 0);
 
 
   ngOnDestroy() {

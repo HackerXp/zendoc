@@ -38,8 +38,6 @@ export class AsideComponent {
       initials: getInitials(this.userToken?.nome!),
       email: this.userToken?.email!,
     };
-
-
   }
 
   getPermissions() {

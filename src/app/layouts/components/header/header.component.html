@@ -39,24 +39,26 @@
         <div *ngIf="files.length > 0" class="mt-4">
             <p class="text-gray-600 font-medium mb-2 text-[12px]">Arquivos selecionados:</p>
             <ul class="grid grid-cols-2 gap-2">
-                <li *ngFor="let file of files"
-                    class="text-[12px] text-[#3570EF] font-medium bg-[#3570EF]/10 rounded-md p-2 flex items-center justify-between">
-                    <div class="truncate w-3/4">
-                        {{ file.name }} ({{ (file.size / 1024).toFixed(2) }} KB)
-                    </div>
-                    <button appTooltip="Remover arquivo" tooltipPosition="top"
-                        class="text-black bg-[#3570EF]/10 w-5 h-5 flex items-center justify-center font-semibold rounded-full"
-                        (click)="removeFile(file)">
-                        &times;
-                    </button>
-                </li>
+                @for (file of files; track file.name;let index = $index) {
+                    <li class="text-[12px] text-[#3570EF] font-medium bg-[#3570EF]/10 rounded-md p-2 flex items-center justify-between">
+                        <div class="truncate w-3/4">
+                            {{ file.name }} ({{ (file.size / 1024).toFixed(2) }} KB)
+                        </div>
+                        <button appTooltip="Remover arquivo" tooltipPosition="top"
+                            class="text-black bg-[#3570EF]/10 w-5 h-5 flex items-center justify-center font-semibold rounded-full"
+                            (click)="removeFile(file)">
+                            &times;
+                        </button>
+                    </li>
+                }
+
             </ul>
         </div>
 
 
         <!-- Categorias -->
         <div class="mt-6">
-            <label for="category" class="block text-[12px] font-medium text-[#7A859B]">
+            <label for="subject" class="block text-[12px] font-medium text-[#7A859B]">
                 Assunto *
             </label>
             <input type="text" formControlName="subject" placeholder="Descreva aqui o assunto"
@@ -72,29 +74,31 @@
                     class="mt-1 block w-full rounded-md text-[12px] font-medium text-[#7A859B] border border-[#76B3D1] px-4 shadow-sm h-10 bg-white">
                     <option value="" class="font-inter text-[12px] text-[#7A859B]" disabled>Selecione a categoria
                     </option>
-                    <option class="font-inter text-[12px] text-black font-medium" *ngFor="let category of categories"
-                        [value]="category">
-                        {{ category }}
-                    </option>
+                    @for (item of categories; track item.categoria) {
+                        <option class="font-inter text-[12px] text-black font-medium" [value]="item.id">
+                            {{ item.categoria }}
+                        </option>
+                    }
                 </select>
             </div>
             <div>
-                <label for="category" class="block text-[12px] font-medium text-[#7A859B]">
+                <label for="department" class="block text-[12px] font-medium text-[#7A859B]">
                     Repartição *
                 </label>
-                <select id="category" formControlName="category" name="category"
+                <select id="department" formControlName="department" name="department"
                     class="mt-1 block w-full rounded-md text-[12px] font-medium text-[#7A859B] border border-[#76B3D1] px-4 shadow-sm h-10 bg-white">
                     <option value="" class="font-inter text-[12px] text-[#7A859B]" disabled>Selecione a repartição
                     </option>
-                    <option class="font-inter text-[12px] text-black font-medium" *ngFor="let category of categories"
-                        [value]="category">
-                        {{ category }}
-                    </option>
+                    @for (item of department; track item.nome) {
+                        <option class="font-inter text-[12px] text-black font-medium" [value]="item.id">
+                            {{ item.nome }}
+                        </option>
+                    }
                 </select>
             </div>
         </div>
         <div class="mt-6">
-            <label for="category" class="block text-[12px] font-medium text-[#7A859B]">
+            <label for="tags" class="block text-[12px] font-medium text-[#7A859B]">
                 Tags
             </label>
             <chips [chips]="chips" />

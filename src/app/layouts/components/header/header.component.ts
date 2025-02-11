@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { NgFor, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
@@ -13,32 +13,51 @@ import { ModalSearchComponent } from "../../../shared/components/modal-search/mo
 import { ShortcutService } from '@shared/services/shortcut.service';
 import { ChipsComponent } from "../../../shared/components/chips/chips.component";
 import { TooltipDirective } from '@shared/directives/tooltip.directive';
+import { DepartmentService } from '@core/services/department/department.service';
+import { Subject, takeUntil } from 'rxjs';
+import { Department_Data } from '@shared/interfaces/department';
+import { Category_Data } from '@shared/interfaces/category';
+import { CategoryService } from '@core/services/category/category.service';
+import { ApiService } from '@core/services/api.service';
+import { AuthService } from '@core/services/auth.service';
+import { UserToken } from '@core/interfaces/user-token';
 
 @Component({
   selector: 'app-header',
-  imports: [FontAwesomeModule,
+  imports: [
+    FontAwesomeModule,
     ModalComponent,
     FormsModule,
-    NgFor, NgIf,
+    NgIf,
     ReactiveFormsModule,
-    ModalSearchComponent, ChipsComponent, TooltipDirective],
+    ModalSearchComponent,
+    ChipsComponent,
+    TooltipDirective,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   faCircleArrowLeft = faArrowAltCircleLeft;
   faCloud = faCloudUpload;
   faUpload = faUpload;
   documentName = '';
   isDragOver = false;
   selectedCategory = '';
-  categories = ['Categoria 1', 'Categoria 2', 'Categoria 3']; // Exemplos
+  categories: Category_Data[] = [];
   titles = ['Dashboard', 'Documentos', 'Configurações'];
   modal: Modal = {};
   files: File[] = [];
   chips: string[] = [];
   formFile!: FormGroup;
-  isSearchOpen: boolean = false;
+  isSearchOpen = false;
+  unsubscribeSubject = new Subject();
+  private deptService = inject(DepartmentService);
+  private catService = inject(CategoryService);
+  private apiService = inject(ApiService);
+  private authService = inject(AuthService);
+  department: Department_Data[] = [];
+  userToken!: UserToken;
 
   constructor(
     private fb: FormBuilder,
@@ -48,13 +67,13 @@ export class HeaderComponent implements OnInit {
     this.shortcutService.shortcut$.subscribe(() => this.toggleSearch());
   }
 
-
   ngOnInit(): void {
     this.toggleMenu();
     this.buildForm();
+    this.getDept();
+    this.getCategory();
+    this.setUser();
   }
-
-
 
   buildForm = () => {
     this.formFile = this.fb.group({
@@ -63,10 +82,32 @@ export class HeaderComponent implements OnInit {
       files: ['', Validators.required],
       subject: ['', Validators.required],
       category: ['', Validators.required],
+      department: ['', Validators.required],
       dateAdd: [new Date()],
     });
   };
 
+  getDept() {
+    this.deptService
+      .getDepartment()
+      .pipe(takeUntil(this.unsubscribeSubject))
+      .subscribe({
+        next: (dept) => {
+          this.department = dept.data;
+        },
+      });
+  }
+
+  getCategory() {
+    this.catService
+      .getCategory()
+      .pipe(takeUntil(this.unsubscribeSubject))
+      .subscribe({
+        next: (cat) => {
+          this.categories = cat.data;
+        },
+      });
+  }
 
   openModal() {
     this.buildForm();
@@ -74,11 +115,12 @@ export class HeaderComponent implements OnInit {
       isOpen: true,
       icon: 'icon-add-doc',
       title: 'Adicionar arquivo ',
-      description: 'Adicione qualquer tipo de arquivo de forma simples e segura',
+      description:
+        'Adicione qualquer tipo de arquivo de forma simples e segura',
       size: 'w-2/5',
       btnCancel: 'Cancelar',
-      btnOK: 'Salvar documento'
-    }
+      btnOK: 'Salvar documento',
+    };
   }
 
   toggleSearch() {
@@ -91,11 +133,45 @@ export class HeaderComponent implements OnInit {
     this.chips = [];
   }
 
+  formData = new FormData();
   saveDocument() {
-    this.toastr.success('Hello world!', 'Toastr fun!');
-    console.log('Documento salvo:', this.formFile.value, this.chips);
+    if (this.files.length === 0) {
+      this.toastr.warning('Selecione pelo menos um arquivo antes de enviar');
+      return;
+    }
+
+    this.formData.append('idusuario', `${this.userToken?.idusuario}`);
+    this.formData.append('idcategoria', this.formFile.value.category);
+    this.formData.append('iddepartamento', this.formFile.value.department);
+    this.formData.append('titulo', 'Teste');
+    this.formData.append('tags', `${[...this.chips]}`);
+    this.categories.find((cat) => {
+      if (cat.id === this.formFile.value.category) {
+        this.formData.append('tipo', cat.categoria);
+      }
+    });
+    this.formData.append('descricao', this.formFile.value.subject);
+    this.files.forEach((file) => {
+      this.formData.append('files[]', file);
+    });
+
+    this.apiService.saveDocument(this.formData).subscribe({
+      next: (response) => {
+        this.toastr.success(response.mensagem);
+        this.files = [];
+        this.formData = new FormData();
+        this.closeModal();
+        this.buildForm();
+      },
+      error: (error) => {
+        this.toastr.error(error.message);
+      },
+    });
   }
 
+  setUser = () => {
+    this.userToken = this.authService.decodeToken();
+  };
 
   // Quando arquivos são arrastados para a área
   onDragOver(event: DragEvent): void {
@@ -126,6 +202,9 @@ export class HeaderComponent implements OnInit {
 
     if (input.files) {
       this.addFiles(input.files);
+
+      // const filesArray = Array.from(input.files) as File[];
+      // this.files = [...this.files, ...filesArray];
     }
   }
 
@@ -141,6 +220,7 @@ export class HeaderComponent implements OnInit {
   // Remove um arquivo da lista
   removeFile(file: File): void {
     this.files = this.files.filter((f) => f !== file);
+    // this.files.splice(index, 1);
   }
 
   toggleMenu() {
@@ -162,7 +242,7 @@ export class HeaderComponent implements OnInit {
       div_img.classList.toggle('toggle');
 
       span_menu.forEach((_) => {
-        _.classList.toggle('toggle')
+        _.classList.toggle('toggle');
       });
 
       item_menu.forEach((_, i) => {
@@ -171,5 +251,8 @@ export class HeaderComponent implements OnInit {
       });
     });
   }
-
+  ngOnDestroy(): void {
+    this.unsubscribeSubject.next(null);
+    this.unsubscribeSubject.complete();
+  }
 }

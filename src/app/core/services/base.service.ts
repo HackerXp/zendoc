@@ -10,8 +10,6 @@ export class BaseService {
   protected apiURL: string = environment.apiURL;
   protected authURL: string = environment.authURL;
 
-  constructor() { }
-
   handleError(error: any) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) errorMessage = error.error.message;

@@ -12,20 +12,26 @@ export interface Document {
 }
 
 
+export interface Data {
+  categoria: string;
+  data_criacao: string;
+  departamento: string;
+  descricao: string;
+  files: File[];
+  id: number;
+  idcategoria: number;
+  iddepartamento: number;
+  idusuario: string;
+  titulo: string;
+  tags: string;
+  tipo: string;
+  usuario: string;
+}
+
 export interface Documents {
-    id: number;
-    titulo: string;
-    tipo: string;
-    descricao: string;
-    categoria: string;
-    idcategoria: number;
-    departamento: string;
-    iddepartamento: number;
-    tags: string;
-    usuario: string;
-    idusuario: string;
-    data_criacao: string;
-    files: File[];
+  codigo: string;
+  data: Data[];
+  mensagem: string;
 }
 
 

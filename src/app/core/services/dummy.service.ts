@@ -3,11 +3,11 @@ import { Document } from '@shared/interfaces/document';
 
 @Injectable({
   providedIn: 'root'
-})
+}) 
 export class DummyService {
 
   // cards = Array.from({ length: 26 }, (_, i) => ({ id: i + 1 })); // Exemplo de 30 cards
-  constructor() { }
+  
   documents: Document[] = [{
     'id': 1,
     'name': 'Street Population.xlsx',

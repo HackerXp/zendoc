@@ -13,25 +13,25 @@
             <div class="flex border rounded p-2 items-center gap-2">
                 <i class="icon icon-figma w-9 h-9"></i>
                 <div class="flex flex-col">
-                    <h4 class="text-menu font-inter font-semibold text-[12px] truncate">{{document.name}}</h4>
-                    <span class="text-menu/60 font-inter text-[12px]">{{fileSize(document.size!)}} -
-                        {{document.time}}</span>
+                    <h4 class="text-menu font-inter font-semibold text-[12px] truncate">{{document.titulo}}</h4>
+                    <!-- <span class="text-menu/60 font-inter text-[12px]">{{fileSize(document.size!)}} - {{document.data_criacao}}</span> -->
+                    <span class="text-menu/60 font-inter text-[12px]">{{document.data_criacao}}</span>
                 </div>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="sm:col-span-1 flex flex-col">
-                    <span class="text-[12px] font-inter font-medium text-menu/40">Formato: </span>
-                    <span class="text-[12px] font-inter font-medium text-menu/40">Tamanho: </span>
+                    <!-- <span class="text-[12px] font-inter font-medium text-menu/40">Formato: </span> -->
+                    <!-- <span class="text-[12px] font-inter font-medium text-menu/40">Tamanho: </span> -->
                     <span class="text-[12px] font-inter font-medium text-menu/40">Data: </span>
                     <span class="text-[12px] font-inter font-medium text-menu/40">Área: </span>
                     <span class="text-[12px] font-inter font-medium text-menu/40">Utilizador: </span>
                 </div>
                 <div class="sm:col-span-2 flex flex-col">
-                    <span class="text-[12px] font-inter font-semibold text-primary">{{document.ext}}</span>
-                    <span class="text-[12px] font-inter font-semibold text-primary">{{fileSize(document.size!)}}</span>
-                    <span class="text-[12px] font-inter font-semibold text-primary">{{document.date}}</span>
-                    <span class="text-[12px] font-inter font-semibold text-primary">{{document.area}}</span>
-                    <span class="text-[12px] font-inter font-semibold text-primary">{{document.user}}</span>
+                    <!-- <span class="text-[12px] font-inter font-semibold text-primary">{{document.ext}}</span> -->
+                    <!-- <span class="text-[12px] font-inter font-semibold text-primary">{{fileSize(document.size!)}}</span> -->
+                    <span class="text-[12px] font-inter font-semibold text-primary">{{document.data_criacao | date:'dd \'de\' MMMM \'de\' yyyy':'pt-BR'}}</span>
+                    <span class="text-[12px] font-inter font-semibold text-primary">{{document.departamento}}</span>
+                    <span class="text-[12px] font-inter font-semibold text-primary">{{document.usuario}}</span>
                 </div>
             </div>
         </div>
@@ -55,24 +55,24 @@
             <i class="icon icon-pdf h-14 w-14"></i>
             <div class="flex flex-col items-center">
                 <i class="icon icon-dots h-4 w-1 cursor-pointer active:scale-95" (click)="showHide('options')"></i>
-                <span class="text-menu text-[12px] font-semibold font-inter">{{fileSize(document.size!)}}</span>
+                <!-- <span class="text-menu text-[12px] font-semibold font-inter">{{fileSize(document.size!)}}</span> -->
             </div>
         </div>
 
         <div class="flex flex-col py-3 gap-1">
-            <span class="text-[#90CAF9] font-semibold text-[12px] font-inter">{{document.type}}</span>
-            <h3 class="text-menu font-semibold text-[14px] font-inter truncate">{{document.name}}</h3>
+            <span class="text-[#90CAF9] font-semibold text-[12px] font-inter">{{document.tipo}}</span>
+            <h3 class="text-menu font-semibold text-[14px] font-inter truncate">{{document.titulo}}</h3>
             <div class="flex gap-1 items-center">
                 <i class="icon icon-calendar h-4 w-4"></i>
-                <span class="text-[12px] text-menu font-inter font-medium">{{document.date}}</span>
+                <span class="text-[12px] text-menu font-inter font-medium">{{document.data_criacao | date:'dd \'de\' MMMM \'de\' yyyy':'pt-BR' }}</span>
             </div>
             <div class="flex gap-1 items-center">
                 <i class="icon icon-time h-4 w-4"></i>
-                <span class="text-[12px] text-menu font-inter font-medium">{{document.time}}</span>
+                <span class="text-[12px] text-menu font-inter font-medium">{{document.data_criacao | date:'HH:mm \'Minutos\''}}</span>
             </div>
         </div>
 
     </div>
 </div>
 
-<modal-info [isOpen]="show.dialog!" (close)="close()" [file]="document.name!" />
+<modal-info [isOpen]="show.dialog!" (close)="close()" [file]="document.titulo!" />

@@ -8,6 +8,7 @@ import { routes } from './app.routes';
 import { NgxPermissionsService, NgxPermissionsStore, NgxRolesService, NgxPermissionsModule } from 'ngx-permissions';
 import { USE_PERMISSIONS_STORE, NgxPermissionsConfigurationService, USE_CONFIGURATION_STORE } from 'ngx-permissions';
 import { authInterceptor } from '@core/interceptors/Auth.interceptor';
+import { httpInterceptor } from '@core/interceptors/http.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,7 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideToastr(),
     provideAnimations(),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor, httpInterceptor])),
 
     // ✅ Provedores do ngx-permissions
     importProvidersFrom(NgxPermissionsModule.forRoot()),
@@ -24,6 +25,6 @@ export const appConfig: ApplicationConfig = {
     NgxRolesService,
     NgxPermissionsConfigurationService,
     { provide: USE_PERMISSIONS_STORE, useValue: true },
-    { provide: USE_CONFIGURATION_STORE, useValue: true } // ✅ ESSENCIAL PARA EVITAR O ERRO
-  ]
+    { provide: USE_CONFIGURATION_STORE, useValue: true }, // ✅ ESSENCIAL PARA EVITAR O ERRO
+  ],
 };

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Auth } from '@core/interfaces/auth';
@@ -12,7 +12,7 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss'
 })
-export class AuthComponent {
+export class AuthComponent implements OnInit, OnDestroy {
   unsubscribeSubject = new Subject();
   private authService = inject(AuthService);
   private toastr = inject(ToastrService);
@@ -50,12 +50,12 @@ export class AuthComponent {
             this.router.navigate(['/dash']);
             localStorage.setItem('reload', 'reload');
           }
-          else
-            this.toastr.error(cb.mensagem, 'Erro');
+          // else
+          //   this.toastr.error(cb.mensagem, 'Erro');
 
         }, // Redireciona após login
-        error: (error) => {
-          this.toastr.error('Erro ao fazer a autênticação', 'Erro');
+        error: () => {
+          // this.toastr.error('Erro ao fazer a autênticação', 'Erro');
         }
       });
   }

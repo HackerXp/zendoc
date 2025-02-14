@@ -1,33 +1,36 @@
 import { Component, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
 import { CardDocComponent } from "../../shared/components/card-doc/card-doc.component";
-import { NgIf } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Data } from '@shared/interfaces/document';
 import prettyBytes from 'pretty-bytes';
 import { ApiService } from '@core/services/api.service';
-import { Subject, takeUntil } from 'rxjs';
+import { map, Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-documents',
-  imports: [CardDocComponent, NgIf],
+  imports: [CardDocComponent, NgIf, AsyncPipe],
   templateUrl: './documents.component.html',
-  styleUrl: './documents.component.scss'
+  styleUrl: './documents.component.scss',
 })
 export class DocumentsComponent implements OnInit, OnDestroy {
   private apiService = inject(ApiService);
   private toastr = inject(ToastrService);
+  documents$ = this.apiService.documents$;
   unsubscribeSubject = new Subject();
+  paginatedDocuments$ = this.apiService.paginatedDocuments$; // ✅ Observa os documentos paginados
+  currentPage$ = this.apiService.currentPage$;
+  cardsPerPage = this.apiService.cardsPerPage;
+  totalPages$ = this.apiService.totalPages$;
 
   cards: Data[] = [];
   total = 0;
   currentPage = 1;
-  cardsPerPage = 1;
+  // cardsPerPage = 1;
 
   ngOnInit(): void {
     this.updateCardsPerPage();
     this.getDocuments();
-    // this.cards = this.dummy.documents;
-    // this.total = this.cards.reduce((acc, item) => acc + item.size!, 0);
   }
 
   // Atualiza os cards por página com base no tamanho da tela
@@ -60,6 +63,14 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     return Math.ceil(this.cards.length / this.cardsPerPage);
   }
 
+  nextPage() {
+    this.apiService.nextPage();
+  }
+
+  previousPage() {
+    this.apiService.previousPage();
+  }
+
   // Altera a página
   changePage(page: number): void {
     if (page > 0 && page <= this.totalPages) {
@@ -70,37 +81,41 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   fileSize = (size: number) => {
     const sizeInBytes = size * 1048576;
     return prettyBytes(sizeInBytes);
-  }
-
+  };
 
   getDocuments = () => {
-    this.apiService.getDocuments()
-      .pipe(takeUntil(this.unsubscribeSubject)).subscribe({
-        next: (cb) => {
-          this.cards = cb.data;
-          this.total = this.calculateTotal();
+    this.apiService.getDocuments();
+    // .pipe(takeUntil(this.unsubscribeSubject)).subscribe({
+    //   next: (cb) => {
+    //     this.cards = cb.data;
+    //     this.total = this.calculateTotal();
+    //   },
+    //   error: () => {
+    //     this.toastr.error('Erro ao carregar documentos', 'Erro');
+    //   }
+    // });
+  };
 
-        },
-        error: () => {
-          this.toastr.error('Erro ao carregar documentos', 'Erro');
+  calculateTotal$ = this.documents$.pipe(
+    map((documents) => {
+      const totalSize = documents.reduce((acc, item) => {
+        if (Array.isArray(item.files)) {
+          const sizeSum = item.files.reduce((fileAcc, file) => {
+            const sizeInMb = parseFloat(file.size.replace('Mb', ''));
+            return fileAcc + sizeInMb;
+          }, 0);
+          return acc + sizeSum;
         }
-      });
-  }
-  sortByName(array: Data[]) {
-    this.cards = array.sort((a, b) => a.titulo!.localeCompare(b.titulo!));
-  }
-
-  calculateTotal = () => this.cards.reduce((acc, item) => {
-    if (Array.isArray(item.files)) {
-      const sizeSum = item.files.reduce((fileAcc, file) => {
-        const sizeInMb = parseFloat(file.size.replace('Mb', ''));
-        return fileAcc + sizeInMb;
+        return acc;
       }, 0);
-      return acc + sizeSum;
-    }
-    return acc;
-  }, 0);
 
+      return this.fileSize(totalSize);
+    })
+  );
+
+  sortDocuments() {
+    this.apiService.sortByName();
+  }
 
   ngOnDestroy() {
     this.unsubscribeSubject.next(null);

@@ -75,4 +75,4 @@
     </div>
 </div>
 
-<modal-info [isOpen]="show.dialog!" (close)="close()" [file]="document.titulo!" />
+<modal-info [isOpen]="show.dialog!" (close)="close()" (selectDocument)="onDocumentSelectedId($event)" [file]="document!" />

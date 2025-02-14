@@ -1,5 +1,6 @@
-<div (click)="onBackdropClick($event)"
+<div (click)="onBackdropClick()"
     class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start z-50">
+    
     <div (click)="$event.stopPropagation()" class="bg-white rounded-lg shadow-lg w-full max-w-md mt-10">
         <div class="p-2 flex justify-between items-center shadow-sm">
             <input type="text" autofocus
@@ -8,12 +9,13 @@
             <fa-icon [icon]="faSearch" class="text-menu"></fa-icon>
         </div>
         <!-- Resultados -->
-        <div *ngIf="searchResults.length > 0" class="p-2 border-t max-h-[250px] overflow-y-auto">
-            <div *ngFor="let result of searchResults"
-                class="flex justify-between items-center cursor-pointer select-none hover:bg-[#90CAF9]/10 border-b py-3 px-1">
-                <span class="text-[12px] text-menu font-medium">{{ result.name }}</span>
-                <span class="text-[10px] text-menu/40 ">{{ result.area }}</span>
-            </div>
+        <div *ngIf="searchResults().length > 0" class="p-2 border-t max-h-[250px] overflow-y-auto">
+            @for (result of searchResults(); track $index) {
+                <div class="flex justify-between items-center cursor-pointer select-none hover:bg-[#90CAF9]/10 border-b py-3 px-1">
+                    <span class="text-[12px] text-menu font-medium">{{ result.titulo }}</span>
+                    <span class="text-[10px] text-menu/40 ">{{ result.categoria }}</span>
+                </div>
+            }
         </div>
     </div>
 </div>

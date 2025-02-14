@@ -1,57 +1,58 @@
-import { NgFor, NgIf } from '@angular/common';
-import { Component, EventEmitter, HostListener, Output } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { Component, computed, EventEmitter, HostListener, inject, OnDestroy, Output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ApiService } from '@core/services/api.service';
 import { DummyService } from '@core/services/dummy.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Document } from '@shared/interfaces/document';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'modal-search',
   standalone: true,
-  imports: [FontAwesomeModule, NgIf, NgFor, FormsModule],
+  imports: [FontAwesomeModule, NgIf, FormsModule],
   templateUrl: './modal-search.component.html',
-  styleUrl: './modal-search.component.scss'
+  styleUrl: './modal-search.component.scss',
 })
-export class ModalSearchComponent {
+export class ModalSearchComponent implements OnDestroy {
   @Output() close = new EventEmitter<void>();
+  private apiService = inject(ApiService);
   faSearch = faSearch;
-  searchInput: string = ''; // Texto do input
-  searchResults: Document[] = []; // Resultados da busca
 
-  mockData: Document[] = []; // Mock de dados
-
+  mockData: Document[] = [];
 
   constructor(private dummy: DummyService) {
-    this.mockData = this.dummy.documents;
     document.addEventListener('keydown', this.handleKeydown);
   }
 
+  documents = toSignal(this.apiService.documents$, { initialValue: [] });
+  searchInput = signal('');
+
+  searchResults = computed(() => {
+    const input = this.searchInput().trim();
+
+    if (input.length <= 3) return [];
+
+    const query = input.toLowerCase();
+
+    return this.documents()
+      .filter(
+        (item) =>
+          item.titulo?.toLowerCase().includes(query) ||
+          item.idusuario?.toLowerCase().includes(query) ||
+          item.categoria?.toLowerCase().includes(query) ||
+          item.tipo?.toLowerCase().includes(query) ||
+          item.descricao?.toLowerCase().includes(query)
+      );
+  });
 
   onSearch(event: Event) {
-    const input = this.searchInput.trim();
-
-    if (input.length > 3) {
-      // Filtra os resultados com base no valor do input
-      this.searchResults = this.mockData.filter((item) => {
-        const query = input.toLowerCase();
-
-        // Verifica se qualquer campo contém o termo de pesquisa
-        return (
-          item.name!.toLowerCase().includes(query) ||
-          item.user!.toLowerCase().includes(query) ||
-          item.area!.toLowerCase().includes(query) ||
-          item.type!.toLowerCase().includes(query) ||
-          item.subject!.toLowerCase().includes(query)
-        );
-      });
-    } else {
-      this.searchResults = []; // Limpa os resultados se o input tiver menos de 3 caracteres
-    }
+    const target = event.target as HTMLInputElement;
+    this.searchInput.set(target.value);
   }
 
-
-  onBackdropClick(event: MouseEvent) {
+  onBackdropClick() {
     this.close.emit(); // Emite o evento para fechar a modal
   }
 

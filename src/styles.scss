@@ -41,7 +41,11 @@ body {
     grid-area: aside;
 }
 
-.container {
+// .main{
+//     grid-area: main;
+// }
+
+.main {
     grid-area: main;
     position: relative;
     height: calc(92vh);

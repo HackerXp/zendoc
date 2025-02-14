@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable, catchError, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { BaseService } from './base.service';
 import { Auth } from '@core/interfaces/auth';
 import { HttpClient } from '@angular/common/http';
@@ -28,7 +28,7 @@ export class AuthService extends BaseService {
     formData.append('senha', credentials.senha!);
     return this.http.post<AuthResponse>(`${this.apiURL}/?rota=autenticacao`, formData).pipe(
       tap(response => response != null || undefined || '' ? sessionStorage.setItem('token', response.data) : false), // Armazena o token
-      catchError(this.handleError) // Trata erros
+      // catchError(this.handleError) // Trata erros
     );
   }
 

@@ -78,7 +78,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   buildForm = () => {
     this.formFile = this.fb.group({
       id: [''],
-      user: ['elvio.souza'],
+      user: [''],
       files: ['', Validators.required],
       subject: ['', Validators.required],
       category: ['', Validators.required],
@@ -143,7 +143,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.formData.append('idusuario', `${this.userToken?.idusuario}`);
     this.formData.append('idcategoria', this.formFile.value.category);
     this.formData.append('iddepartamento', this.formFile.value.department);
-    this.formData.append('titulo', 'Teste');
+    this.formData.append('titulo', this.formFile.value.subject);
     this.formData.append('tags', `${[...this.chips]}`);
     this.categories.find((cat) => {
       if (cat.id === this.formFile.value.category) {
@@ -155,18 +155,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.formData.append('files[]', file);
     });
 
-    this.apiService.saveDocument(this.formData).subscribe({
-      next: (response) => {
-        this.toastr.success(response.mensagem);
-        this.files = [];
-        this.formData = new FormData();
-        this.closeModal();
-        this.buildForm();
-      },
-      error: (error) => {
-        this.toastr.error(error.message);
-      },
-    });
+    this.apiService.saveDocument(this.formData);
+    this.files = [];
+    this.formData = new FormData();
+    this.closeModal();
+    this.buildForm();
   }
 
   setUser = () => {

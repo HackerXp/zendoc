@@ -4,41 +4,41 @@
 @import url("styles/icon.scss");
 @import url("styles/toastr.scss");
 @import url("styles/tooltip.scss");
-@import '@fontsource/mukta';
-@import 'ngx-toastr/toastr';
+@import "@fontsource/mukta";
+@import "ngx-toastr/toastr";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    text-decoration: none;
-    list-style: none;
-    font-family: "Open Sans", Inter, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style: none;
+  font-family: "Open Sans", Inter, sans-serif;
 
-    &,
-    &:before,
-    &:after {
-        box-sizing: border-box;
-    }
+  &,
+  &:before,
+  &:after {
+    box-sizing: border-box;
+  }
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    background: var(--bg-app) !important;
-    overflow: hidden;
+  margin: 0;
+  padding: 0;
+  background: var(--bg-app) !important;
+  overflow: hidden;
 }
 
 .header {
-    grid-area: header;
+  grid-area: header;
 }
 
 .aside {
-    grid-area: aside;
+  grid-area: aside;
 }
 
 // .main{
@@ -46,16 +46,26 @@ body {
 // }
 
 .main {
-    grid-area: main;
-    position: relative;
-    height: calc(92vh);
-    transition: all 0.5s ease;
+  grid-area: main;
+  position: relative;
+  height: calc(92vh);
+  transition: all 0.5s ease;
 }
 
 .app {
-    display: grid;
-    grid-template-areas:
-        "aside header header header header header"
-        "aside main main main main main";
-    padding: 0;
+  display: grid;
+  grid-template-areas:
+    "aside header header header header header"
+    "aside main main main main main";
+  padding: 0;
+}
+
+.table-users td,
+th {
+  padding: 20px;
+  text-align: center;
+}
+
+.table-users tr:nth-child(odd):not(.table-head) {
+  background-color: #fbfcfc;
 }

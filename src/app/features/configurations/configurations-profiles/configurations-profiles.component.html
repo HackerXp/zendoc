@@ -1,0 +1,125 @@
+<section class="p-8">
+  <div class="flex justify-between items-center">
+    <div>
+      <h2 class="text-[30px] font-bold">Configurações</h2>
+      <p class="flex items-center">
+        Criação de perfis: <span class="text-[green] mx-1">10</span
+        ><strong>perfis criadoss</strong>
+      </p>
+    </div>
+    <button
+      (click)="openModal()"
+      class="bg-[#263238] text-white px-4 py-2 rounded-md text-[16px] flex items-center gap-x-2"
+    >
+      <i class="icon icon-user-btn w-[30px] h-[30px] cursor-pointer"></i>
+      Adiconar novo perfil
+    </button>
+  </div>
+  <div class="mt-8">
+    <table class="w-full table-users bg-white">
+      <thead class="">
+        <tr class="table-head">
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Departamento</th>
+          <th>Opções</th>
+        </tr>
+      </thead>
+      <tbody class="">
+        <tr>
+          <td>Félix</td>
+          <td>feli.gmail.com</td>
+          <td>A,B,C</td>
+          <td>
+            <i class="icon icon-user-btn w-[15px] h-[15px] cursor-pointer"></i>
+          </td>
+        </tr>
+        <tr>
+          <td>Félix</td>
+          <td>feli.gmail.com</td>
+          <td>A,B,C</td>
+          <td>
+            <i class="icon icon-user-btn w-[15px] h-[15px] cursor-pointer"></i>
+          </td>
+        </tr>
+        <tr>
+          <td>Félix</td>
+          <td>feli.gmail.com</td>
+          <td>A,B,C</td>
+          <td>
+            <i class="icon icon-user-btn w-[15px] h-[15px] cursor-pointer"></i>
+          </td>
+        </tr>
+        <tr>
+          <td>Félix</td>
+          <td>feli.gmail.com</td>
+          <td>A,B,C</td>
+          <td>
+            <i class="icon icon-user-btn w-[15px] h-[15px] cursor-pointer"></i>
+          </td>
+        </tr>
+        <tr>
+          <td>Félix</td>
+          <td>feli.gmail.com</td>
+          <td>A,B,C</td>
+          <td>
+            <i class="icon icon-user-btn w-[15px] h-[15px] cursor-pointer"></i>
+          </td>
+        </tr>
+        <tr>
+          <td>Félix</td>
+          <td>feli.gmail.com</td>
+          <td>A,B,C</td>
+          <td>
+            <i class="icon icon-user-btn w-[15px] h-[15px] cursor-pointer"></i>
+          </td>
+        </tr>
+        <tr>
+          <td>Félix</td>
+          <td>feli.gmail.com</td>
+          <td>A,B,C</td>
+          <td>
+            <i class="icon icon-user-btn w-[15px] h-[15px] cursor-pointer"></i>
+            Acção
+          </td>
+        </tr>
+        <tr>
+          <td>Félix</td>
+          <td>feli.gmail.com</td>
+          <td>A,B,C</td>
+          <td class="">
+            <div class="flex gap-x-3">
+              <i class="icon icon-user w-[25px] h-[25px] cursor-pointer"></i>
+              <i class="icon icon-user w-[25px] h-[25px] cursor-pointer"></i>
+              <i class="icon icon-user w-[25px] h-[25px] cursor-pointer"></i>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div
+    *ngIf="false"
+    class="flex flex-col items-center justify-center p-12 bg-white mt-8 rounded-md h-[70vh]"
+  >
+    <i class="icon icon-user-none w-[130px] h-[130px]"></i>
+    <strong class="text-menu text-[20px] my-2"
+      >Sem perfis para apresentar</strong
+    >
+    <p class="text-center text-menu">
+      Não existe nenhum perfil cadastrado. Adicione um perfil.
+    </p>
+  </div>
+</section>
+
+<app-modal
+  [modal]="modal"
+  [form]="formFile"
+  (closeModal)="closeModal()"
+  (confirmAction)="saveUser()"
+>
+
+
+
+</app-modal>

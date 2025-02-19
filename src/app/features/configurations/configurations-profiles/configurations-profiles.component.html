@@ -108,29 +108,29 @@
 <app-modal [modal]="modal" [form]="formUser" (closeModal)="closeModal()" (confirmAction)="saveUser()">
   <form class="space-y-4" [formGroup]="formUser">
     <div class="mt-6">
-      <label for="nome" class="block text-[12px] font-medium text-[#7A859B]">
+      <label for="nome" class="block text-[12px] font-semibold text-[#7A859B]">
         Nome
       </label>
       <input type="text" formControlName="nome" placeholder="Digite o nome"
-        class="mt-1 block focus:border-[#3570EF] w-full outline-none rounded-md text-[12px] font-medium text-[#7A859B] border border-[#76B3D1] px-4 shadow-sm h-10 bg-white">
+        class="mt-1 block focus:border-[#3570EF] w-full outline-none rounded-md text-[12px] font-semibold text-[#7A859B] border border-[#76B3D1] px-4 shadow-sm h-10 bg-white">
     </div>
     <div class="mt-6">
-      <label for="usuario" class="block text-[12px] font-medium text-[#7A859B]">
+      <label for="usuario" class="block text-[12px] font-semibold text-[#7A859B]">
         Usuário
       </label>
-      <input type="text" formControlName="usuario" placeholder="Digite o usuário"
-        class="mt-1 block focus:border-[#3570EF] w-full outline-none rounded-md text-[12px] font-medium text-[#7A859B] border border-[#76B3D1] px-4 shadow-sm h-10 bg-white">
+      <input type="text" formControlName="usuario" placeholder="Digite o usuário" readonly
+        class="mt-1 block focus:border-[#3570EF] w-full outline-none rounded-md text-[12px] font-semibold text-[#7A859B] border border-[#76B3D1] px-4 shadow-sm h-10 bg-white">
     </div>
     <div class="mt-6">
-      <label for="email" class="block text-[12px] font-medium text-[#7A859B]">
+      <label for="email" class="block text-[12px] font-semibold text-[#7A859B]">
         E-mail
       </label>
       <input type="text" formControlName="email" placeholder="Digite o e-mail"
-        class="mt-1 block focus:border-[#3570EF] w-full outline-none rounded-md text-[12px] font-medium text-[#7A859B] border border-[#76B3D1] px-4 shadow-sm h-10 bg-white">
+        class="mt-1 block focus:border-[#3570EF] w-full outline-none rounded-md text-[12px] font-semibold text-[#7A859B] border border-[#76B3D1] px-4 shadow-sm h-10 bg-white">
     </div>
 
     <div>
-      <label for="department" class="block text-[12px] font-medium text-[#7A859B]">
+      <label for="department" class="block text-[12px] font-semibold text-[#7A859B]">
         Repartição
       </label>
       <select id="department" formControlName="department" name="department"
@@ -143,6 +143,43 @@
         </option>
         }
       </select>
+    </div>
+    <div class="">
+      <div class="flex items-center gap-x-2 mb-2">
+        <h2 class="text-[#7A859B]  text-[12px] font-medium">Permissões</h2>
+        <hr class="border-[#7A859B]/60 border w-full">
+      </div>
+
+      <div class="grid grid-cols-3 gap-4 p-4 border border-[#76B3D1] rounded-md">
+        <label class="flex items-center space-x-2 cursor-pointer">
+          <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded">
+          <span class="text-[#7A859B]  text-[12px] font-medium">Vídeos</span>
+        </label>
+        <label class="flex items-center space-x-2 cursor-pointer">
+          <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded">
+          <span class="text-[#7A859B]  text-[12px] font-medium">Documentos</span>
+        </label>
+        <label class="flex items-center space-x-2 cursor-pointer">
+          <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded">
+          <span class="text-[#7A859B]  text-[12px] font-medium">Arquivos Extras</span>
+        </label>
+        <label class="flex items-center space-x-2 cursor-pointer">
+          <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded">
+          <span class="text-[#7A859B]  text-[12px] font-medium">Áudio</span>
+        </label>
+        <label class="flex items-center space-x-2 cursor-pointer">
+          <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded">
+          <span class="text-[#7A859B]  text-[12px] font-medium">Imagens</span>
+        </label>
+        <label class="flex items-center space-x-2 cursor-pointer">
+          <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded">
+          <span class="text-[#7A859B]  text-[12px] font-medium">Configurações</span>
+        </label>
+        <label class="flex items-center space-x-2 cursor-pointer">
+          <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded">
+          <span class="text-[#7A859B]  text-[12px] font-medium">Configurações</span>
+        </label>
+      </div>
     </div>
   </form>
 </app-modal>

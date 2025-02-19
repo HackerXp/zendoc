@@ -48,7 +48,7 @@ export class CardDocComponent {
   }
 
   showHide = (
-    param: 'dialog' | 'options' | 'details' | 'details-info',
+    param: 'dialog' | 'options' | 'details' | 'files',
     id?: number
   ) => {
     this.openCardId = this.openCardId == id! ? null : id!;
@@ -56,8 +56,8 @@ export class CardDocComponent {
       case 'details':
         this.show = { details: true };
         break;
-      case 'details-info':
-        this.showInfo = { dialog: true };
+      case 'files':
+        this.show = { files: true };
         break;
       case 'dialog':
         this.show = { dialog: true };

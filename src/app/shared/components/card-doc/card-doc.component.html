@@ -29,21 +29,61 @@
                 <div class="sm:col-span-2 flex flex-col">
                     <!-- <span class="text-[12px] font-inter font-semibold text-primary">{{document.ext}}</span> -->
                     <!-- <span class="text-[12px] font-inter font-semibold text-primary">{{fileSize(document.size!)}}</span> -->
-                    <span class="text-[12px] font-inter font-semibold text-primary">{{document.data_criacao | date:'dd \'de\' MMMM \'de\' yyyy':'pt-BR'}}</span>
+                    <span class="text-[12px] font-inter font-semibold text-primary">{{document.data_criacao | date:'dd
+                        \'de\' MMMM \'de\' yyyy':'pt-BR'}}</span>
                     <span class="text-[12px] font-inter font-semibold text-primary">{{document.departamento}}</span>
                     <span class="text-[12px] font-inter font-semibold text-primary">{{document.usuario}}</span>
                 </div>
             </div>
         </div>
     </div>
+
+    <div [class.hidden]="!show.files" [class.opacity-0]="!show.files" [class.opacity-100]="show.files"
+        [class.scale-95]="!show.files" [class.scale-100]="show.files"
+        class="flex -top-14 p-3 -mr-5 absolute  self-end w-full flex-col gap-1 right-0 bg-white shadow-lg rounded-lg z-10 transition-all duration-200 ease-in-out">
+        <div class="flex flex-col border-b border-[#76B3D1]/40">
+            <button title="Fechar detalhes" (click)="close()"
+                class="text-black active:scale-95 self-end bg-[#3570EF]/10 w-4 h-4 flex items-center justify-center font-semibold rounded-full">
+                &times;
+            </button>
+            <div class="flex justify-between items-center">
+                <h3 class="self-center text-menu text-[16px] font-inter font-semibold">Arquivos</h3>
+                <i class="icon icon-delete active:scale-95 w-4 h-4 cursor-pointer"></i>
+            </div>
+        </div>
+        <div class="body flex flex-col gap-2">
+            <ul class="text-[12px] text-[#0F2045]">
+                <li class="py-1 cursor-pointer flex items-center justify-between border-b">
+                    <span>arquivo 1.pdf</span>
+                    <i class="cursor-pointer active:scale-95 icon icon-eye-80 h-4 w-4"></i>
+                </li>
+                <li class="py-1 cursor-pointer flex items-center justify-between border-b">
+                    <span>arquivo 1.pdf</span>
+                    <i class="cursor-pointer active:scale-95 icon icon-eye-80 h-4 w-4"></i>
+                </li>
+                <li class="py-1 cursor-pointer flex items-center justify-between border-b">
+                    <span>arquivo 1.pdf</span>
+                    <i class="cursor-pointer active:scale-95 icon icon-eye-80 h-4 w-4"></i>
+                </li>
+                <li class="py-1 cursor-pointer flex items-center justify-between border-b">
+                    <span>arquivo 1.pdf</span>
+                    <i class="cursor-pointer active:scale-95 icon icon-eye-80 h-4 w-4"></i>
+                </li>
+            </ul>
+        </div>
+    </div>
     <div [class.hidden]="!show.options" [class.opacity-0]="!show.options" [class.opacity-100]="show.options"
         [class.scale-95]="!show.options" [class.scale-100]="show.options"
         class="flex -top-8 -mr-5 absolute more-options self-end p-2 text-right flex-col items-center gap-1 right-0 bg-white shadow-lg rounded-lg z-10 transition-all duration-200 ease-in-out">
-        <i class="cursor-pointer active:scale-95 icon icon-trash h-5 w-5" title="Remover" (click)="showHide('dialog')"></i>
+        <i class="cursor-pointer active:scale-95 icon icon-trash h-5 w-5" title="Remover"
+            (click)="showHide('dialog')"></i>
         <div class="border w-full bg-[#0F2045]"></div>
-        <i class="cursor-pointer active:scale-95 icon icon-info h-5 w-5" title="Ver detalhes" (click)="showHide('details')"></i>
+        <i class="cursor-pointer active:scale-95 icon icon-info h-5 w-5" title="Ver detalhes"
+            (click)="showHide('details')"></i>
         <div class="border w-full bg-[#0F2045]"></div>
-        <fa-icon [icon]="faEye" class="text-menu/80 cursor-pointer h-5 w-5 active:scale-95" title="Visualizar" (click)="openModal()"></fa-icon>
+        <i class="cursor-pointer active:scale-95 icon icon-view h-5 w-5" title="Ver detalhes"
+            (click)="showHide('files')"></i>
+        <!-- <fa-icon [icon]="faEye" class="text-menu/80 cursor-pointer h-5 w-5 active:scale-95" title="Visualizar" (click)="openModal()"></fa-icon> -->
         <!-- <fa-icon [icon]="faEye" class="text-menu/80 cursor-pointer h-5 w-5 active:scale-95" title="Visualizar" (click)="goTo('view', document)"></fa-icon> -->
     </div>
 
@@ -62,18 +102,26 @@
             <h3 class="text-menu font-semibold text-[14px] font-inter truncate">{{document.titulo}}</h3>
             <div class="flex gap-1 items-center">
                 <i class="icon icon-calendar h-4 w-4"></i>
-                <span class="text-[12px] text-menu font-inter font-medium">{{document.data_criacao | date:'dd \'de\' MMMM \'de\' yyyy':'pt-BR' }}</span>
+                <span class="text-[12px] text-menu font-inter font-medium">{{document.data_criacao | date:'dd \'de\'
+                    MMMM \'de\' yyyy':'pt-BR' }}</span>
             </div>
             <div class="flex gap-1 items-center">
                 <i class="icon icon-time h-4 w-4"></i>
-                <span class="text-[12px] text-menu font-inter font-medium">{{document.data_criacao | date:'HH:mm \'Minutos\''}}</span>
+                <span class="text-[12px] text-menu font-inter font-medium">{{document.data_criacao | date:'HH:mm
+                    \'Minutos\''}}</span>
+            </div>
+            <div class="flex gap-1 items-center">
+                <i class="icon icon-file-length h-[18px] w-[18px]"></i>
+                <span class="text-[12px] text-[#FF5959] font-inter font-medium">{{document.files.length}} arquivos
+                    associados</span>
             </div>
         </div>
 
     </div>
 </div>
 
-<modal-info [isOpen]="show.dialog!" (close)="close()" (selectDocument)="onDocumentSelectedId($event)" [file]="document!" />
+<modal-info [isOpen]="show.dialog!" (close)="close()" (selectDocument)="onDocumentSelectedId($event)"
+    [file]="document!" />
 @if (isModalOpen()) {
-    <app-modal-info-detail [isOpen]="isModalOpen" [document]="documentData"></app-modal-info-detail>
+<app-modal-info-detail [isOpen]="isModalOpen" [document]="documentData"></app-modal-info-detail>
 }

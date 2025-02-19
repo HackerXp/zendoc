@@ -42,6 +42,13 @@ export const routes: Routes = [
             '@features/configurations/configurations-profiles/configurations-profiles.component'
           ).then((c) => c.ConfigurationsProfilesComponent),
       },
+      {
+        path: 'view/:id',
+        loadComponent: () =>
+          import('./shared/components/pdf-viewer/pdf-viewer.component').then(
+            (c) => c.PdfViewerComponent
+          ),
+      },
     ],
   },
 ];

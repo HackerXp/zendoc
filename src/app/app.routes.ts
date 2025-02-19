@@ -3,26 +3,41 @@ import { AuthGuard } from '@core/guards/auth.guard';
 import { AuthComponent } from '@features/auth/auth.component';
 import { RootComponent } from '@layouts/root/root.component';
 
-export const routes: Routes = [{
+export const routes: Routes = [
+  {
     path: '',
-    component: AuthComponent
-},
-{
+    component: AuthComponent,
+  },
+  {
     path: '',
     component: RootComponent,
     canActivate: [AuthGuard],
-    children: [{
+    children: [
+      {
         path: 'dash',
-        loadComponent: () => import('@features/dashboard/dashboard.component').then(c => c.DashboardComponent)
-    },
-    {
+        loadComponent: () =>
+          import('@features/dashboard/dashboard.component').then(
+            (c) => c.DashboardComponent
+          ),
+      },
+      {
         path: 'documents',
-        loadComponent: () => import('@features/documents/documents.component').then(c => c.DocumentsComponent)
-    },
-    {
+        loadComponent: () =>
+          import('@features/documents/documents.component').then(
+            (c) => c.DocumentsComponent
+          ),
+      },
+      {
         path: 'configurations',
-        loadComponent: () => import('@features/configurations/configurations.component').then(c => c.ConfigurationsComponent)
-    }
-    ]
-}
+        loadComponent: () =>
+          import('@features/configurations/configurations.component').then(
+            (c) => c.ConfigurationsComponent
+          ),
+      },
+      {
+        path: 'view/:id',
+        loadComponent: () => import('./shared/components/pdf-viewer/pdf-viewer.component').then((c) => c.PdfViewerComponent),
+      },
+    ],
+  },
 ];

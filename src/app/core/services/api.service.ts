@@ -13,6 +13,8 @@ export class ApiService extends BaseService {
   documents$ = this.documentsSubject.asObservable();
   private currentPageSubject = new BehaviorSubject<number>(1);
   currentPage$ = this.currentPageSubject.asObservable();
+  private documentByIdSubject = new BehaviorSubject<Data[]>([]);
+  documentById$ = this.documentByIdSubject.asObservable();
 
   private totalDocumentsSubject = new BehaviorSubject<number>(0);
   totalDocuments$ = this.totalDocumentsSubject.asObservable();
@@ -31,6 +33,10 @@ export class ApiService extends BaseService {
         this.currentPageSubject.next(1);
         this.totalDocumentsSubject.next(docs.data.length);
       });
+  };
+
+  getDocumentById = (id:number) => {
+    return this.http.get<Documents>(`${this.apiURL}/?rota=listar-documentos-por-id&id=${id}`)
   };
 
   saveDocument(formData: FormData) {
@@ -55,7 +61,9 @@ export class ApiService extends BaseService {
       .subscribe((response) => {
         if (response.codigo === '200') {
           const currentDocs = this.documentsSubject.getValue();
-          const updatedDocs = currentDocs.filter((doc) => doc.id !== documentId);
+          const updatedDocs = currentDocs.filter(
+            (doc) => doc.id !== documentId
+          );
 
           this.documentsSubject.next(updatedDocs);
           this.totalDocumentsSubject.next(updatedDocs.length);
@@ -70,7 +78,10 @@ export class ApiService extends BaseService {
     this.documentsSubject.next(sortedDocs);
   }
 
-  paginatedDocuments$ = combineLatest([this.documents$, this.currentPage$]).pipe(
+  paginatedDocuments$ = combineLatest([
+    this.documents$,
+    this.currentPage$,
+  ]).pipe(
     map(([documents, currentPage]) => {
       const startIndex = (currentPage - 1) * this.cardsPerPage;
       const endIndex = startIndex + this.cardsPerPage;

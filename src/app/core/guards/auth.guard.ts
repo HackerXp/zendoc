@@ -13,14 +13,16 @@ import { NgxPermissionsService } from 'ngx-permissions';
 })
 export class AuthGuard implements CanActivate {
   private router = inject(Router);
-  constructor(private ngxPermissionsService: NgxPermissionsService, private baseService: BaseService) { }
+  constructor(
+    private ngxPermissionsService: NgxPermissionsService,
+    private baseService: BaseService
+  ) {}
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
     const token = sessionStorage.getItem('token');
     if (token != undefined && token != null) {
-
       const permissionsList = sessionStorage.getItem('permissoes');
       const permissions = permissionsList?.split(',');
       if (permissions) {
@@ -28,7 +30,7 @@ export class AuthGuard implements CanActivate {
       }
       return true;
     } else {
-      this.router.navigate(['/'])
+      this.router.navigate(['/']);
       return false;
     }
   }

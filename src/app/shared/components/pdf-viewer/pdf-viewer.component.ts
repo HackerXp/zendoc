@@ -31,7 +31,6 @@ export class PdfViewerComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this._activateRoute.snapshot.params['id'];
-    // const decodedId = atob(id);
     const type = id.split('.')[1];
 
     if (type === 'pdf') {

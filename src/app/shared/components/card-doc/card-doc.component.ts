@@ -3,8 +3,8 @@ import {
   HostListener,
   inject,
   Input,
-  WritableSignal,
-  signal,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { Data } from '@shared/interfaces/document';
 import { ShowHide } from '@shared/interfaces/show-hide';
@@ -15,7 +15,6 @@ import { ModalInfoComponent } from "../modal-info/modal-info.component";
 import { DatePipe } from '@angular/common';
 import { ApiService } from '@core/services/api.service';
 import { Router } from '@angular/router';
-import { ModalInfoDetailComponent } from '../modal-info-detail/modal-info-detail.component';
 
 @Component({
   selector: 'app-card-doc',
@@ -23,12 +22,11 @@ import { ModalInfoDetailComponent } from '../modal-info-detail/modal-info-detail
     FontAwesomeModule,
     ModalInfoComponent,
     DatePipe,
-    ModalInfoDetailComponent,
   ],
   templateUrl: './card-doc.component.html',
   styleUrl: './card-doc.component.scss',
 })
-export class CardDocComponent {
+export class CardDocComponent implements OnChanges {
   @Input() document!: Data;
   openCardId: number | null = 0;
   show: ShowHide = {};
@@ -36,15 +34,20 @@ export class CardDocComponent {
   showDetail = false;
   faEye = faEye;
   selectedDocumentId: number | null = null;
+  existFiles = false;
   private apiService = inject(ApiService);
   private readonly router = inject(Router);
-  documentData: WritableSignal<Data> = signal<Data>(this.document);
 
-  isModalOpen: WritableSignal<boolean> = signal(false);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['document'] && changes['document'].currentValue) {
+      this.existFiles = this.document
+        ? Array.isArray(this.document.files)
+        : false;
+    }
+  }
 
-  openModal(): void {
-    this.documentData.set(this.document);
-    this.isModalOpen.set(true);
+  showOptions(where: string, data: string) {
+    this.router.navigate([`/${where}/${data}`]);
   }
 
   showHide = (

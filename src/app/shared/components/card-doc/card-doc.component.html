@@ -29,7 +29,8 @@
                 <div class="sm:col-span-2 flex flex-col">
                     <!-- <span class="text-[12px] font-inter font-semibold text-primary">{{document.ext}}</span> -->
                     <!-- <span class="text-[12px] font-inter font-semibold text-primary">{{fileSize(document.size!)}}</span> -->
-                    <span class="text-[12px] font-inter font-semibold text-primary">{{document.data_criacao | date:'dd\'de\' MMMM \'de\' yyyy':'pt-BR'}}</span>
+                    <span class="text-[12px] font-inter font-semibold text-primary">{{document.data_criacao |
+                        date:'dd\'de\' MMMM \'de\' yyyy':'pt-BR'}}</span>
                     <span class="text-[12px] font-inter font-semibold text-primary">{{document.departamento}}</span>
                     <span class="text-[12px] font-inter font-semibold text-primary">{{document.usuario}}</span>
                 </div>
@@ -47,22 +48,24 @@
             </button>
             <div class="flex justify-between items-center">
                 <h3 class="self-center text-menu text-[16px] font-inter font-semibold">Arquivos</h3>
+                @if (document.files.length>0) {
                 <i class="icon icon-delete active:scale-95 w-4 h-4 cursor-pointer"></i>
+                }
             </div>
         </div>
         <div class="body flex flex-col gap-2">
             <ul class="text-[12px] text-[#0F2045]">
                 @if (existFiles) {
-                    @for (item of document.files; track $index) {
-                        <li class="py-1 cursor-pointer flex items-center justify-between border-b">
-                            <span>{{item.nome}}</span>
-                            <i class="cursor-pointer active:scale-95 icon icon-eye-80 h-4 w-4" tabindex="0" 
-                            (click)="showOptions('view', item.nome)" (keydown.enter)="showOptions('view', item.nome)" 
-                            (keydown.space)="showOptions('view', item.nome)"></i>
-                        </li>
-                    }
+                @for (item of document.files; track $index) {
+                <li class="py-1 cursor-pointer flex items-center justify-between border-b">
+                    <span>{{item.nome}}</span>
+                    <i class="cursor-pointer active:scale-95 icon icon-eye-80 h-4 w-4" tabindex="0"
+                        (click)="showOptions('view', item.url)" (keydown.enter)="showOptions('view', item.url)"
+                        (keydown.space)="showOptions('view', item.url)"></i>
+                </li>
+                }
                 }@else {
-                    <span>Nenhum arquivo associado</span>
+                <span>Nenhum arquivo associado</span>
                 }
             </ul>
         </div>
@@ -70,13 +73,16 @@
     <div [class.hidden]="!show.options" [class.opacity-0]="!show.options" [class.opacity-100]="show.options"
         [class.scale-95]="!show.options" [class.scale-100]="show.options"
         class="flex -top-8 -mr-5 absolute more-options self-end p-2 text-right flex-col items-center gap-1 right-0 bg-white shadow-lg rounded-lg z-10 transition-all duration-200 ease-in-out">
-        <i class="cursor-pointer active:scale-95 icon icon-trash h-5 w-5" title="Remover" tabindex="0" (click)="showHide('dialog')" (keydown.enter)="showHide('dialog')" (keydown.space)="showHide('dialog')"></i>
+        <i class="cursor-pointer active:scale-95 icon icon-trash h-5 w-5" title="Remover" tabindex="0"
+            (click)="showHide('dialog')" (keydown.enter)="showHide('dialog')" (keydown.space)="showHide('dialog')"></i>
         <div class="border w-full bg-[#0F2045]"></div>
         <i class="cursor-pointer active:scale-95 icon icon-info h-5 w-5" title="Ver detalhes"
-            (click)="showHide('details')" tabindex="0" (keydown.enter)="showHide('details')" (keydown.space)="showHide('details')"></i>
+            (click)="showHide('details')" tabindex="0" (keydown.enter)="showHide('details')"
+            (keydown.space)="showHide('details')"></i>
         <div class="border w-full bg-[#0F2045]"></div>
         <i class="cursor-pointer active:scale-95 icon icon-view h-5 w-5" title="Ver detalhes"
-            (click)="showHide('files')" tabindex="0" (keydown.enter)="showHide('files')" (keydown.space)="showHide('files')"></i>
+            (click)="showHide('files')" tabindex="0" (keydown.enter)="showHide('files')"
+            (keydown.space)="showHide('files')"></i>
     </div>
 
     <div class="card w-full bg-white shadow-sm rounded-lg p-4 flex flex-col gap-2">
@@ -84,7 +90,8 @@
         <div class="flex justify-between items-center">
             <i class="icon icon-pdf h-14 w-14"></i>
             <div class="flex flex-col items-center">
-                <i class="icon icon-dots h-4 w-1 cursor-pointer active:scale-95" (click)="showHide('options')" tabindex="0" (keydown.enter)="showHide('options')" (keydown.space)="showHide('options')"></i>
+                <i class="icon icon-dots h-4 w-1 cursor-pointer active:scale-95" (click)="showHide('options')"
+                    tabindex="0" (keydown.enter)="showHide('options')" (keydown.space)="showHide('options')"></i>
             </div>
         </div>
 
@@ -98,15 +105,16 @@
             </div>
             <div class="flex gap-1 items-center">
                 <i class="icon icon-time h-4 w-4"></i>
-                <span class="text-[12px] text-menu font-inter font-medium">{{document.data_criacao | date:'HH:mm\'Minutos\''}}</span>
+                <span class="text-[12px] text-menu font-inter font-medium">{{document.data_criacao |
+                    date:'HH:mm\'Minutos\''}}</span>
             </div>
             <div class="flex gap-1 items-center">
                 <i class="icon icon-file-length h-[18px] w-[18px]"></i>
                 <span class="text-[12px] text-[#FF5959] font-inter font-medium">
                     @if (existFiles) {
-                        {{document.files.length}} 
+                    {{document.files.length}}
                     }@else {
-                        0
+                    0
                     }
                     arquivos associados
                 </span>

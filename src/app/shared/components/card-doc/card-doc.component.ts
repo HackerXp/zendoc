@@ -15,6 +15,7 @@ import { ModalInfoComponent } from "../modal-info/modal-info.component";
 import { DatePipe } from '@angular/common';
 import { ApiService } from '@core/services/api.service';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-card-doc',
@@ -29,6 +30,7 @@ import { Router } from '@angular/router';
 export class CardDocComponent implements OnChanges {
   @Input() document!: Data;
   openCardId: number | null = 0;
+  private http = inject(HttpClient);
   show: ShowHide = {};
   showInfo: ShowHide = {};
   showDetail = false;
@@ -47,7 +49,19 @@ export class CardDocComponent implements OnChanges {
   }
 
   showOptions(where: string, data: string) {
-    this.router.navigate([`/${where}/${data}`]);
+    let pdf = `http://localhost/api-zendoc/app/files/${data}`;
+
+    console.log(data);
+    this.http.get(data, { responseType: 'blob' }).subscribe(
+      (blob) => {
+        pdf = URL.createObjectURL(blob);
+        console.log(pdf, 'pdf blob');
+
+      },
+      (error) => console.error('Erro ao carregar PDF:', error)
+    );
+
+    //this.router.navigate([`/${where}/${data}`]);
   }
 
   showHide = (

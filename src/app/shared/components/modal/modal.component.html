@@ -24,11 +24,12 @@
     </div>
 
     <!-- Rodapé -->
-    <div class="px-4 py-3 border-t border-gray-200 flex justify-between space-x-2">
-      <button class="p-2 bg-gray-300 text-[12px] text-gray-700 rounded hover:bg-gray-400" (click)="close()">
+    <div class="px-4 py-3 border-t border-gray-200 flex {{modal.onOff?'justify-center':'justify-between'}} space-x-2">
+      <button *ngIf="!modal.onOff" class="p-2 bg-gray-300 text-[12px] text-gray-700 rounded hover:bg-gray-400"
+        (click)="close()">
         {{modal.btnCancel}}
       </button>
-      <button [disabled]="form.invalid" class="p-2 text-[12px] text-white rounded bg-[#3570EF] hover:bg-blue-700 cursor-pointer 
+      <button [disabled]="form.invalid" class="p-2 text-[12px] text-white {{modal.onOff?'w-full':''}} rounded bg-[#3570EF] hover:bg-blue-700 cursor-pointer 
          disabled:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-50" (click)="confirm()">
         {{ modal.btnOK }}
       </button>

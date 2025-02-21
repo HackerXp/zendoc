@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import {
   ChangeDetectorRef,
   Component,
@@ -23,6 +24,7 @@ export class PdfViewerComponent implements OnInit {
   @ViewChild('pdfViewer') pdfViewer!: Ng2PdfViewerComponent;
   @ViewChild('docContainer', { static: true }) docContainer!: ElementRef;
   private _activateRoute = inject(ActivatedRoute);
+  private http = inject(HttpClient);
   zoom = 1.0;
   private _cdr = inject(ChangeDetectorRef);
   pdf: string | undefined;
@@ -35,6 +37,17 @@ export class PdfViewerComponent implements OnInit {
 
     if (type === 'pdf') {
       this.pdf = `http://localhost/api-zendoc/app/files/${id}`;
+
+      this.http.get(this.pdf, { responseType: 'blob' }).subscribe(
+        (blob) => {
+          this.pdf = URL.createObjectURL(blob);
+          console.log(this.pdf, 'pdf blob');
+
+        },
+        (error) => console.error('Erro ao carregar PDF:', error)
+      );
+
+
       this._cdr.detectChanges();
     } else if (type === 'jpg' || type === 'jpeg') {
       this.imageSrc = `http://localhost/api-zendoc/app/files/${id}`;

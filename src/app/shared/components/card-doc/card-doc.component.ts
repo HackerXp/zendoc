@@ -53,6 +53,7 @@ export class CardDocComponent implements OnChanges {
   isDelete: Delete = { check: false, id: 0 };
 
   idFiles: any[] = [];
+  tags: any[] = [];
   documento: Data[] = [];
   private apiService = inject(ApiService);
   private readonly router = inject(Router);
@@ -68,7 +69,6 @@ export class CardDocComponent implements OnChanges {
   showOptions(item: File, data: string) {
     let pdf = `http://localhost/api-zendoc/app/files/${data}`;
 
-    console.log(data);
     this.http.get(data, { responseType: 'blob' }).subscribe(
       (blob) => {
         pdf = URL.createObjectURL(blob);
@@ -97,6 +97,7 @@ export class CardDocComponent implements OnChanges {
     switch (param) {
       case 'details':
         this.show = { details: true };
+        this.tags = this.document.tags.split(',').map((item) => `#${item}`);
         break;
       case 'files':
         this.show = { files: true };

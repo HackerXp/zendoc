@@ -6,7 +6,7 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import { Data } from '@shared/interfaces/document';
+import { Data, File } from '@shared/interfaces/document';
 import { ShowHide } from '@shared/interfaces/show-hide';
 import prettyBytes from 'pretty-bytes';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -16,6 +16,16 @@ import { DatePipe } from '@angular/common';
 import { ApiService } from '@core/services/api.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { PreviewDocComponent } from "../preview-doc/preview-doc.component";
+import { Modal } from '@shared/interfaces/modal';
+import { getFileIcon } from '@core/helper/utils';
+
+
+interface Delete {
+  check?: boolean;
+  id?: number;
+}
+
 
 @Component({
   selector: 'app-card-doc',
@@ -23,6 +33,7 @@ import { HttpClient } from '@angular/common/http';
     FontAwesomeModule,
     ModalInfoComponent,
     DatePipe,
+    PreviewDocComponent
   ],
   templateUrl: './card-doc.component.html',
   styleUrl: './card-doc.component.scss',
@@ -32,11 +43,17 @@ export class CardDocComponent implements OnChanges {
   openCardId: number | null = 0;
   private http = inject(HttpClient);
   show: ShowHide = {};
+  modal: Modal = {};
   showInfo: ShowHide = {};
-  showDetail = false;
+  showDetail: boolean = false;
   faEye = faEye;
   selectedDocumentId: number | null = null;
-  existFiles = false;
+  existFiles: boolean = false;
+  extFile!: string;
+  isDelete: Delete = { check: false, id: 0 };
+
+  idFiles: any[] = [];
+  documento: Data[] = [];
   private apiService = inject(ApiService);
   private readonly router = inject(Router);
 
@@ -48,7 +65,7 @@ export class CardDocComponent implements OnChanges {
     }
   }
 
-  showOptions(where: string, data: string) {
+  showOptions(item: File, data: string) {
     let pdf = `http://localhost/api-zendoc/app/files/${data}`;
 
     console.log(data);
@@ -60,6 +77,14 @@ export class CardDocComponent implements OnChanges {
       },
       (error) => console.error('Erro ao carregar PDF:', error)
     );
+
+    this.modal = {
+      isOpen: true,
+      icon: getFileIcon(item.extension),
+      title: this.document.titulo,
+      description: item.nome,
+    };
+
 
     //this.router.navigate([`/${where}/${data}`]);
   }
@@ -102,6 +127,8 @@ export class CardDocComponent implements OnChanges {
 
   close = () => {
     this.show = {};
+    this.isDelete = {};
+    this.modal = {};
   };
 
   removeDoc = (id: number) => {
@@ -118,4 +145,26 @@ export class CardDocComponent implements OnChanges {
   fileSize = (size: number) => {
     return prettyBytes(size);
   };
+
+  activeDelete = (id: number, check: boolean) => {
+    check = check == false ? true : false;
+    this.isDelete = { check, id }
+    if (!check && this.idFiles.length > 0)
+      this.idFiles = [];
+  }
+
+  addFilesToRemove = (id: number) => {
+    const index = this.idFiles.indexOf(id);
+    if (index !== -1)
+      this.idFiles.splice(index, 1);
+    else
+      this.idFiles.push(id);
+  }
+
+  confirmDelete = () => {
+    this.document.files = this.document.files.filter(obj => !this.idFiles.includes(obj.idfiles));
+    this.idFiles = [];
+    this.close();
+  }
+
 }

@@ -45,7 +45,7 @@ export class ConfigurationsDepartmentComponent {
       title: 'Cadastrar departamento',
       description:
         'Cadastrar departamento no sistema de forma simples',
-      size: ' w-1/4',
+      size: 'w-1/3',
       btnCancel: 'Cancelar',
       btnOK: 'Adicionar departamento',
       onOff: true

@@ -45,7 +45,7 @@ export class ConfigurationsCategoryComponent {
       title: 'Cadastrar categoria',
       description:
         'Cadastrar categoria no sistema de forma simples',
-      size: ' w-1/4',
+      size: 'w-1/3',
       btnCancel: 'Cancelar',
       btnOK: 'Adicionar categoria',
       onOff: true

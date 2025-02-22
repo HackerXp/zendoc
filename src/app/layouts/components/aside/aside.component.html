@@ -1,11 +1,7 @@
-<aside
-  class="side-menu md:w-[280px] w-[100px] h-[100vh] flex flex-col justify-between bg-[white] border-r"
->
+<aside class="side-menu md:w-[280px] w-[100px] h-[100vh] flex flex-col justify-between bg-[white] border-r">
   <div>
     <div class="h-16 border-b items-center justify-center flex p-1">
-      <div
-        class="w-36 h-14 bg-[#90CAF9]/10 rounded-md items-center justify-center flex gap-2"
-      >
+      <div class="w-36 h-14 bg-[#90CAF9]/10 rounded-md items-center justify-center flex gap-2">
         <div class="flex gap-2">
           <img src="img-logo.png" alt="logo" class="w-6 h-8" />
           <h3 class="font-bold text-logo uppercase hidden md:block">DOCZEN</h3>
@@ -15,80 +11,73 @@
     <div class="py-1 px-3 menu flex flex-col gap-3 select-none">
       <span class="text-menu/40 font-medium text-[14px]">Menu</span>
       <div class="flex flex-col gap-2">
-        <div
-          routerLink="dash"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          class="item-menu flex items-center gap-1 cursor-pointer hover:bg-[#3570EF] rounded-2xl p-3 active:scale-95"
-        >
-          <i class="icon icon-dashboard icon-menu w-5 h-5"></i>
+        <div routerLink="dash" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+          class="item-menu group relative flex items-center gap-1 cursor-pointer hover:bg-[#3570EF] rounded-2xl p-3 active:scale-95">
+          <!-- Ícone padrão -->
+          <i class="icon icon-dashboard icon-menu w-5 h-5 group-[.active]:hidden group-hover:hidden"></i>
+
+          <!-- Ícone ativo (aparece no hover ou estado ativo) -->
+          <i class="icon icon-dashboard-active icon-menu w-5 h-5 hidden group-[.active]:block group-hover:block"></i>
+
+          <!-- Texto do menu -->
           <span
-            class="text-[#263238] span-menu font-medium text-[12px] hover:text-white transition-colors duration-200"
-            >Dashboard</span
-          >
+            class="span-menu text-[#263238] font-medium text-[12px] group-hover:text-white group-[.active]:text-white transition-all duration-700">
+            Dashboard
+          </span>
         </div>
-        <div
-          routerLink="documents"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          class="item-menu flex items-center gap-1 cursor-pointer hover:bg-[#3570EF] rounded-2xl p-3 active:scale-95"
-        >
-          <i class="icon icon-menu-doc icon-menu w-5 h-5"></i>
+
+        <div routerLink="documents" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+          class="item-menu group flex items-center gap-1 cursor-pointer hover:bg-[#3570EF] rounded-2xl p-3 active:scale-95">
+          <!-- Ícone padrão -->
+          <i class="icon icon-menu-doc icon-menu w-5 h-5 group-[.active]:hidden group-hover:hidden"></i>
+
+          <!-- Ícone ativo (aparece no hover ou estado ativo) -->
+          <i class="icon icon-menu-doc-active icon-menu w-5 h-5 hidden group-[.active]:block group-hover:block"></i>
+
           <span
-            class="text-[#263238] span-menu font-medium text-[12px] hover:text-white transition-colors duration-200"
-            >Documentos</span
-          >
+            class="span-menu text-[#263238] font-medium text-[12px] group-hover:text-white group-[.active]:text-white transition-all duration-700">
+            Documentos
+          </span>
         </div>
-        <div
-          routerLink="configurations"
-          *ngxPermissionsOnly="['CONFIGURACOES']"
-          routerLinkActive="active"
+        <div routerLink="configurations" *ngxPermissionsOnly="['CONFIGURACOES']" routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
-          class="item-menu flex items-center gap-1 cursor-pointer hover:bg-[#3570EF] rounded-2xl p-3 active:scale-95"
-        >
-          <i class="icon icon-settings icon-menu w-5 h-5"></i>
+          class="item-menu group flex items-center gap-1 cursor-pointer hover:bg-[#3570EF] rounded-2xl p-3 active:scale-95">
+          <!-- Ícone padrão -->
+          <i class="icon icon-settings icon-menu w-5 h-5 group-[.active]:hidden group-hover:hidden"></i>
+
+          <!-- Ícone ativo (aparece no hover ou estado ativo) -->
+          <i class="icon icon-settings-active icon-menu w-5 h-5 hidden group-[.active]:block group-hover:block"></i>
           <span
-            class="text-[#263238] span-menu font-medium text-[12px] hover:text-white transition-colors duration-200"
-            >Configurações</span
-          >
+            class="span-menu text-[#263238] font-medium text-[12px] group-hover:text-white group-[.active]:text-white transition-all duration-700">
+            Configurações
+          </span>
         </div>
       </div>
 
       <div class="flex p-1 border flex-col items-center div-img">
         <i class="icon icon-rafiki h-32 w-32"></i>
-        <span class="text-[#7A859B] font-inter text-[12px] text-center"
-          >Armazene os seus documentos de forma organizada e segura.</span
-        >
+        <span class="text-[#7A859B] font-inter text-[12px] text-center">Armazene os seus documentos de forma organizada
+          e segura.</span>
       </div>
     </div>
   </div>
 
   <div class="user flex items-center z-30 p-2">
     <div class="w-14">
-      <div
-        class="w-9 h-9 rounded-full flex justify-center items-center bg-primary"
-      >
+      <div class="w-9 h-9 rounded-full flex justify-center items-center bg-primary">
         <span class="text-white font-bold font-inter text-[18px]">
-          {{ user.initials }}</span
-        >
+          {{ user.initials }}</span>
       </div>
     </div>
     <div class="flex justify-between w-full items-center">
       <div class="user-perfil flex-col hidden md:flex">
-        <span
-          class="user-name text-[12px] text-[#485368] font-semibold font-inter"
-          >{{ user.name }}</span
-        >
+        <span class="user-name text-[12px] text-[#485368] font-semibold font-inter">{{ user.name }}</span>
         <span class="user-email text-[12px] text-[#7A859B] font-inter">{{
           user.email
-        }}</span>
+          }}</span>
       </div>
-      <fa-icon
-        [icon]="faSignOutAlt"
-        (click)="logout()"
-        title="Terminar a sessão"
-        class="cursor-pointer toogleBtn text-danger active:scale-95"
-      ></fa-icon>
+      <fa-icon [icon]="faSignOutAlt" (click)="logout()" title="Terminar a sessão"
+        class="cursor-pointer toogleBtn text-danger active:scale-95"></fa-icon>
     </div>
   </div>
 </aside>

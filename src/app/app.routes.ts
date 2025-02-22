@@ -43,6 +43,27 @@ export const routes: Routes = [
           ).then((c) => c.ConfigurationsProfilesComponent),
       },
       {
+        path: 'configurations/permissions',
+        loadComponent: () =>
+          import(
+            '@features/configurations/configurations-permission/configurations-permission.component'
+          ).then((c) => c.ConfigurationsPermissionComponent),
+      },
+      {
+        path: 'configurations/category',
+        loadComponent: () =>
+          import(
+            '@features/configurations/configurations-category/configurations-category.component'
+          ).then((c) => c.ConfigurationsCategoryComponent),
+      },
+      {
+        path: 'configurations/department',
+        loadComponent: () =>
+          import(
+            '@features/configurations/configurations-department/configurations-department.component'
+          ).then((c) => c.ConfigurationsDepartmentComponent),
+      },
+      {
         path: 'view/:id',
         loadComponent: () =>
           import('./shared/components/pdf-viewer/pdf-viewer.component').then(

@@ -22,7 +22,7 @@
         @for (card of paginatedDocuments$ | async; track $index) {
         <app-card-doc [document]="card" />
         }@empty {
-        <div class="bg-red-400 w-full p-1">Sem resultados</div>
+        <div class="bg-red-400 w-full p-1 block">Sem resultados</div>
         }
 
         <!-- Paginador -->

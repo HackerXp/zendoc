@@ -4,6 +4,7 @@ export interface Modal {
   description?: string;
   size?: string;
   isOpen?: boolean;
+  onOff?: boolean;
   btnCancel?: string;
   btnOK?: string;
   response?: boolean;

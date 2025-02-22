@@ -1,6 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { BackForwardComponent } from '@shared/components/back-forward/back-forward.component';
+import { EmptyComponent } from '@shared/components/empty/empty.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
+import { Empty } from '@shared/interfaces/empty';
 import { Modal } from '@shared/interfaces/modal';
 import { ToastrService } from 'ngx-toastr';
 
@@ -8,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'app-configurations-profiles',
   templateUrl: './configurations-profiles.component.html',
   styleUrls: ['./configurations-profiles.component.css'],
-  imports: [ModalComponent, FormsModule, ReactiveFormsModule,],
+  imports: [ModalComponent, FormsModule, ReactiveFormsModule, EmptyComponent, BackForwardComponent],
 })
 export class ConfigurationsProfilesComponent implements OnInit {
   private fb = inject(FormBuilder);
@@ -18,7 +21,8 @@ export class ConfigurationsProfilesComponent implements OnInit {
   files: File[] = [];
   chips: string[] = [];
   formUser!: FormGroup;
-
+  profiles: any[] = [];
+  empty: Empty = { icon: 'icon-user-none', title: 'Sem perfis para apresentar', description: 'Não existe nenhum perfil cadastrado  , adicione um perfil.' };
   constructor() { }
 
   ngOnInit() {
@@ -42,9 +46,10 @@ export class ConfigurationsProfilesComponent implements OnInit {
   closeModal = () => {
     this.modal = {};
   };
+
   saveUser = () => { };
 
-  openModal() {
+  openModal = () => {
     this.modal = {
       isOpen: true,
       icon: 'icon-user',

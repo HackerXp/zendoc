@@ -1,9 +1,10 @@
 <section class="p-8">
   <div class="flex justify-between items-center">
     <div>
+      <back-forward ulr="configurations" desc="Voltar" />
       <h2 class="text-[30px] font-bold">Configurações</h2>
       <p class="flex items-center">
-        Criação de perfis: <span class="text-[green] mx-1">10</span><strong>perfis criadoss</strong>
+        Criação de perfis: <span class="text-[green] mx-1">10</span><strong>perfis criados</strong>
       </p>
     </div>
     <button (click)="openModal()"
@@ -12,6 +13,7 @@
       Adicionar novo perfil
     </button>
   </div>
+  @if (profiles.length>0) {
   <div class="mt-8">
     <table class="w-full table-users bg-white">
       <thead class="">
@@ -39,70 +41,12 @@
             <i class="icon icon-user-btn w-[15px] h-[15px] cursor-pointer"></i>
           </td>
         </tr>
-        <tr>
-          <td>Félix</td>
-          <td>feli.gmail.com</td>
-          <td>A,B,C</td>
-          <td>
-            <i class="icon icon-user-btn w-[15px] h-[15px] cursor-pointer"></i>
-          </td>
-        </tr>
-        <tr>
-          <td>Félix</td>
-          <td>feli.gmail.com</td>
-          <td>A,B,C</td>
-          <td>
-            <i class="icon icon-user-btn w-[15px] h-[15px] cursor-pointer"></i>
-          </td>
-        </tr>
-        <tr>
-          <td>Félix</td>
-          <td>feli.gmail.com</td>
-          <td>A,B,C</td>
-          <td>
-            <i class="icon icon-user-btn w-[15px] h-[15px] cursor-pointer"></i>
-          </td>
-        </tr>
-        <tr>
-          <td>Félix</td>
-          <td>feli.gmail.com</td>
-          <td>A,B,C</td>
-          <td>
-            <i class="icon icon-user-btn w-[15px] h-[15px] cursor-pointer"></i>
-          </td>
-        </tr>
-        <tr>
-          <td>Félix</td>
-          <td>feli.gmail.com</td>
-          <td>A,B,C</td>
-          <td>
-            <i class="icon icon-user-btn w-[15px] h-[15px] cursor-pointer"></i>
-            Acção
-          </td>
-        </tr>
-        <tr>
-          <td>Félix</td>
-          <td>feli.gmail.com</td>
-          <td>A,B,C</td>
-          <td class="">
-            <div class="flex gap-x-3">
-              <i class="icon icon-user w-[25px] h-[25px] cursor-pointer"></i>
-              <i class="icon icon-user w-[25px] h-[25px] cursor-pointer"></i>
-              <i class="icon icon-user w-[25px] h-[25px] cursor-pointer"></i>
-            </div>
-          </td>
-        </tr>
       </tbody>
     </table>
   </div>
-
-  <div *ngIf="false" class="flex flex-col items-center justify-center p-12 bg-white mt-8 rounded-md h-[70vh]">
-    <i class="icon icon-user-none w-[130px] h-[130px]"></i>
-    <strong class="text-menu text-[20px] my-2">Sem perfis para apresentar</strong>
-    <p class="text-center text-menu">
-      Não existe nenhum perfil cadastrado. Adicione um perfil.
-    </p>
-  </div>
+  }@else {
+  <app-empty [empty]="empty" />
+  }
 </section>
 
 <app-modal [modal]="modal" [form]="formUser" (closeModal)="closeModal()" (confirmAction)="saveUser()">

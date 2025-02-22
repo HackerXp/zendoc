@@ -5,7 +5,7 @@ import {
   FormsModule,
   ReactiveFormsModule,
   Validators,
-  
+
 } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
@@ -151,11 +151,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.formData.append('iddepartamento', this.formFile.value.department);
     this.formData.append('titulo', this.formFile.value.subject);
     this.formData.append('tags', `${[...this.chips]}`);
+
     this.categories.find((cat) => {
-      if (cat.id === this.formFile.value.category) {
+      if (cat.id == this.formFile.value.category) {
         this.formData.append('tipo', cat.categoria);
       }
     });
+
     this.formData.append('descricao', this.formFile.value.subject);
     this.files.forEach((file) => {
       this.formData.append('files[]', file);

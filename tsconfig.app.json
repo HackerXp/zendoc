@@ -22,7 +22,9 @@
         "app/*"
       ],
     },
-    "types": []
+    "types": [
+      "@angular/localize"
+    ]
   },
   "files": [
     "src/main.ts"

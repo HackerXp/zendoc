@@ -2,6 +2,7 @@ import { ApplicationConfig, provideZoneChangeDetection, importProvidersFrom } fr
 import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
+import { LOCALE_ID } from '@angular/core';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
 // Importações do ngx-permissions
@@ -26,5 +27,6 @@ export const appConfig: ApplicationConfig = {
     NgxPermissionsConfigurationService,
     { provide: USE_PERMISSIONS_STORE, useValue: true },
     { provide: USE_CONFIGURATION_STORE, useValue: true }, // ✅ ESSENCIAL PARA EVITAR O ERRO
+    { provide: LOCALE_ID, useValue: 'pt-BR' }
   ],
 };

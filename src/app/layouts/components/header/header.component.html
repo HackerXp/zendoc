@@ -41,16 +41,17 @@
             <p class="text-gray-600 font-medium mb-2 text-[12px]">Arquivos selecionados:</p>
             <ul class="grid grid-cols-2 gap-2">
                 @for (file of files; track file.name;let index = $index) {
-                    <li class="text-[12px] text-[#3570EF] font-medium bg-[#3570EF]/10 rounded-md p-2 flex items-center justify-between">
-                        <div class="truncate w-3/4">
-                            {{ file.name }} ({{ (file.size / 1024).toFixed(2) }} KB)
-                        </div>
-                        <button appTooltip="Remover arquivo" tooltipPosition="top"
-                            class="text-black bg-[#3570EF]/10 w-5 h-5 flex items-center justify-center font-semibold rounded-full"
-                            (click)="removeFile(file)">
-                            &times;
-                        </button>
-                    </li>
+                <li
+                    class="text-[12px] text-[#3570EF] font-medium bg-[#3570EF]/10 rounded-md p-2 flex items-center justify-between">
+                    <div class="truncate w-3/4">
+                        {{ file.name }} ({{ (file.size / 1024).toFixed(2) }} KB)
+                    </div>
+                    <button appTooltip="Remover arquivo" tooltipPosition="top"
+                        class="text-black bg-[#3570EF]/10 w-5 h-5 flex items-center justify-center font-semibold rounded-full"
+                        (click)="removeFile(file)">
+                        &times;
+                    </button>
+                </li>
                 }
 
             </ul>
@@ -76,9 +77,9 @@
                     <option value="" class="font-inter text-[12px] text-[#7A859B]" disabled>Selecione a categoria
                     </option>
                     @for (item of categories; track item.categoria) {
-                        <option class="font-inter text-[12px] text-black font-medium" [value]="item.id">
-                            {{ item.categoria }}
-                        </option>
+                    <option class="font-inter text-[12px] text-black font-medium" [value]="item.id">
+                        {{ item.categoria }}
+                    </option>
                     }
                 </select>
             </div>
@@ -91,16 +92,16 @@
                     <option value="" class="font-inter text-[12px] text-[#7A859B]" disabled>Selecione a repartição
                     </option>
                     @for (item of department; track item.descricao) {
-                        <option class="font-inter text-[12px] text-black font-medium" [value]="item.id">
-                            {{ item.descricao }}
-                        </option>
+                    <option class="font-inter text-[12px] text-black font-medium" [value]="item.id">
+                        {{ item.descricao }}
+                    </option>
                     }
                 </select>
             </div>
         </div>
         <div class="mt-6">
             <label for="tags" class="block text-[12px] font-medium text-[#7A859B]">
-                Tags
+                Palavras-chave
             </label>
             <chips [chips]="chips" />
         </div>

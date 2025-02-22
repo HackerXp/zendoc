@@ -17,3 +17,25 @@ export function getInitials(fullName: string) {
 
     return `${firstInitial}${lastInitial}`;
 }
+
+
+export function getFileIcon(extension: string): string {
+    const icons: Record<string, string> = {
+        pdf: 'icon-pdf',
+        doc: 'icon-word',
+        docx: 'icon-word',
+        xls: 'icon-xls',
+        xlsx: 'icon-xls',
+        ppt: 'icon-power-point',
+        pptx: 'icon-power-point',
+        jpg: 'icon-image-geral',
+        jpeg: 'icon-image-geral',
+        png: 'icon-image-geral',
+        gif: 'icon-image-geral',
+        svg: 'icon-image-geral',
+    };
+
+    // Remove o ponto e transforma em minúsculas
+    const ext = extension.replace('.', '').toLowerCase();
+    return icons[ext] || 'icon-geral';
+}

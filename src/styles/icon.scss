@@ -45,11 +45,23 @@ i.icon-pdf {
 }
 
 i.icon-word {
-  background-image: url('/icon-word.svg') !important;  
+  background-image: url('/icon-word.svg') !important;
+}
+
+i.icon-power-point {
+  background-image: url("/icon-power-point.svg") !important;
+}
+
+i.icon-geral {
+  background-image: url("/icon-geral.svg") !important;
 }
 
 i.icon-image {
-  background-image: url('/icon-image.svg') !important;  
+  background-image: url('/icon-image.svg') !important;
+}
+
+i.icon-image-geral {
+  background-image: url('/icon-image-geral.svg') !important;
 }
 
 i.icon-dots {
@@ -166,4 +178,8 @@ i.icon-category-white {
 
 i.icon-manage-white {
   background-image: url("/icon-manage-white.svg") !important;
+}
+
+i.icon-delete-active {
+  background-image: url("/icon-delete-active.svg") !important;
 }

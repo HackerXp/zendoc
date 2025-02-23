@@ -44,7 +44,7 @@ export class ConfigurationsPermissionComponent {
       title: 'Cadastrar permissões',
       description:
         'Cadastrar  permissões no sistema de forma simples',
-      size: 'w-1/3',
+      size: 'w-2/5',
       btnCancel: 'Cancelar',
       btnOK: 'Adicionar permissão',
       onOff: true

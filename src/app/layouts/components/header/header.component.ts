@@ -27,6 +27,7 @@ import { CategoryService } from '@core/services/category/category.service';
 import { ApiService } from '@core/services/api.service';
 import { AuthService } from '@core/services/auth.service';
 import { UserToken } from '@core/interfaces/user-token';
+import ControlaSessionDecorator from '@core/decorators/controla-session.decorator';
 
 @Component({
   selector: 'app-header',
@@ -72,6 +73,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {
     this.shortcutService.shortcut$.subscribe(() => this.toggleSearch());
   }
+
+  @ControlaSessionDecorator(300000, 'http://localhost:4200')
 
   ngOnInit(): void {
     this.toggleMenu();

@@ -63,13 +63,6 @@ export const routes: Routes = [
             '@features/configurations/configurations-department/configurations-department.component'
           ).then((c) => c.ConfigurationsDepartmentComponent),
       },
-      {
-        path: 'view/:id',
-        loadComponent: () =>
-          import('./shared/components/pdf-viewer/pdf-viewer.component').then(
-            (c) => c.PdfViewerComponent
-          ),
-      },
     ],
   },
 ];

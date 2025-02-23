@@ -87,6 +87,9 @@ export class CardDocComponent implements OnChanges {
   }
 
   showOptions(item: File, url: string) {
+    this.pdf = '';
+    this.imageSrc = '';
+    this.fileDocUrl = '';
     if (item.extension.includes('pdf')) {
       this.pdf = url;
     } else if (['.jpg', '.jpeg', '.png', '.gif'].includes(item.extension)) {

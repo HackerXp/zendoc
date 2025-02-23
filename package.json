@@ -30,7 +30,6 @@
     "jquery": "^3.7.1",
     "ng2-pdf-viewer": "^10.4.0",
     "ngx-doc-viewer": "^15.0.1",
-    "ngx-extended-pdf-viewer": "^23.0.0-alpha.2",
     "ngx-permissions": "^17.1.0",
     "ngx-toastr": "^19.0.0",
     "postcss": "^8.4.49",

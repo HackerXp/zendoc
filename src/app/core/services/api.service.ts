@@ -3,6 +3,7 @@ import { BaseService } from './base.service';
 import { BehaviorSubject, combineLatest, first, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Data, Documents } from '@shared/interfaces/document';
+import { LoaderService } from '@shared/services/loader.service';
 
 @Injectable({
   providedIn: 'root',
@@ -26,12 +27,14 @@ export class ApiService extends BaseService {
   }
 
   getDocuments = () => {
+    LoaderService.startLoading();
     this.http
       .get<Documents>(`${this.apiURL}/?rota=listar-todos-documentos`)
       .subscribe((docs) => {
         this.documentsSubject.next(docs.data);
         this.currentPageSubject.next(1);
         this.totalDocumentsSubject.next(docs.data.length);
+        LoaderService.stopLoading();
       });
   };
 
@@ -40,6 +43,7 @@ export class ApiService extends BaseService {
   };
 
   saveDocument(formData: FormData) {
+    LoaderService.startLoading();
     this.http
       .post<Documents>(`${this.apiURL}/?rota=salvar-documento`, formData)
       .subscribe((newDoc) => {
@@ -49,6 +53,7 @@ export class ApiService extends BaseService {
 
           this.documentsSubject.next(updateDocs);
           this.totalDocumentsSubject.next(updateDocs.length);
+          LoaderService.stopLoading();
         }
       });
   }

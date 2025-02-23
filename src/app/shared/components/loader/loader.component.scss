@@ -1,0 +1,20 @@
+@keyframes indeterminate {
+    0% {
+        left: -100%;
+        width: 30%;
+    }
+
+    50% {
+        left: 50%;
+        width: 30%;
+    }
+
+    100% {
+        left: 100%;
+        width: 30%;
+    }
+}
+
+.animate-indeterminate {
+    animation: indeterminate 1.5s infinite ease-in-out;
+}

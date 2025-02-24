@@ -40,7 +40,7 @@ export class ModalSearchComponent implements OnDestroy {
       .filter(
         (item) =>
           item.titulo?.toLowerCase().includes(query) ||
-          item.idusuario?.toLowerCase().includes(query) ||
+          // item.idusuario?.toLowerCase().includes(query) ||
           item.categoria?.toLowerCase().includes(query) ||
           item.tipo?.toLowerCase().includes(query) ||
           item.descricao?.toLowerCase().includes(query)

@@ -38,7 +38,17 @@ export class ApiService extends BaseService {
       });
   };
 
-  getDocumentById = (id:number) => {
+  search = (filtro: string) => {
+    this.http
+      .get<Documents>(`${this.apiURL}/?rota=filtro-avancado&busca=${filtro}`)
+      .subscribe((docs) => {
+        this.documentsSubject.next(docs.data);
+        this.currentPageSubject.next(1);
+        this.totalDocumentsSubject.next(docs.data.length);
+      });
+  };
+
+  getDocumentById = (id: number) => {
     return this.http.get<Documents>(`${this.apiURL}/?rota=listar-documentos-por-id&id=${id}`)
   };
 

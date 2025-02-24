@@ -144,12 +144,7 @@ export class CardDocComponent implements OnChanges {
     this.modal = {};
   };
 
-  removeDoc = (id: number) => {
-    this.show = {};
-    console.log(id);
-  };
-
-  onDocumentSelectedId(documentId: number) {
+  removeDoc(documentId: number) {
     this.selectedDocumentId = documentId;
     this.apiService.deleteDocument(this.selectedDocumentId);
     this.close();

@@ -57,6 +57,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   files: File[] = [];
   chips: string[] = [];
   formFile!: FormGroup;
+  formData = new FormData();
   isSearchOpen = false;
   unsubscribeSubject = new Subject();
   private deptService = inject(DepartmentService);
@@ -142,7 +143,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.chips = [];
   }
 
-  formData = new FormData();
   saveDocument() {
     if (this.files.length === 0) {
       this.toastr.warning('Selecione pelo menos um arquivo antes de enviar');
@@ -255,6 +255,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
     });
   }
+
   ngOnDestroy(): void {
     this.unsubscribeSubject.next(null);
     this.unsubscribeSubject.complete();

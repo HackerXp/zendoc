@@ -1,44 +1,29 @@
-<div
-  (click)="onBackdropClick($event)"
-  [class.hidden]="!isOpen"
-  class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
->
-  <div
-    (click)="$event.stopPropagation()"
-    class="bg-white lex flex-col gap-2 p-3 rounded-lg shadow-md w-full max-w-xs"
-  >
+<div (click)="onBackdropClick($event)" [class.hidden]="!isOpen"
+  class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+  <div (click)="$event.stopPropagation()" class="bg-white lex flex-col gap-2 p-3 rounded-lg shadow-md w-full max-w-xs">
     <div class="flex flex-col mb-5">
-      <button
-        title="Fechar detalhes"
-        (click)="closeModal()"
-        class="text-black active:scale-95 self-end bg-[#3570EF]/10 w-4 h-4 flex items-center justify-center font-semibold rounded-full"
-      >
+      <button title="Fechar detalhes" (click)="closeModal()"
+        class="text-black active:scale-95 self-end bg-[#3570EF]/10 w-4 h-4 flex items-center justify-center font-semibold rounded-full">
         &times;
       </button>
       <h3 class="self-center text-menu text-[14px] font-inter font-semibold">
-        Eliminar arquivo
+        {{file.tipo!=undefined?' Eliminar arquivo':' Eliminar recurso'}}
       </h3>
     </div>
     <div class="body flex items-center justify-center mb-5">
-      <span
-        class="text-[#7A859B] text-center font-inter font-semibold text-[12px]"
-      >
-        Tem certeza de que deseja mover o documento
+      <span class="text-[#7A859B] text-center font-inter font-semibold text-[12px]">
+        Tem certeza de que deseja mover o item
         <strong class="text-menu">{{ file.titulo }}</strong> do sistema para
         a lixeira?
       </span>
     </div>
     <div class="footer flex justify-between items-center">
-      <button
-        class="p-2 active:scale-95 bg-gray-300 text-[12px] text-gray-700 rounded hover:bg-gray-400"
-        (click)="closeModal()"
-      >
+      <button class="p-2 active:scale-95 bg-gray-300 text-[12px] text-gray-700 rounded hover:bg-gray-400"
+        (click)="closeModal()">
         Cancelar
       </button>
-      <button
-        (click)="confirmAction()"
-        class="py-2 px-6 text-[12px] text-white rounded bg-[#3570EF] hover:bg-blue-700 cursor-pointer disabled:bg-blue-400 active:scale-95"
-      >
+      <button (click)="confirmAction()"
+        class="py-2 px-6 text-[12px] text-white rounded bg-[#3570EF] hover:bg-blue-700 cursor-pointer disabled:bg-blue-400 active:scale-95">
         Sim
       </button>
     </div>

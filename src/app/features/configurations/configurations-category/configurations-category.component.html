@@ -3,17 +3,18 @@
         <div>
             <back-forward ulr="configurations" desc="Voltar" />
             <h2 class="text-[30px] font-bold">Configurações</h2>
-            <p class="flex items-center">
-                Criação de categorias: <span class="text-[green] mx-1">10</span><strong>categorias criadas</strong>
+            <p class="flex items-center text-[14px]">
+                Criação de categorias: <span class="text-[green] mx-1">{{categories.length}}</span>
+                <strong>{{categories.length==1?'categoria criada':'categorias criadas'}}</strong>
             </p>
         </div>
-        <button (click)="openModal()"
+        <button (click)="openModal('new')"
             class="bg-[#263238] text-white active:scale-95 px-4 py-2 rounded-md text-[16px] flex items-center gap-x-2">
             <i class="icon icon-category-white w-5 h-5 cursor-pointer"></i>
             Adicionar categoria
         </button>
     </div>
-    @if (permissions.length>0) {
+    @if (categories.length>0) {
     <div class="mt-8">
         <table class="w-full table-users bg-white">
             <thead class="">
@@ -24,20 +25,18 @@
                 </tr>
             </thead>
             <tbody class="">
+                @for (category of categories; track $index) {
                 <tr>
-                    <td>Félix</td>
-                    <td>feli.gmail.com</td>
-                    <td>
-                        <i class="icon icon-user w-[15px] h-[15px] cursor-pointer"></i>
+                    <td>{{category.categoria}}</td>
+                    <td>{{category.descricao}}</td>
+                    <td class="flex justify-center gap-x-1">
+                        <i class="icon icon-edit w-[15px] h-[15px] active:scale-95 cursor-pointer"
+                            (click)="openModal('edit',category)" title="Editar"></i>
+                        <i class="icon icon-delete w-[15px] h-[15px] active:scale-95 cursor-pointer" title="Eliminar"
+                            (click)="openModal('delete',category)"></i>
                     </td>
                 </tr>
-                <tr>
-                    <td>Félix</td>
-                    <td>feli.gmail.com</td>
-                    <td>
-                        <i class="icon icon-user w-[15px] h-[15px] cursor-pointer"></i>
-                    </td>
-                </tr>
+                }
             </tbody>
         </table>
     </div>
@@ -51,18 +50,21 @@
 <app-modal [modal]="modal" [form]="formCategory" (closeModal)="closeModal()" (confirmAction)="saveCategory()">
     <form class="space-y-4" [formGroup]="formCategory">
         <div>
-            <label for="name" class="block text-[12px] font-medium text-[#7A859B]">
+            <label for="categoria" class="block text-[12px] font-medium text-[#7A859B]">
                 Nome *
             </label>
-            <input type="text" formControlName="name" placeholder="Digite o nome"
+            <input type="text" formControlName="categoria" placeholder="Digite o nome"
                 class="mt-1 block focus:border-[#3570EF] w-full outline-none rounded-md text-[12px] font-medium text-[#7A859B] border border-[#76B3D1] px-4 shadow-sm h-10 bg-white">
         </div>
         <div>
-            <label for="description" class="block text-[12px] font-medium text-[#7A859B]">
+            <label for="descricao" class="block text-[12px] font-medium text-[#7A859B]">
                 Descrição *
             </label>
-            <input type="text" formControlName="description" placeholder="Digite a descrição"
+            <input type="text" formControlName="descricao" placeholder="Digite a descrição"
                 class="mt-1 block focus:border-[#3570EF] w-full outline-none rounded-md text-[12px] font-medium text-[#7A859B] border border-[#76B3D1] px-4 shadow-sm h-10 bg-white">
         </div>
     </form>
 </app-modal>
+
+
+<modal-info [isOpen]="show.dialog!" (close)="close()" (selectDocument)="delete($event)" [file]="catObj" />

@@ -10,7 +10,7 @@ import { Data } from '@shared/interfaces/document';
 export class ModalInfoComponent implements OnDestroy {
   @Output() close = new EventEmitter<void>();
   @Output() confirm = new EventEmitter<void>();
-  @Input() file!: Data;
+  @Input() file!: Data | any;
   @Input() isOpen = false;
   @Output() selectDocument = new EventEmitter<number>();
 

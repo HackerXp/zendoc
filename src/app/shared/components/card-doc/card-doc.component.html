@@ -59,6 +59,7 @@
                 <h3 class="self-center text-menu text-[16px] font-inter font-semibold">Arquivos</h3>
 
                 <i title="Remover arquivos"
+                *ngxPermissionsOnly="['REMOVER-DOCUMENTOS']"
                     class="icon {{isDelete.check?'icon-delete-active':'icon-delete'}} active:scale-95 w-4 h-4 cursor-pointer"
                     (click)="activeDelete(document.id,isDelete.check!)"></i>
 
@@ -115,14 +116,14 @@
     <div [class.hidden]="!show.options" [class.opacity-0]="!show.options" [class.opacity-100]="show.options"
         [class.scale-95]="!show.options" [class.scale-100]="show.options"
         class="flex -top-8 -mr-5 absolute more-options self-end p-2 text-right flex-col items-center gap-1 right-0 bg-white shadow-lg rounded-lg z-10 transition-all duration-200 ease-in-out">
-        <i class="cursor-pointer active:scale-95 icon icon-trash h-5 w-5" title="Remover" tabindex="0"
+        <i *ngxPermissionsOnly="['REMOVER-DOCUMENTOS']" class="cursor-pointer active:scale-95 icon icon-trash h-5 w-5" title="Remover" tabindex="0"
             (click)="showHide('dialog')" (keydown.enter)="showHide('dialog')" (keydown.space)="showHide('dialog')"></i>
         <div class="border w-full bg-[#0F2045]"></div>
         <i class="cursor-pointer active:scale-95 icon icon-info h-5 w-5" title="Ver detalhes"
             (click)="showHide('details')" tabindex="0" (keydown.enter)="showHide('details')"
             (keydown.space)="showHide('details')"></i>
         <div class="border w-full bg-[#0F2045]"></div>
-        <i class="cursor-pointer active:scale-95 icon icon-view h-5 w-5" title="Visualizar" (click)="showHide('files')"
+        <i *ngxPermissionsOnly="['VER-DOCUMENTOS']" class="cursor-pointer active:scale-95 icon icon-view h-5 w-5" title="Visualizar" (click)="showHide('files')"
             tabindex="0" (keydown.enter)="showHide('files')" (keydown.space)="showHide('files')"></i>
     </div>
 

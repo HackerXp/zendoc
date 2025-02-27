@@ -3,8 +3,9 @@
     <div>
       <back-forward ulr="configurations" desc="Voltar" />
       <h2 class="text-[30px] font-bold">Configurações</h2>
-      <p class="flex items-center">
-        Criação de perfis: <span class="text-[green] mx-1">10</span><strong>perfis criados</strong>
+      <p class="flex items-center text-[14px]">
+        Criação de perfis: <span class="text-[green] mx-1">{{profiles.length}}</span>
+        <strong>{{profiles.length==1?'perfil criado':'perfis criados'}}</strong>
       </p>
     </div>
     <button (click)="openModal()"

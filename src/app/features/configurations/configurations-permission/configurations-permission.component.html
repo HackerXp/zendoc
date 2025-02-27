@@ -3,11 +3,12 @@
         <div>
             <back-forward ulr="configurations" desc="Voltar" />
             <h2 class="text-[30px] font-bold">Configurações</h2>
-            <p class="flex items-center">
-                Criação de permissões: <span class="text-[green] mx-1">10</span><strong>permissões criadas</strong>
+            <p class="flex items-center text-[14px]">
+                Criação de permissões: <span class="text-[green] mx-1">{{permissions.length}}</span>
+                <strong>{{permissions.length==1?'permissão criada':'permissões criada'}}</strong>
             </p>
         </div>
-        <button (click)="openModal()"
+        <button (click)="openModal('new')"
             class="bg-[#263238] text-white active:scale-95 px-4 py-2 rounded-md text-[16px] flex items-center gap-x-2">
             <i class="icon icon-key-btn w-5 h-5 cursor-pointer"></i>
             Adicionar permissão
@@ -24,20 +25,16 @@
                 </tr>
             </thead>
             <tbody class="">
+                @for (permission of permissions; track $index) {
                 <tr>
-                    <td>Félix</td>
-                    <td>feli.gmail.com</td>
-                    <td>
-                        <i class="icon icon-user w-[15px] h-[15px] cursor-pointer"></i>
+                    <td>{{permission.descricao}}</td>
+                    <td>{{permission.estado}}</td>
+                    <td class="flex justify-center gap-x-1">
+                        <i class="icon icon-edit w-[15px] h-[15px] active:scale-95 cursor-pointer"
+                            (click)="openModal('edit',permission)" title="Editar"></i>
                     </td>
                 </tr>
-                <tr>
-                    <td>Félix</td>
-                    <td>feli.gmail.com</td>
-                    <td>
-                        <i class="icon icon-user w-[15px] h-[15px] cursor-pointer"></i>
-                    </td>
-                </tr>
+                }
             </tbody>
         </table>
     </div>
@@ -51,10 +48,10 @@
 <app-modal [modal]="modal" [form]="formPermission" (closeModal)="closeModal()" (confirmAction)="savePemission()">
     <form class="space-y-4" [formGroup]="formPermission">
         <div>
-            <label for="permission" class="block text-[12px] font-medium text-[#7A859B]">
+            <label for="descricao" class="block text-[12px] font-medium text-[#7A859B]">
                 Permissão *
             </label>
-            <input type="text" formControlName="permission" placeholder="Digite a permissão"
+            <input type="text" formControlName="descricao" placeholder="Digite a permissão"
                 class="mt-1 block focus:border-[#3570EF] uppercase w-full outline-none rounded-md text-[12px] font-medium text-[#7A859B] border border-[#76B3D1] px-4 shadow-sm h-10 bg-white">
         </div>
     </form>

@@ -23,6 +23,7 @@ import { Modal } from '@shared/interfaces/modal';
 import { getFileIcon } from '@core/helper/utils';
 
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 import {
   PdfViewerModule,
@@ -45,7 +46,8 @@ interface Delete {
     PreviewDocComponent,
     PdfViewerModule,
     NgIf,
-    NgxDocViewerModule
+    NgxDocViewerModule,
+    NgxPermissionsModule
   ],
   templateUrl: './card-doc.component.html',
   styleUrl: './card-doc.component.scss',

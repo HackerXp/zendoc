@@ -120,9 +120,7 @@ export class ConfigurationsDepartmentComponent {
           },
         });
     } else {
-      this.formData.append('id', `${this.department.id}`);
-      console.log(this.formData);
-      
+      this.formData.append('id', `${this.department.id}`);    
       this.deptService.editDepartment(this.formData).pipe(takeUntil(this.unsubscribeSubject))
         .subscribe({
           next: (cat) => {

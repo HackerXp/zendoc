@@ -86,7 +86,12 @@ export class ConfigurationsProfilesComponent implements OnInit {
 
     this.userService.saveUser(this.formData).pipe(takeUntil(this.unsubscribeSubject)).subscribe({
       next: (res) => {
-        this.getUsers()
+        if (res.codigo == '200') {
+          this.formData = new FormData();
+          this.closeModal();
+          this.buildForm();
+          this.getUsers();
+        }
         LoaderService.stopLoading();
       },
       complete: () => LoaderService.stopLoading(),
@@ -97,7 +102,7 @@ export class ConfigurationsProfilesComponent implements OnInit {
     this.modal = {
       isOpen: true,
       icon: 'icon-user',
-      title: 'Cadastrar usuários',
+      title: 'Cadastrar perfis',
       description:
         'Cadastrar  perfis no sistema de forma simples',
       size: 'w-2/5',

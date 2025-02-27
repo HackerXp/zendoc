@@ -39,3 +39,19 @@ export function getFileIcon(extension: string): string {
     const ext = extension.replace('.', '').toLowerCase();
     return icons[ext] || 'icon-geral';
 }
+
+
+export function generateUsername(fullName: string): string {
+    if (!fullName.trim()) return "";
+
+    const normalizeText = (text: string) =>
+        text.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+
+    const nameParts = fullName.trim().split(/\s+/);
+    if (nameParts.length < 2) return normalizeText(nameParts[0].toLowerCase());
+
+    const firstName = normalizeText(nameParts[0].toLowerCase());
+    const lastName = normalizeText(nameParts[nameParts.length - 1].toLowerCase());
+
+    return `${firstName}.${lastName}`;
+}

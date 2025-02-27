@@ -5,7 +5,7 @@ import { Empty } from '@shared/interfaces/empty';
 import { Modal } from '@shared/interfaces/modal';
 import { ToastrService } from 'ngx-toastr';
 import { EmptyComponent } from "../../../shared/components/empty/empty.component";
-import { Permission } from '@shared/interfaces/permission';
+import { Permission, Permission_Data } from '@shared/interfaces/permission';
 import { BackForwardComponent } from '@shared/components/back-forward/back-forward.component';
 
 @Component({
@@ -16,12 +16,11 @@ import { BackForwardComponent } from '@shared/components/back-forward/back-forwa
 })
 export class ConfigurationsPermissionComponent {
   private fb = inject(FormBuilder);
-  private toastr = inject(ToastrService);
 
   modal: Modal = {};
   empty: Empty = { icon: 'icon-key', title: 'Sem permissões  para apresentar', description: 'Não existe nenhuma permissão cadastrada  , adicione uma permissão.' };
   formPermission!: FormGroup;
-  permissions: Permission[] = [];
+  permissions: Permission_Data[] = [];
   constructor() { }
 
   ngOnInit() {

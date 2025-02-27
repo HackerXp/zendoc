@@ -12,6 +12,7 @@ import { Empty } from '@shared/interfaces/empty';
 import { Modal } from '@shared/interfaces/modal';
 import { Permission_Data } from '@shared/interfaces/permission';
 import { PermissionUser } from '@shared/interfaces/permission-user';
+import { User_Data } from '@shared/interfaces/user';
 import { LoaderService } from '@shared/services/loader.service';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -32,7 +33,7 @@ export class ConfigurationsProfilesComponent implements OnInit {
   modal: Modal = {};
   chips: string[] = [];
   formUser!: FormGroup;
-  profiles: any[] = [];
+  profiles: User_Data[] = [];
   permissions: Permission_Data[] = [];
   departaments: Department_Data[] = [];
   permissionUser: PermissionUser[] = [];
@@ -44,6 +45,7 @@ export class ConfigurationsProfilesComponent implements OnInit {
     this.buildForm();
     this.getPermission();
     this.getDepartment();
+    this.getUsers();
   }
 
   buildForm = () => {
@@ -84,13 +86,10 @@ export class ConfigurationsProfilesComponent implements OnInit {
 
     this.userService.saveUser(this.formData).pipe(takeUntil(this.unsubscribeSubject)).subscribe({
       next: (res) => {
-        console.log(res);
-
+        LoaderService.stopLoading()
       },
       complete: () => LoaderService.stopLoading(),
     });
-
-    console.log(this.formData);
   };
 
   openModal = () => {
@@ -114,6 +113,19 @@ export class ConfigurationsProfilesComponent implements OnInit {
       },
       complete: () => LoaderService.stopLoading(),
     });
+  }
+
+  getUsers() {
+    LoaderService.startLoading();
+    this.userService
+      .getUsers()
+      .pipe(takeUntil(this.unsubscribeSubject))
+      .subscribe({
+        next: (cat) => {
+          this.profiles = cat.data;
+          LoaderService.stopLoading();
+        },
+      });
   }
 
   getDepartment() {

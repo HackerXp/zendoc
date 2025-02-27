@@ -20,27 +20,22 @@
         <tr class="table-head">
           <th>Nome</th>
           <th>Email</th>
-          <th>Departamento</th>
+          <th>Utilizador</th>
           <th>Opções</th>
         </tr>
       </thead>
       <tbody class="">
+        @for (profile of profiles; track $index) {
         <tr>
-          <td>Félix</td>
-          <td>feli.gmail.com</td>
-          <td>A,B,C</td>
-          <td>
-            <i class="icon icon-user-btn w-[15px] h-[15px] cursor-pointer"></i>
+          <td>{{profile.nome}}</td>
+          <td>{{profile.email}}</td>
+          <td>{{profile.usuario}}</td>
+          <td class="flex justify-center gap-x-1">
+            <i class="icon icon-edit w-[15px] h-[15px] active:scale-95 cursor-pointer" title="Editar"></i>
+            <i class="icon icon-delete w-[15px] h-[15px] active:scale-95 cursor-pointer" title="Eliminar"></i>
           </td>
         </tr>
-        <tr>
-          <td>Félix</td>
-          <td>feli.gmail.com</td>
-          <td>A,B,C</td>
-          <td>
-            <i class="icon icon-user-btn w-[15px] h-[15px] cursor-pointer"></i>
-          </td>
-        </tr>
+        }
       </tbody>
     </table>
   </div>
@@ -98,8 +93,8 @@
       <div class="grid grid-cols-3 gap-4 p-4 border border-[#76B3D1] rounded-md">
         @for (permission of permissions; track $index) {
         <label class="flex items-center cursor-pointer space-x-2">
-          <input type="checkbox" (change)="addPermisionUser($event)" formControlName="permissoes" name="check-{{$index}}" [value]="permission.id"
-            class="hidden peer" />
+          <input type="checkbox" (change)="addPermisionUser($event)" formControlName="permissoes"
+            name="check-{{$index}}" [value]="permission.id" class="hidden peer" />
           <div
             class="w-4 h-4 flex items-center justify-center rounded-sm border border-blue-500 peer-checked:bg-blue-500 peer-checked:border-blue-500 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white hidden peer-checked:block"

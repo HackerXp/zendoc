@@ -22,6 +22,11 @@ const ALLOWED_ENDPOINTS = [
   '/?rota=cadastrar-departamento',
   '/?rota=editar-departamento',
   '/?rota=eliminar-departamento',
+  '/?rota=listar-todos-usuario',
+  '/?rota=listar-usuario-por-id',
+  '/?rota=cadastrar-usuario',
+  '/?rota=editar-usuario',
+  '/?rota=editar-senha',
 ];
 export const httpInterceptor: HttpInterceptorFn = (req, next) => {
   const toastr = inject(ToastrService);

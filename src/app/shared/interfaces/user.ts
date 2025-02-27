@@ -5,4 +5,9 @@ export interface User {
 }
 
 
-export interface User_Data { }
+export interface User_Data {
+    id?: number;
+    nome: string;
+    usuario: string;
+    email: string;
+}

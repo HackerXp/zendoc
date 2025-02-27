@@ -86,7 +86,8 @@ export class ConfigurationsProfilesComponent implements OnInit {
 
     this.userService.saveUser(this.formData).pipe(takeUntil(this.unsubscribeSubject)).subscribe({
       next: (res) => {
-        LoaderService.stopLoading()
+        this.getUsers()
+        LoaderService.stopLoading();
       },
       complete: () => LoaderService.stopLoading(),
     });

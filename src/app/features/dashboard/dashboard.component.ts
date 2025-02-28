@@ -7,7 +7,8 @@ import { CardComponent } from "../../shared/components/card/card.component";
 import { ApiService } from '@core/services/api.service';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-// import { faCalendarDays } from '@fortawesome/free-regular-svg-icons';
+import { ActivatedRoute } from '@angular/router';
+
 @Component({
   selector: 'app-dashboard',
   imports: [FontAwesomeModule, ItemListComponent, CardComponent, AsyncPipe],
@@ -15,9 +16,12 @@ import { AsyncPipe } from '@angular/common';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
+  private apiService = inject(ApiService);
+
   faCalendar = faCalendarDays;
   faClock = faClock;
-  total = 0;
+  total: number = 0;
+
   items: ItemList[] = [
     {
       title: 'Documentos',
@@ -25,6 +29,7 @@ export class DashboardComponent implements OnInit {
       icon: 'icon-doc',
       total: 200,
       type: 'Acta',
+      id: 1
     },
     {
       title: 'Imagens',
@@ -32,9 +37,10 @@ export class DashboardComponent implements OnInit {
       icon: 'icon-doc',
       total: 100,
       type: 'Boletim Ocorrencia',
+      id: 2
     },
   ];
-  private apiService = inject(ApiService);
+
   totalDocuments$: Observable<number> = this.apiService.totalDocuments$;
 
   constructor() {

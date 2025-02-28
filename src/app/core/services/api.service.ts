@@ -20,7 +20,7 @@ export class ApiService extends BaseService {
   private totalDocumentsSubject = new BehaviorSubject<number>(0);
   totalDocuments$ = this.totalDocumentsSubject.asObservable();
 
-  cardsPerPage = 10;
+  cardsPerPage = 12;
   constructor() {
     super();
     this.getDocuments();

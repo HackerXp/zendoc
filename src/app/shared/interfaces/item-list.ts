@@ -3,5 +3,6 @@ export interface ItemList {
   title: string;
   description: string;
   total: number;
-  type: 'Boletim' | 'Acta' | 'Boletim Ocorrencia' | undefined;
+  id: number;
+  type: any;
 }

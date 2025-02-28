@@ -15,7 +15,6 @@ import { Subject, takeUntil } from 'rxjs';
 export class AuthComponent implements OnInit, OnDestroy {
   unsubscribeSubject = new Subject();
   private authService = inject(AuthService);
-  private toastr = inject(ToastrService);
   private router = inject(Router);
 
   errorMessage = signal<string | null>(null);

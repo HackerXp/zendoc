@@ -46,40 +46,44 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
       next: (event) => {
         if (event instanceof HttpResponse) {
           const body: Documents = event.body as Documents;
-
-          if (body?.codigo === '200') {
-            toastr.success('Operação realizada com sucesso!', 'Sucesso');
-          } else if (body?.codigo === '400') {
-            toastr.warning('Requisição inválida.', 'Aviso');
-          } else if (body?.codigo === '500') {
-            toastr.error('Erro interno do servidor.', 'Erro');
+          if (!localStorage.getItem('reload')) {
+            if (body?.codigo === '200') {
+              toastr.success('Operação realizada com sucesso!', 'Sucesso');
+            } else if (body?.codigo === '400') {
+              toastr.warning('Requisição inválida.', 'Aviso');
+            } else if (body?.codigo === '500') {
+              toastr.error('Erro interno do servidor.', 'Erro');
+            }
           }
         }
       },
       error: () => {
         LoaderService.stopLoading();
-        toastr.error('Erro ao processar a requisição', 'Erro');
+        if (!localStorage.getItem('reload')) {
+          toastr.error('Erro ao processar a requisição', 'Erro');
+        }
       },
     }),
     catchError((error: HttpErrorResponse) => {
 
       LoaderService.stopLoading();
-      if (error.status === 401 && error?.error?.mensagem?.includes('Expired token')) {
-        toastr.error('Redirecionando para o login...', 'Sessão Expirada');
-        setTimeout(() => {
-          sessionStorage.removeItem('token');
-          router.navigate(['/']);
-        }, 3000);
-      } else if (error.status === 401) {
-        toastr.error('Token inválido. Faça login novamente.', 'Acesso Negado');
-        setTimeout(() => {
-          sessionStorage.clear();
-          router.navigate(['/']);
-        }, 3000);
-      } else {
-        toastr.error('Erro inesperado, tente novamente mais tarde.', 'Erro');
+      if (!localStorage.getItem('reload')) {
+        if (error.status === 401 && error?.error?.mensagem?.includes('Expired token')) {
+          toastr.error('Redirecionando para o login...', 'Sessão Expirada');
+          setTimeout(() => {
+            sessionStorage.removeItem('token');
+            router.navigate(['/']);
+          }, 3000);
+        } else if (error.status === 401) {
+          toastr.error('Token inválido. Faça login novamente.', 'Acesso Negado');
+          setTimeout(() => {
+            sessionStorage.clear();
+            router.navigate(['/']);
+          }, 3000);
+        } else {
+          toastr.error('Erro inesperado, tente novamente mais tarde.', 'Erro');
+        }
       }
-
       return throwError(() => error);
     })
   );

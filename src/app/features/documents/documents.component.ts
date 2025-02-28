@@ -6,31 +6,41 @@ import prettyBytes from 'pretty-bytes';
 import { ApiService } from '@core/services/api.service';
 import { map, Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { Empty } from '@shared/interfaces/empty';
+import { EmptyComponent } from '@shared/components/empty/empty.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-documents',
-  imports: [CardDocComponent, NgIf, AsyncPipe],
+  imports: [CardDocComponent, AsyncPipe, EmptyComponent],
   templateUrl: './documents.component.html',
   styleUrl: './documents.component.scss',
 })
 export class DocumentsComponent implements OnInit, OnDestroy {
   private apiService = inject(ApiService);
-  private toastr = inject(ToastrService);
+  private route = inject(ActivatedRoute);
+
   documents$ = this.apiService.documents$;
   unsubscribeSubject = new Subject();
   paginatedDocuments$ = this.apiService.paginatedDocuments$; // ✅ Observa os documentos paginados
   currentPage$ = this.apiService.currentPage$;
   cardsPerPage = this.apiService.cardsPerPage;
   totalPages$ = this.apiService.totalPages$;
+  empty: Empty = { icon: 'icon-no-document', title: 'Sem documentos para apresentar', description: 'Não existe nenhum documento cadastrado   , adicione um arquivo .' };
 
   cards: Data[] = [];
-  total = 0;
+  total: number = 0;
   currentPage = 1;
-  // cardsPerPage = 1;
+  id: string | null = null;
+  category: string | null = null;
 
   ngOnInit(): void {
     this.updateCardsPerPage();
     this.getDocuments();
+    this.route.queryParamMap.subscribe(params => {
+      this.id = params.get('id');
+      this.category = params.get('category');
+    });
   }
 
   // Atualiza os cards por página com base no tamanho da tela

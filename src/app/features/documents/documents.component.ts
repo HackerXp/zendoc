@@ -5,7 +5,6 @@ import { Data } from '@shared/interfaces/document';
 import prettyBytes from 'pretty-bytes';
 import { ApiService } from '@core/services/api.service';
 import { map, Subject } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
 import { Empty } from '@shared/interfaces/empty';
 import { EmptyComponent } from '@shared/components/empty/empty.component';
 import { ActivatedRoute } from '@angular/router';
@@ -19,7 +18,7 @@ import { ActivatedRoute } from '@angular/router';
 export class DocumentsComponent implements OnInit, OnDestroy {
   private apiService = inject(ApiService);
   private route = inject(ActivatedRoute);
-
+ 
   documents$ = this.apiService.documents$;
   unsubscribeSubject = new Subject();
   paginatedDocuments$ = this.apiService.paginatedDocuments$; // ✅ Observa os documentos paginados
@@ -36,11 +35,15 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.updateCardsPerPage();
-    this.getDocuments();
+  
     this.route.queryParamMap.subscribe(params => {
       this.id = params.get('id');
       this.category = params.get('category');
     });
+
+    if (this.id) {
+      this.apiService.getDocumentByIdCategory(this.id);
+    }
   }
 
   // Atualiza os cards por página com base no tamanho da tela
@@ -91,19 +94,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   fileSize = (size: number) => {
     const sizeInBytes = size * 1048576;
     return prettyBytes(sizeInBytes);
-  };
-
-  getDocuments = () => {
-    this.apiService.getDocuments();
-    // .pipe(takeUntil(this.unsubscribeSubject)).subscribe({
-    //   next: (cb) => {
-    //     this.cards = cb.data;
-    //     this.total = this.calculateTotal();
-    //   },
-    //   error: () => {
-    //     this.toastr.error('Erro ao carregar documentos', 'Erro');
-    //   }
-    // });
   };
 
   calculateTotal$ = this.documents$.pipe(

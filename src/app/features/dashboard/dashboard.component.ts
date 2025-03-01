@@ -5,9 +5,10 @@ import { ItemListComponent } from '../../shared/components/item-list/item-list.c
 import { ItemList } from '@shared/interfaces/item-list';
 import { CardComponent } from "../../shared/components/card/card.component";
 import { ApiService } from '@core/services/api.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,30 +17,15 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
+  unsubscribeSubject = new Subject();
   private apiService = inject(ApiService);
+  private toastr = inject(ToastrService);
 
   faCalendar = faCalendarDays;
   faClock = faClock;
   total: number = 0;
 
-  items: ItemList[] = [
-    {
-      title: 'Documentos',
-      description: 'Total de documentos',
-      icon: 'icon-doc',
-      total: 200,
-      type: 'Acta',
-      id: 1
-    },
-    {
-      title: 'Imagens',
-      description: 'Total de imagens',
-      icon: 'icon-doc',
-      total: 100,
-      type: 'Boletim Ocorrencia',
-      id: 2
-    },
-  ];
+  items: ItemList[] = [];
 
   totalDocuments$: Observable<number> = this.apiService.totalDocuments$;
 
@@ -50,10 +36,19 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.enableNavigationSidebar();
+    this.getDocumentByCategory();
   }
 
-  goToDoc = (param: string | undefined) => {
-    console.log(param);
+  getDocumentByCategory = () => {
+    this.apiService.getDocumentByCategory()
+      .pipe(takeUntil(this.unsubscribeSubject)).subscribe({
+        next: (dc:any) => {
+          this.items = dc.data;
+        },
+        error: () => {
+          this.toastr.error('Erro ao carregar documentos', 'Erro');
+        }
+      });
   };
 
   enableNavigationSidebar() {
@@ -61,5 +56,10 @@ export class DashboardComponent implements OnInit {
       localStorage.removeItem('reload');
       window.location.reload();
     }
+  }
+
+  ngOnDestroy() {
+    this.unsubscribeSubject.next(null);
+    this.unsubscribeSubject.complete();
   }
 }

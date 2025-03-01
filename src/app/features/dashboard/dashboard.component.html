@@ -3,10 +3,10 @@
     <div class="sm:col-span-2 p-0">
       <div class="bg-primary h-48 border-0 rounded-lg"></div>
       <div class="grid grid-cols-2 justify-between gap-3 mt-3">
-        <card/>
-        <card/>
-        <card/>
-        <card/>
+        <card />
+        <card />
+        <card />
+        <card />
       </div>
     </div>
 
@@ -18,29 +18,22 @@
       </div>
       <div class="body my-3">
         @for (item of items; track $index) {
-        <item-list
-          [item]="item"
-          [accessKey]="$index"
-          (clickEvent)="goToDoc(item.type)"
-        />
+        <item-list [item]="item" [accessKey]="$index" />
         }
       </div>
       <div class="w-[92%] absolute bottom-0 flex  flex-col">
         <hr class="w-[100%]">
         <h3 class="uppercase text-primary text-[12px] font-medium font-inter">
-          TOtal de ARQUIVOS ARMAZENADOS:
+          TOTAL DE ARQUIVOS ARMAZENADOS:
         </h3>
         <div class="flex items-center gap-1 my-1">
           <i class="icon icon-file h-4 w-4"></i>
-          <span class="text-menu text-[10px] font-medium font-inter"
-            >{{ totalDocuments$ | async }} disponíveis</span
-          >
+          <span class="text-menu text-[10px] font-medium font-inter">{{ totalDocuments$ | async }} disponíveis</span>
         </div>
         <div class="flex items-center gap-1 mb-2">
           <i class="icon icon-info h-4 w-4"></i>
-          <span class="text-menu text-[10px] font-medium font-inter"
-            >Os dados aqui mostrados são actualizados de forma instantânea</span
-          >
+          <span class="text-menu text-[10px] font-medium font-inter">Os dados aqui mostrados são actualizados de forma
+            instantânea</span>
         </div>
       </div>
     </div>

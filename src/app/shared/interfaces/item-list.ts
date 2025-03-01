@@ -1,8 +1,6 @@
 export interface ItemList {
   icon: string;
-  title: string;
-  description: string;
+  categoria: string;
   total: number;
   id: number;
-  type: any;
 }

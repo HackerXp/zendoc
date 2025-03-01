@@ -4,6 +4,7 @@ import { BehaviorSubject, combineLatest, first, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Data, Documents } from '@shared/interfaces/document';
 import { LoaderService } from '@shared/services/loader.service';
+import { ItemList } from '@shared/interfaces/item-list';
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +51,22 @@ export class ApiService extends BaseService {
 
   getDocumentById = (id: number) => {
     return this.http.get<Documents>(`${this.apiURL}/?rota=listar-documentos-por-id&id=${id}`)
+  };
+
+  getDocumentByIdCategory = (id: string) => {
+    LoaderService.startLoading();
+    this.http.get<Documents>(`${this.apiURL}/?rota=listar-documentos-id-categoria&id=${id}`)
+      .subscribe((docs) => {
+        this.documentsSubject.next(docs.data); // Atualiza os documentos observáveis
+        this.currentPageSubject.next(1); // Reset para a primeira página
+        this.totalDocumentsSubject.next(docs.data.length);
+        LoaderService.stopLoading();
+      });
+  };
+  
+
+  getDocumentByCategory = () => {
+    return this.http.get<ItemList[]>(`${this.apiURL}/?rota=listar-todos-documentos-por-categoria`)
   };
 
   saveDocument(formData: FormData) {

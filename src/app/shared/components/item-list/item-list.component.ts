@@ -10,9 +10,4 @@ import { ItemList } from '@shared/interfaces/item-list';
 })
 export class ItemListComponent {
   @Input() item: ItemList = {} as ItemList;
-  @Output() clickEvent = new EventEmitter<string>();
-
-  respond(type: string | undefined) {
-    this.clickEvent.emit(type);
-  }
 }

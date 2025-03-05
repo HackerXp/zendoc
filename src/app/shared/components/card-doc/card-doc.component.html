@@ -29,7 +29,8 @@
                     <span class="text-[12px] font-inter font-semibold text-primary">{{document.data_criacao |
                         date:'dd \'de\' MMMM \'de\' yyyy':'pt-BR'}}</span>
                     <span class="text-[12px] font-inter font-semibold text-primary">{{document.departamento}}</span>
-                    <span class="text-[12px] font-inter font-semibold text-primary">{{document.usuario}}</span>
+                    <span
+                        class="text-[12px] font-inter font-semibold text-primary capitalize">{{document.usuario}}</span>
                 </div>
             </div>
             @if (tags.length) {
@@ -128,7 +129,8 @@
             (keydown.space)="showHide('files')"></i>
     </div>
 
-    <div class="card w-full bg-white hover:scale-[0.99] transition-transform duration-200 shadow-sm rounded-lg p-4 flex flex-col gap-2">
+    <div
+        class="card w-full bg-white hover:scale-[0.99] transition-transform duration-200 shadow-sm rounded-lg p-4 flex flex-col gap-2">
 
         <div class="flex justify-between items-center">
             <i class="icon icon-geral h-14 w-14"></i>
@@ -169,7 +171,7 @@
 
 <modal-info [isOpen]="show.dialog!" (close)="close()" (selectDocument)="removeDoc($event)" [file]="document!" />
 
-<preview-doc [modal]="modal" (closeModal)="close()">
+<preview-doc [modal]="modal" (closeModal)="close()" (downloadAction)="download(pdf!)" (printAction)="print(pdf!)">
     <ng-container *ngIf="pdf">
         <pdf-viewer [src]="pdf" #pdfViewer [render-text]="true" [rotation]="0" [original-size]="false" [show-all]="true"
             [fit-to-page]="false" [zoom]="zoom" [zoom-scale]="'page-width'" [stick-to-page]="false"

@@ -177,4 +177,32 @@ export class CardDocComponent implements OnChanges {
     this.close();
   }
 
+  print = (url: string): void => {
+    const printWindow = window.open(url, '_blank');
+    if (printWindow) {
+      printWindow.print();
+    
+    } else {
+      console.error('Falha ao abrir a janela de impressão.');
+    }
+  };
+
+  download = (url: string, filename: string = 'arquivo'): void => {
+    fetch(url)
+      .then(response => response.blob())
+      .then(blob => {
+        const link = document.createElement('a');
+        const objectURL = URL.createObjectURL(blob);
+        link.href = objectURL;
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(objectURL); // Libera memória
+      })
+      .catch(error => console.error('Erro ao baixar arquivo:', error));
+  };
+  
+
+
 }

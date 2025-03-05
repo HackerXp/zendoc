@@ -11,30 +11,39 @@ import { ItemList } from '@shared/interfaces/item-list';
 })
 export class ApiService extends BaseService {
   private http = inject(HttpClient);
+
   private documentsSubject = new BehaviorSubject<Data[]>([]);
   documents$ = this.documentsSubject.asObservable();
+
   private currentPageSubject = new BehaviorSubject<number>(1);
   currentPage$ = this.currentPageSubject.asObservable();
+
   private documentByIdSubject = new BehaviorSubject<Data[]>([]);
   documentById$ = this.documentByIdSubject.asObservable();
 
   private totalDocumentsSubject = new BehaviorSubject<number>(0);
   totalDocuments$ = this.totalDocumentsSubject.asObservable();
 
+  private totalPagesSubject = new BehaviorSubject<number>(0);
+  totalPages$ = this.totalPagesSubject.asObservable();
+
   cardsPerPage = 12;
+
   constructor() {
     super();
-    this.getDocuments();
+    this.getDocuments(1);
   }
 
-  getDocuments = () => {
+  getDocuments = (page: number) => {
     LoaderService.startLoading();
+    page == undefined ? 1 : page;
     this.http
-      .get<Documents>(`${this.apiURL}/?rota=listar-todos-documentos`)
+      .get<Documents>(`${this.apiURL}/?rota=listar-todos-documentos&pagina=${page}&limite=${this.cardsPerPage}`)
       .subscribe((docs) => {
         this.documentsSubject.next(docs.data);
-        this.currentPageSubject.next(1);
-        this.totalDocumentsSubject.next(docs.data.length);
+        this.currentPageSubject.next(docs.pagina_atual);
+        this.totalDocumentsSubject.next(docs.total_registros);
+        this.totalPagesSubject.next(docs.total_paginas);
         LoaderService.stopLoading();
       });
   };
@@ -58,12 +67,12 @@ export class ApiService extends BaseService {
     this.http.get<Documents>(`${this.apiURL}/?rota=listar-documentos-id-categoria&id=${id}`)
       .subscribe((docs) => {
         this.documentsSubject.next(docs.data); // Atualiza os documentos observáveis
-        this.currentPageSubject.next(1); // Reset para a primeira página
-        this.totalDocumentsSubject.next(docs.data.length);
+        this.currentPageSubject.next(docs.pagina_atual); // Reset para a primeira página
+        this.totalDocumentsSubject.next(docs.total_registros);
         LoaderService.stopLoading();
       });
   };
-  
+
 
   getDocumentByCategory = () => {
     return this.http.get<ItemList[]>(`${this.apiURL}/?rota=listar-todos-documentos-por-categoria`)
@@ -115,9 +124,12 @@ export class ApiService extends BaseService {
     this.currentPage$,
   ]).pipe(
     map(([documents, currentPage]) => {
+      //console.log(currentPage, 'currentPage');
+
       const startIndex = (currentPage - 1) * this.cardsPerPage;
       const endIndex = startIndex + this.cardsPerPage;
-      return documents.slice(startIndex, endIndex);
+      //console.table(documents.slice(startIndex, endIndex))
+      return documents
     })
   );
 
@@ -126,6 +138,7 @@ export class ApiService extends BaseService {
       const validPage = Math.max(1, Math.min(page, totalPages));
       this.currentPageSubject.pipe(first()).subscribe((currentPage) => {
         if (validPage !== currentPage) {
+          this.getDocuments(validPage)
           this.currentPageSubject.next(validPage);
         }
       });
@@ -149,9 +162,4 @@ export class ApiService extends BaseService {
     this.currentPageSubject.next(1);
   }
 
-  totalPages$ = this.documents$.pipe(
-    map((documents) =>
-      Math.max(1, Math.ceil(documents.length / this.cardsPerPage))
-    )
-  );
 }

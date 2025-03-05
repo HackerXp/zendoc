@@ -4,7 +4,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { Data } from '@shared/interfaces/document';
 import prettyBytes from 'pretty-bytes';
 import { ApiService } from '@core/services/api.service';
-import { map, Subject } from 'rxjs';
+import { combineLatest, first, map, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { Empty } from '@shared/interfaces/empty';
 import { EmptyComponent } from '@shared/components/empty/empty.component';
 import { ActivatedRoute } from '@angular/router';
@@ -18,7 +18,7 @@ import { ActivatedRoute } from '@angular/router';
 export class DocumentsComponent implements OnInit, OnDestroy {
   private apiService = inject(ApiService);
   private route = inject(ActivatedRoute);
- 
+
   documents$ = this.apiService.documents$;
   unsubscribeSubject = new Subject();
   paginatedDocuments$ = this.apiService.paginatedDocuments$; // ✅ Observa os documentos paginados
@@ -35,15 +35,29 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.updateCardsPerPage();
-  
-    this.route.queryParamMap.subscribe(params => {
-      this.id = params.get('id');
-      this.category = params.get('category');
-    });
+    this.id = null;
+    this.category = null;
 
-    if (this.id) {
-      this.apiService.getDocumentByIdCategory(this.id);
-    }
+    this.route.queryParamMap
+      .pipe(
+        switchMap(params => {
+          this.id = params.get('id');
+          this.category = params.get('category');
+
+          return this.id
+            ? of(this.apiService.getDocumentByIdCategory(this.id))
+            : of(this.apiService.getDocuments(1))
+        }),
+        takeUntil(this.unsubscribeSubject) // Cancela a inscrição ao destruir o componente
+      )
+      .subscribe({
+        next: (data) => {
+          console.log('Dados recebidos:', data);
+        },
+        error: (error) => {
+          console.error('Erro ao buscar documentos:', error);
+        }
+      });
   }
 
   // Atualiza os cards por página com base no tamanho da tela

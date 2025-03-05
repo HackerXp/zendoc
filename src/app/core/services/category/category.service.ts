@@ -1,9 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { BaseService } from '../base.service';
 import { HttpClient } from '@angular/common/http';
-import { catchError, Observable, take } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Category } from '@shared/interfaces/category';
-import { LoaderService } from '@shared/services/loader.service';
 
 @Injectable({
   providedIn: 'root'

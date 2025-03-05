@@ -11,9 +11,19 @@ import { Modal } from '@shared/interfaces/modal';
 export class PreviewDocComponent {
   @Input() modal: Modal = {};
   @Output() closeModal = new EventEmitter<void>();
+  @Output() printAction = new EventEmitter<void>();
+  @Output() downloadAction = new EventEmitter<void>();
 
   close() {
     this.closeModal.emit();
+  }
+
+  print() {
+    this.printAction.emit();
+  }
+
+  download() {
+    this.downloadAction.emit();
   }
 
 }

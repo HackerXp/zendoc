@@ -1,14 +1,14 @@
 export interface Document {
-    id?: number;
-    type?: string;
-    name?: string;
-    subject?: string;
-    date?: string;
-    time?: string;
-    size?: number;
-    ext?: string;
-    area?: string;
-    user?: string;
+  id?: number;
+  type?: string;
+  name?: string;
+  subject?: string;
+  date?: string;
+  time?: string;
+  size?: number;
+  ext?: string;
+  area?: string;
+  user?: string;
 }
 
 
@@ -32,14 +32,17 @@ export interface Documents {
   codigo: string;
   data: Data[];
   mensagem: string;
+  total_paginas: number;
+  pagina_atual: number;
+  total_registros: number;
 }
 
 
 export interface File {
-    idfiles: number;
-    iddocumento: number;
-    extension: string;
-    size: string;
-    nome: string;
-    url: string
+  idfiles: number;
+  iddocumento: number;
+  extension: string;
+  size: string;
+  nome: string;
+  url: string
 }

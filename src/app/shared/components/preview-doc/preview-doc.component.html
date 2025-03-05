@@ -10,12 +10,20 @@
                     <h2 class="text-lg font-semibold text-primary">{{ modal.title }}</h2>
                     <span class="text-[#7A859B] text-[12px] font-inter font-normal">{{ modal.description }}</span>
                 </div>
+
             </div>
-            <button title="Fechar modal"
-                class="text-black active:scale-95 bg-[#3570EF]/10 w-5 h-5 flex items-center justify-center font-semibold rounded-full"
-                (click)="close()">
-                &times;
-            </button>
+            <div class="flex flex-col gap-y-1 justify-center">
+                <button title="Fechar modal"
+                    class="text-black active:scale-95 self-end bg-[#3570EF]/10 w-5 h-5 flex items-center justify-center font-semibold rounded-full"
+                    (click)="close()">
+                    &times;
+                </button>
+                <div class="flex buttons items-center gap-x-1">
+                    <span (click)="download()" class="cursor-pointer underline text-[#3570EF] active:scale-95 text-[12px] font-inter font-normal">download</span>
+                    <span (click)="print()" class="cursor-pointer underline text-[#3570EF] active:scale-95 text-[12px] font-inter font-normal">imprimir</span>
+                </div>
+            </div>
+
         </div>
 
         <!-- Corpo -->

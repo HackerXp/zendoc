@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { UserToken } from '@core/interfaces/user-token';
+import { LoaderService } from '@shared/services/loader.service';
 
 
 @Injectable({
@@ -35,6 +36,7 @@ export class AuthService extends BaseService {
   logout(): void {
     sessionStorage.removeItem('token');
     sessionStorage.clear();
+    LoaderService.stopLoading();
     this.router.navigate(['/'])
   }
 

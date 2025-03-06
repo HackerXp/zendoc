@@ -1,10 +1,10 @@
 import { Component, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
 import { CardDocComponent } from "../../shared/components/card-doc/card-doc.component";
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Data } from '@shared/interfaces/document';
 import prettyBytes from 'pretty-bytes';
 import { ApiService } from '@core/services/api.service';
-import { combineLatest, first, map, of, Subject, switchMap, takeUntil } from 'rxjs';
+import { map, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { Empty } from '@shared/interfaces/empty';
 import { EmptyComponent } from '@shared/components/empty/empty.component';
 import { ActivatedRoute } from '@angular/router';
@@ -29,6 +29,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
   cards: Data[] = [];
   total: number = 0;
+  lastScrollTop = 0;
   currentPage = 1;
   id: string | null = null;
   category: string | null = null;

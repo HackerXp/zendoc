@@ -4,7 +4,7 @@
       <back-forward ulr="configurations" desc="Voltar" />
       <h2 class="text-[30px] font-bold">Configurações</h2>
       <p class="flex items-center text-[14px]">
-        Criação de perfis: <span class="text-[green] mx-1">{{profiles.length}}</span>
+        Visualizando <span class="text-[green] mx-1">{{profiles.length}}</span>
         <strong>{{profiles.length==1?'perfil criado':'perfis criados'}}</strong>
       </p>
     </div>
@@ -39,6 +39,7 @@
         }
       </tbody>
     </table>
+    <paginator [totalPages]="totalPages" [currentPage]="currentPage" (pageChange)="changePage($event)" />
   </div>
   }@else {
   <app-empty [empty]="empty" />

@@ -15,12 +15,13 @@ import { PermissionUser } from '@shared/interfaces/permission-user';
 import { User_Data } from '@shared/interfaces/user';
 import { LoaderService } from '@shared/services/loader.service';
 import { Subject, takeUntil } from 'rxjs';
+import { PaginatorComponent } from "../../../shared/components/paginator/paginator.component";
 
 @Component({
   selector: 'app-configurations-profiles',
   templateUrl: './configurations-profiles.component.html',
   styleUrls: ['./configurations-profiles.component.css'],
-  imports: [ModalComponent, FormsModule, ReactiveFormsModule, EmptyComponent, BackForwardComponent],
+  imports: [ModalComponent, FormsModule, ReactiveFormsModule, EmptyComponent, BackForwardComponent, PaginatorComponent],
 })
 export class ConfigurationsProfilesComponent implements OnInit {
   unsubscribeSubject = new Subject();
@@ -31,6 +32,10 @@ export class ConfigurationsProfilesComponent implements OnInit {
 
   formData = new FormData();
   modal: Modal = {};
+
+  totalPages: number = 0;
+  currentPage: number = 1;
+
   chips: string[] = [];
   formUser!: FormGroup;
   profiles: User_Data[] = [];
@@ -45,7 +50,7 @@ export class ConfigurationsProfilesComponent implements OnInit {
     this.buildForm();
     this.getPermission();
     this.getDepartment();
-    this.getUsers();
+    this.getUsers(this.currentPage);
   }
 
   buildForm = () => {
@@ -90,7 +95,7 @@ export class ConfigurationsProfilesComponent implements OnInit {
           this.formData = new FormData();
           this.closeModal();
           this.buildForm();
-          this.getUsers();
+          this.getUsers(this.currentPage);
         }
         LoaderService.stopLoading();
       },
@@ -121,14 +126,15 @@ export class ConfigurationsProfilesComponent implements OnInit {
     });
   }
 
-  getUsers() {
+  getUsers(page: number) {
     LoaderService.startLoading();
     this.userService
-      .getUsers()
+      .getUsers(page)
       .pipe(takeUntil(this.unsubscribeSubject))
       .subscribe({
-        next: (cat) => {
-          this.profiles = cat.data;
+        next: (user) => {
+          this.profiles = user.data;
+          this.totalPages = user.total_paginas;
           LoaderService.stopLoading();
         },
       });
@@ -156,6 +162,13 @@ export class ConfigurationsProfilesComponent implements OnInit {
     // Adiciona a nova permissão ao array
     this.permissionUser.push({ idpermissao: idpermissao });
   }
+
+
+  changePage(page: any) {
+    this.currentPage = page;
+    this.getUsers(this.currentPage);
+  }
+
 
   ngOnDestroy(): void {
     this.unsubscribeSubject.next(null);

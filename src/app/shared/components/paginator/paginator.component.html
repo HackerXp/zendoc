@@ -1,0 +1,17 @@
+<div class="fixed bottom-0 left-0 w-full z-20 flex justify-center items-center py-4 shadow-md">
+    <div class="flex justify-center items-center bg-primary/10 p-3 shadow-md rounded-md">
+        <button
+            class="disabled:opacity-50 disabled:cursor-not-allowed px-3 py-1 text-[12px] font-inter font-semibold bg-menu/90 transition-all active:scale-95 text-white rounded hover:bg-menu"
+            [disabled]="currentPage == 1" (click)="previousPage()">
+            Anterior
+        </button>
+        <span class="mx-4 text-[12px] font-inter font-semibold text-gray-600">
+            Página {{ currentPage }} de {{ totalPages }}
+        </span>
+        <button
+            class="disabled:opacity-50 disabled:cursor-not-allowed px-3 py-1 text-[12px] font-inter font-semibold bg-menu/90 transition-all active:scale-95 text-white rounded hover:bg-menu"
+            [disabled]="currentPage == totalPages" (click)="nextPage()">
+            Próxima
+        </button>
+    </div>
+</div>

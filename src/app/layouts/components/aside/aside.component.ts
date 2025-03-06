@@ -5,7 +5,8 @@ import { User } from '@core/interfaces/user';
 import { UserToken } from '@core/interfaces/user-token';
 import { AuthService } from '@core/services/auth.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSignOutAlt, faGear, faUser } from '@fortawesome/free-solid-svg-icons';
+import { ShowHide } from '@shared/interfaces/show-hide';
 import { NgxPermissionsModule } from 'ngx-permissions';
 @Component({
   selector: 'app-aside',
@@ -15,9 +16,12 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 })
 export class AsideComponent {
   faSignOutAlt = faSignOutAlt;
+  faGear = faGear;
+  faUser = faUser;
   private authService = inject(AuthService);
   userToken!: UserToken;
   user!: User;
+  show: ShowHide = {};
   permissoes: string[] = [];
 
   ngOnInit(): void {
@@ -45,5 +49,20 @@ export class AsideComponent {
       this.permissoes.push(modulo.descricao?.trim()!);
     });
     sessionStorage.setItem('permissoes', String(this.permissoes));
+  }
+
+  showHide = (
+    param: 'dialog',
+  ) => {
+    switch (param) {
+      case 'dialog':
+        this.show.dialog = !this.show.dialog;
+        break;
+    }
+  };
+
+  close = () => {
+    if (this.show.dialog)
+      this.show = {};
   }
 }

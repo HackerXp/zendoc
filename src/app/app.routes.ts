@@ -63,6 +63,13 @@ export const routes: Routes = [
             '@features/configurations/configurations-department/configurations-department.component'
           ).then((c) => c.ConfigurationsDepartmentComponent),
       },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('@features/profile/profile.component').then(
+            (c) => c.ProfileComponent
+          ),
+      },
     ],
   },
 ];

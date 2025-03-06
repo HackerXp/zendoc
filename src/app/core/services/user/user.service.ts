@@ -10,8 +10,8 @@ import { User } from '@shared/interfaces/user';
 export class UserService extends BaseService {
   private http = inject(HttpClient);
 
-  getUsers = (): Observable<User> => {
-    return this.http.get<User>(`${this.apiURL}/?rota=listar-todos-usuario`);
+  getUsers = (page: number): Observable<User> => {
+    return this.http.get<User>(`${this.apiURL}/?rota=listar-todos-usuario&pagina=${page}&limite=5`);
   };
 
 

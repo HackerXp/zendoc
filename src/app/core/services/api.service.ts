@@ -36,6 +36,7 @@ export class ApiService extends BaseService {
 
   getDocuments = (page: number) => {
     LoaderService.startLoading();
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     page == undefined ? 1 : page;
     this.http
       .get<Documents>(`${this.apiURL}/?rota=listar-todos-documentos&pagina=${page}&limite=${this.cardsPerPage}`)
@@ -49,17 +50,17 @@ export class ApiService extends BaseService {
   };
 
   search = (filtro: string) => {
-    this.http
-      .get<Documents>(`${this.apiURL}/?rota=filtro-avancado&busca=${filtro}`)
-      .subscribe((docs) => {
-        this.documentsSubject.next(docs.data);
-        this.currentPageSubject.next(1);
-        this.totalDocumentsSubject.next(docs.data.length);
-      });
+    return this.http.get<Documents>(`${this.apiURL}/?rota=filtro-avancado&busca=${filtro}`);
   };
 
   getDocumentById = (id: number) => {
-    return this.http.get<Documents>(`${this.apiURL}/?rota=listar-documentos-por-id&id=${id}`)
+    this.http.get<Documents>(`${this.apiURL}/?rota=listar-documentos-por-id&id=${id}`).subscribe((docs) => {
+      this.documentsSubject.next(docs.data); // Atualiza os documentos observáveis
+      this.currentPageSubject.next(1); // Reset para a primeira página
+      this.totalDocumentsSubject.next(1);
+      this.totalPagesSubject.next(1);
+      LoaderService.stopLoading();
+    });
   };
 
   getDocumentByIdCategory = (id: string) => {
@@ -69,6 +70,7 @@ export class ApiService extends BaseService {
         this.documentsSubject.next(docs.data); // Atualiza os documentos observáveis
         this.currentPageSubject.next(docs.pagina_atual); // Reset para a primeira página
         this.totalDocumentsSubject.next(docs.total_registros);
+        this.totalPagesSubject.next(docs.total_paginas);
         LoaderService.stopLoading();
       });
   };
@@ -127,6 +129,7 @@ export class ApiService extends BaseService {
       //console.log(currentPage, 'currentPage');
 
       const startIndex = (currentPage - 1) * this.cardsPerPage;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const endIndex = startIndex + this.cardsPerPage;
       //console.table(documents.slice(startIndex, endIndex))
       return documents
@@ -147,13 +150,13 @@ export class ApiService extends BaseService {
 
   nextPage() {
     this.currentPage$.pipe(first()).subscribe((page) => {
-      this.setPage(page + 1);
+      this.setPage(isNaN(page) ? 1 : page + 1);
     });
   }
 
   previousPage() {
     this.currentPage$.pipe(first()).subscribe((page) => {
-      this.setPage(page - 1);
+      this.setPage(isNaN(page) ? 1 : page - 1);
     });
   }
 

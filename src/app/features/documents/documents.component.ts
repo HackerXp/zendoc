@@ -33,6 +33,8 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   currentPage = 1;
   id: string | null = null;
   category: string | null = null;
+  cod: string | null = null;
+  title: string | null = null;
 
   ngOnInit(): void {
     this.updateCardsPerPage();
@@ -44,10 +46,14 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         switchMap(params => {
           this.id = params.get('id');
           this.category = params.get('category');
+          this.cod = params.get('cod');
+          this.title = params.get('title');
 
-          return this.id
+          return this.id && this.cod == null
             ? of(this.apiService.getDocumentByIdCategory(this.id))
-            : of(this.apiService.getDocuments(1))
+            : this.cod && this.id == null
+              ? of(this.apiService.getDocumentById(Number(this.cod)))
+              : of(this.apiService.getDocuments(1));
         }),
         takeUntil(this.unsubscribeSubject) // Cancela a inscrição ao destruir o componente
       )
@@ -114,6 +120,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   calculateTotal$ = this.documents$.pipe(
     map((documents) => {
       const totalSize = documents.reduce((acc, item) => {
+
         if (Array.isArray(item.files)) {
           const sizeSum = item.files.reduce((fileAcc, file) => {
             const sizeInMb = parseFloat(file.size.replace('Mb', ''));

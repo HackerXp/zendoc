@@ -1,7 +1,8 @@
 <div class="flex-col gap-2 flex">
     <div class="flex items-center justify-between">
         <div class="flex flex-col">
-            <h3 class="text-menu font-inter font-bold text-[24px]">{{category==null?'Documentos':category}}</h3>
+            <h3 class="text-menu font-inter font-bold text-[24px]">{{category==null &&
+                title==null?'Documentos':category?category:title}}</h3>
             <div class="flex items-center gap-1">
                 <span class="text-menu font-medium text-[12px]">Espaço ocupado:</span>
                 <span class="text-menu font-semibold text-[12px]">{{ calculateTotal$ | async }}</span>

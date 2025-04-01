@@ -113,6 +113,102 @@
         </div>
 
     </div>
+
+    <!-- Tag Departamento -->
+    <div [class.hidden]="!show.tagDept" [class.opacity-0]="!show.tagDept" [class.opacity-100]="show.tagDept"
+        [class.scale-95]="!show.tagDept" [class.scale-100]="show.tagDept"
+        class="flex -top-14 p-3 -mr-5 absolute  self-end w-full flex-col gap-1 right-0 bg-white shadow-lg rounded-lg z-10 transition-all duration-200 ease-in-out">
+        <div class="flex flex-col border-b border-[#76B3D1]/40">
+            <button title="Fechar detalhes" (click)="close()"
+                class="text-black active:scale-95 self-end bg-[#3570EF]/10 w-4 h-4 flex items-center justify-center font-semibold rounded-full">
+                &times;
+            </button>
+            <div class="flex justify-between items-center">
+                <h4 class="self-center text-menu text-[12px] font-inter font-semibold">Selecione as repartições</h4>
+            </div>
+        </div>
+        <div class="body flex flex-col gap-2">
+
+        </div>
+
+    </div>
+
+    <!-- Tag user -->
+    <div [class.hidden]="!show.tagUser" [class.opacity-0]="!show.tagUser" [class.opacity-100]="show.tagUser"
+        [class.scale-95]="!show.tagUser" [class.scale-100]="show.tagUser"
+        class="flex -top-14 p-3 -mr-5 absolute  self-end w-full flex-col gap-1 right-0 bg-white shadow-lg rounded-lg z-10 transition-all duration-200 ease-in-out">
+        <div class="flex flex-col border-b border-[#76B3D1]/40">
+            <button title="Fechar detalhes" (click)="close()"
+                class="text-black active:scale-95 self-end bg-[#3570EF]/10 w-4 h-4 flex items-center justify-center font-semibold rounded-full">
+                &times;
+            </button>
+            <div class="flex justify-between items-center">
+                <h4 class="self-center text-menu text-[12px] font-inter font-semibold">Selecione os utilizadores</h4>
+            </div>
+        </div>
+        <div class="body flex flex-col gap-2">
+            <div class="relative w-full">
+
+                <!-- Input para buscar utilizadores -->
+                <input type="text" autofocus
+                    class="w-full focus:outline-none text-[12px] px-2 py-2 border border-gray-300 rounded-md"
+                    placeholder="Digite @ para buscar utilizadores..." [(ngModel)]="searchTerm" (input)="onSearch()"
+                    (keydown)="handleKeydown($event)" />
+
+                <!-- Dropdown de Sugestões -->
+                <ul *ngIf="filteredUsers.length > 0"
+                    class="absolute bg-white border text-[12px] p-1 border-gray-300 w-full mt-1 rounded-md shadow-lg z-10 h-40 overflow-y-auto">
+                    <li *ngFor="let user of filteredUsers" class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                        (click)="addUser(user)">
+                        {{ user.nome }}
+                    </li>
+                </ul>
+
+                <!-- Lista de Utilizadores Selecionados -->
+                <div class="flex flex-wrap gap-2 mt-2">
+                    <div *ngFor="let user of selectedUsers"
+                        class="flex items-center text-[12px] bg-blue-500 text-white px-2 py-1 rounded-md">
+                        {{getFirstAndLastName(user.nome) }}
+                        <button title="Remover" class="ml-2 text-[12px] text-white hover:text-gray-200"
+                            (click)="removeUser(user)">
+                            ✕
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (selectedUsers.length>0) {
+        <div class="footer border-t border-[#76B3D1]/40 flex justify-end py-1">
+            <button (click)="shareWithUser()" class="bg-blue-800 text-white font-medium py-1 px-3 rounded-lg shadow-md
+         transition-all duration-300 ease-in-out text-[13px]
+         hover:bg-blue-700 hover:shadow-lg
+          active:scale-95
+         focus:outline-none">
+                Partilhar
+            </button>
+
+        </div>
+        }
+
+    </div>
+
+    <!--Privacy  -->
+    <div [class.hidden]="!show.privacy" [class.opacity-0]="!show.privacy" [class.opacity-100]="show.privacy"
+        [class.scale-95]="!show.privacy" [class.scale-100]="show.privacy"
+        class="flex -top-8 -mr-5 absolute more-privacy self-end p-2 text-right flex-col items-center gap-1 right-0 bg-white shadow-lg rounded-lg z-10 transition-all duration-200 ease-in-out">
+        <i class="cursor-pointer active:scale-95 icon icon-globe h-4 w-4" title="Público" tabindex="0"
+            (click)="setPublic(document)"></i>
+        <div class="border w-full bg-[#0F2045]"></div>
+        <i class="cursor-pointer active:scale-95 icon icon-private-doc h-4 w-4" title="Privado Repartição"
+            (click)="showHide('tagDept')" tabindex="0" (keydown.enter)="showHide('tagDept')"
+            (keydown.space)="showHide('tagDept')"></i>
+        <div class="border w-full bg-[#0F2045]"></div>
+        <i class="cursor-pointer active:scale-95 icon icon-user-lock-doc h-4 w-4" title="Privado Utilizador"
+            (click)="showHide('tagUser')" tabindex="0" (keydown.enter)="showHide('tagUser')"
+            (keydown.space)="showHide('tagUser')"></i>
+    </div>
+
+    <!-- More options -->
     <div [class.hidden]="!show.options" [class.opacity-0]="!show.options" [class.opacity-100]="show.options"
         [class.scale-95]="!show.options" [class.scale-100]="show.options"
         class="flex -top-8 -mr-5 absolute more-options self-end p-2 text-right flex-col items-center gap-1 right-0 bg-white shadow-lg rounded-lg z-10 transition-all duration-200 ease-in-out">
@@ -129,17 +225,23 @@
             (keydown.space)="showHide('files')"></i>
     </div>
 
-    <div
-        class="card w-full bg-white hover:scale-[0.99] transition-transform duration-200 shadow-sm rounded-lg p-4 flex flex-col gap-2">
+    <!-- Buttons Actions -->
+    <div class="card w-full bg-white shadow-sm rounded-lg p-4 flex flex-col gap-2">
 
         <div class="flex justify-between items-center">
             <i class="icon icon-geral h-14 w-14"></i>
-            <div class="flex flex-col items-center">
-                <i class="icon icon-dots h-4 w-1 cursor-pointer active:scale-95" (click)="showHide('options')"
-                    tabindex="0" (keydown.enter)="showHide('options')" (keydown.space)="showHide('options')"></i>
+            <div class="flex flex-col items-center gap-y-1">
+                <i class="icon icon-private-doc h-4 w-4 cursor-pointer active:scale-95" title="Privacidade"
+                    (click)="showHide('privacy')" tabindex="0" (keydown.enter)="showHide('privacy')"
+                    (keydown.space)="showHide('privacy')"></i>
+
+                <i class="icon icon-dots h-4 w-1 cursor-pointer active:scale-95" title="Opções"
+                    (click)="showHide('options')" tabindex="0" (keydown.enter)="showHide('options')"
+                    (keydown.space)="showHide('options')"></i>
             </div>
         </div>
 
+        <!-- Card representing -->
         <div class="flex flex-col py-3 gap-1">
             <span class="text-[#90CAF9] font-semibold text-[12px] font-inter">{{document.tipo}}</span>
             <h3 class="text-menu font-semibold text-[14px] font-inter truncate">{{document.titulo}}</h3>

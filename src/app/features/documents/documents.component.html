@@ -21,7 +21,7 @@
     <div class="grid items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
         <!-- Cards -->
         @for (card of paginatedDocuments$ | async; track $index) {
-        <app-card-doc [document]="card" />
+        <app-card-doc [document]="card" [users]="users"  [idLogged]="this.userToken.idusuario!"/>
         }
     </div>
     } @else {

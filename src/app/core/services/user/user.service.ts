@@ -14,6 +14,14 @@ export class UserService extends BaseService {
     return this.http.get<User>(`${this.apiURL}/?rota=listar-todos-usuario&pagina=${page}&limite=5`);
   };
 
+  getAllUsers = (): Observable<User> => {
+    return this.http.get<User>(`${this.apiURL}/?rota=listar-todos-usuario`);
+  };
+
+  getAllUsersByDept = (id: number, dept: number): Observable<User> => {
+    return this.http.get<User>(`${this.apiURL}/?rota=listar-usuario-por-dept&id=${id}&dept=${dept}`);
+  };
+
 
   getUserById = (): Observable<User> => {
     return this.http.get<User>(`${this.apiURL}/?rota=listar-usuario-por-id`);

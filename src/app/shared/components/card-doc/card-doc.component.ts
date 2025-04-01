@@ -15,9 +15,8 @@ import prettyBytes from 'pretty-bytes';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { ModalInfoComponent } from "../modal-info/modal-info.component";
-import { DatePipe, NgIf } from '@angular/common';
+import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { ApiService } from '@core/services/api.service';
-import { Router } from '@angular/router';
 import { PreviewDocComponent } from "../preview-doc/preview-doc.component";
 import { Modal } from '@shared/interfaces/modal';
 import { getFileIcon } from '@core/helper/utils';
@@ -29,7 +28,11 @@ import {
   PdfViewerModule,
   PdfViewerComponent as Ng2PdfViewerComponent,
 } from 'ng2-pdf-viewer';
+import { FormsModule } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { User_Data } from '@shared/interfaces/user';
 
+import { getFirstAndLastName } from '@core/helper/utils';
 
 interface Delete {
   check?: boolean;
@@ -47,7 +50,9 @@ interface Delete {
     PdfViewerModule,
     NgIf,
     NgxDocViewerModule,
-    NgxPermissionsModule
+    NgxPermissionsModule,
+    NgFor,
+    FormsModule
   ],
   templateUrl: './card-doc.component.html',
   styleUrl: './card-doc.component.scss',
@@ -55,6 +60,8 @@ interface Delete {
 export class CardDocComponent implements OnChanges {
   @ViewChild('pdfViewer') pdfViewer!: Ng2PdfViewerComponent;
   @ViewChild('docContainer', { static: true }) docContainer!: ElementRef;
+
+  unsubscribeSubject = new Subject();
 
   @Input() document!: Data;
   openCardId: number | null = 0;
@@ -75,15 +82,33 @@ export class CardDocComponent implements OnChanges {
   imageSrc: string | undefined;
   fileDocUrl: string | undefined;
 
+  searchTerm: string = '';
+
+  @Input() users: User_Data[] = [];
+  @Input() idLogged: number = 0;
+
+  filteredUsers: User_Data[] = [];
+  selectedUsers: User_Data[] = [];
+  processedUsers: User_Data[] = [];
+
   zoom = 1.0;
   private apiService = inject(ApiService);
-  private readonly router = inject(Router);
+
+
+  processUsers() {
+    // Apenas um exemplo de processamento: ordenando os usuários pelo nome
+    this.processedUsers = [...this.users].sort((a, b) => a.nome.localeCompare(b.nome));
+    this.idLogged = this.idLogged;
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['document'] && changes['document'].currentValue) {
       this.existFiles = this.document
         ? Array.isArray(this.document.files)
         : false;
+    }
+    if (changes['users'] && changes['users'].currentValue) {
+      this.processUsers();
     }
   }
 
@@ -111,10 +136,11 @@ export class CardDocComponent implements OnChanges {
   }
 
   showHide = (
-    param: 'dialog' | 'options' | 'details' | 'files',
+    param: 'dialog' | 'options' | 'details' | 'files' | 'privacy' | 'tagUser' | 'tagDept',
     id?: number
   ) => {
     this.openCardId = this.openCardId == id! ? null : id!;
+
     switch (param) {
       case 'details':
         this.show = { details: true };
@@ -128,6 +154,15 @@ export class CardDocComponent implements OnChanges {
         break;
       case 'options':
         this.show.options = !this.show.options;
+        break;
+      case 'privacy':
+        this.show.privacy = !this.show.privacy;
+        break;
+      case 'tagUser':
+        this.show = { tagUser: true }
+        break;
+      case 'tagDept':
+        this.show = { tagDept: true }
         break;
     }
   };
@@ -223,5 +258,58 @@ export class CardDocComponent implements OnChanges {
       .catch(error => console.error('Erro ao baixar arquivo:', error));
   };
 
+  setPublic = (document: Data) => {
+    console.log(document);
+  }
 
+  onSearch() {
+    if (this.searchTerm.startsWith('@')) {
+      const query = this.searchTerm.substring(1).toLowerCase();
+
+      this.filteredUsers = this.processedUsers
+        .filter(user => user.nome.toLowerCase().includes(query)) // Filtra pelo nome digitado
+        .filter(user => !this.selectedUsers.some(selected => selected.id === user.id)); // Remove os já selecionados
+    } else {
+      this.filteredUsers = [];
+    }
+  }
+
+  addUser(user: any) {
+    if (!this.selectedUsers.find((u) => u.id === user.id)) {
+      this.selectedUsers.push(user);
+      let users: any[] = this.selectedUsers.map((u: User_Data) => ({
+        id: u.id,
+        iddepartamento: u.iddepartamento!,
+        nome: u.nome,
+        idLogged: this.idLogged
+      }));
+
+      this.selectedUsers = users;
+
+    }
+    this.searchTerm = ''; // Limpa o input
+    this.filteredUsers = []; // Fecha a lista
+  }
+
+  removeUser(user: any) {
+    this.selectedUsers = this.selectedUsers.filter((u) => u.id !== user.id);
+  }
+
+  handleKeydown(event: KeyboardEvent) {
+    if (event.key === 'Enter' && this.filteredUsers.length > 0) {
+      this.addUser(this.filteredUsers[0]); // Adiciona o primeiro da lista
+    }
+  }
+
+  getFirstAndLastName = (name: string) => getFirstAndLastName(name);
+
+  shareWithUser = () => {
+    this.searchTerm = ''; // Limpa o input
+    this.filteredUsers = []; // Fecha a lista
+    console.log(this.selectedUsers);
+    this.selectedUsers = []; // Fecha a lista
+    this.close();
+  }
+
+  shareWithDepartament = () => { }
 }

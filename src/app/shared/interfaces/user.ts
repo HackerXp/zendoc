@@ -10,6 +10,8 @@ export interface User {
 
 export interface User_Data {
     id?: number;
+    idLogged?: number;
+    iddepartamento?: number;
     nome: string;
     usuario: string;
     email: string;

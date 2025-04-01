@@ -21,6 +21,7 @@ export class ModalSearchComponent implements OnDestroy {
 
   faSearch = faSearch;
   ctrl: boolean = false;
+  loading: boolean = false;
   resFilter: Data[] = [];
   termo: string = '';
   constructor() {
@@ -30,9 +31,11 @@ export class ModalSearchComponent implements OnDestroy {
   onSearch(event: Event) {
     const target = event.target as HTMLInputElement;
     const input = target.value.trim();
+    this.loading = true;
     if (input.length <= 3) {
       this.resFilter = [];
       this.ctrl = false;
+      this.loading = false;
       return
     } else {
       const query = input.toLowerCase();
@@ -40,6 +43,7 @@ export class ModalSearchComponent implements OnDestroy {
       this.apiService.search(query).pipe(takeUntil(this.unsubscribeSubject))
         .subscribe({
           next: (res) => {
+            this.loading = false;
             if (res.codigo == '200') {
               this.ctrl = false;
               this.resFilter = res.data;

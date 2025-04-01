@@ -1,10 +1,11 @@
 import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { TooltipDirective } from '@shared/directives/tooltip.directive';
 import { Modal } from '@shared/interfaces/modal';
 
 @Component({
   selector: 'preview-doc',
-  imports: [NgIf],
+  imports: [NgIf, TooltipDirective,],
   templateUrl: './preview-doc.component.html',
   styleUrl: './preview-doc.component.scss'
 })

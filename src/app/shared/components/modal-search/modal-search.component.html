@@ -7,12 +7,19 @@
                 placeholder="Procure por qualquer documento..." (input)="onSearch($event)" />
             <fa-icon [icon]="faSearch" class="text-menu"></fa-icon>
         </div>
+
+        @if (loading) {
+        <div class="w-full h-[0.5px] bg-gray-300 overflow-hidden relative rounded">
+            <div class="absolute w-full h-full bg-gradient-to-l from-blue-500 to-blue-100 animate-indeterminate"></div>
+        </div>
+        }
+
         <!-- Resultados -->
         @if (resFilter.length==0 && ctrl) {
         <div class="flex justify-center items-center cursor-pointer select-none py-2 px-1">
             <div class="text-[12px] text-menu font-semibold">
                 <span class="mr-1">Nenhum resultado encontrado com o termo:</span>
-                <span class="text-indigo-700 underline">{{termo}}</span>
+                <span class="text-indigo-700">{{termo}}</span>
             </div>
         </div>
         }@else {

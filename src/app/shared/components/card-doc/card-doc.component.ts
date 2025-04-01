@@ -64,7 +64,6 @@ export class CardDocComponent implements OnChanges {
   showInfo: ShowHide = {};
   showDetail: boolean = false;
   faEye = faEye;
-  selectedDocumentId: number | null = null;
   existFiles: boolean = false;
   extFile!: string;
   isDelete: Delete = { check: false, id: 0 };
@@ -107,6 +106,7 @@ export class CardDocComponent implements OnChanges {
       icon: getFileIcon(item.extension),
       title: this.document.titulo,
       description: item.nome,
+      extension: item.extension,
     };
   }
 
@@ -146,9 +146,8 @@ export class CardDocComponent implements OnChanges {
     this.modal = {};
   };
 
-  removeDoc(documentId: number) {
-    this.selectedDocumentId = documentId;
-    this.apiService.deleteDocument(this.selectedDocumentId);
+  removeDoc(id: number) {
+    this.apiService.deleteDocument(id);
     this.close();
   }
 
@@ -178,23 +177,44 @@ export class CardDocComponent implements OnChanges {
   }
 
   print = (url: string): void => {
-    const printWindow = window.open(url, '_blank');
+    const printWindow = window.open('', '_blank');
     if (printWindow) {
-      printWindow.print();
-    
+      const isImage = /\.(jpeg|jpg|png|gif|bmp|webp)$/i.test(url);
+
+      if (isImage) {
+        printWindow.document.write(`<img src="${url}" onload="window.print(); window.close();" style="max-width:100%;"/>`);
+      } else {
+        printWindow.location.href = url;
+        printWindow.onload = () => {
+          printWindow.print();
+          printWindow.onafterprint = () => printWindow.close();
+        };
+      }
     } else {
       console.error('Falha ao abrir a janela de impressão.');
     }
   };
 
+
   download = (url: string, filename: string = 'arquivo'): void => {
-    fetch(url)
-      .then(response => response.blob())
+    fetch(url, { mode: 'cors' }) // Garante que a requisição respeite CORS
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Erro ao buscar arquivo: ${response.statusText}`);
+        }
+        return response.blob();
+      })
       .then(blob => {
-        const link = document.createElement('a');
         const objectURL = URL.createObjectURL(blob);
+        const link = document.createElement('a');
         link.href = objectURL;
-        link.setAttribute('download', filename);
+
+        // Detecta automaticamente o tipo de arquivo e adiciona a extensão correta
+        const contentType = blob.type;
+        const extension = contentType.split('/')[1] || 'png'; // Define PNG como padrão caso falhe
+        const isImage = contentType.startsWith('image/');
+
+        link.download = isImage ? `${filename}.${extension}` : filename;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -202,7 +222,6 @@ export class CardDocComponent implements OnChanges {
       })
       .catch(error => console.error('Erro ao baixar arquivo:', error));
   };
-  
 
 
 }

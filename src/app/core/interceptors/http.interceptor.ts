@@ -30,6 +30,7 @@ const ALLOWED_ENDPOINTS = [
   '/?rota=listar-permissao',
   '/?rota=cadastrar-permissao',
   '/?rota=editar-permissao',
+  '/?rota=shareWith',
 ];
 export const httpInterceptor: HttpInterceptorFn = (req, next) => {
   const toastr = inject(ToastrService);

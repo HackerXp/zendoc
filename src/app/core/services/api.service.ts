@@ -1,17 +1,19 @@
 import { inject, Injectable } from '@angular/core';
 import { BaseService } from './base.service';
-import { BehaviorSubject, combineLatest, first, map } from 'rxjs';
+import { BehaviorSubject, combineLatest, first, map, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Data, Documents } from '@shared/interfaces/document';
 import { LoaderService } from '@shared/services/loader.service';
 import { ItemList } from '@shared/interfaces/item-list';
+import { UserToken } from '@core/interfaces/user-token';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService extends BaseService {
   private http = inject(HttpClient);
-
+  private authService = inject(AuthService);
   private documentsSubject = new BehaviorSubject<Data[]>([]);
   documents$ = this.documentsSubject.asObservable();
 
@@ -28,18 +30,19 @@ export class ApiService extends BaseService {
   totalPages$ = this.totalPagesSubject.asObservable();
 
   cardsPerPage = 12;
+  userToken!: UserToken;
 
   constructor() {
     super();
+    this.userToken = this.authService.decodeToken();
     this.getDocuments(1);
   }
 
   getDocuments = (page: number) => {
     LoaderService.startLoading();
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     page == undefined ? 1 : page;
     this.http
-      .get<Documents>(`${this.apiURL}/?rota=listar-todos-documentos&pagina=${page}&limite=${this.cardsPerPage}`)
+      .get<Documents>(`${this.apiURL}/?rota=listar-todos-documentos&pagina=${page}&limite=${this.cardsPerPage}&usuario_id=${this.userToken.idusuario}&departamento_id=${this.userToken.iddepartamento}`)
       .subscribe((docs) => {
         this.documentsSubject.next(docs.data);
         this.currentPageSubject.next(docs.pagina_atual);
@@ -50,8 +53,12 @@ export class ApiService extends BaseService {
   };
 
   search = (filtro: string) => {
-    return this.http.get<Documents>(`${this.apiURL}/?rota=filtro-avancado&busca=${filtro}`);
+    return this.http.get<Documents>(`${this.apiURL}/?rota=filtro-avancado&busca=${filtro}&usuario_id=${this.userToken.idusuario}&departamento_id=${this.userToken.iddepartamento}`);
   };
+
+  shareWith = (formData: FormData): Observable<any> => {
+    return this.http.put<any>(`${this.apiURL}/?rota=shareWith`, formData)
+  }
 
   getDocumentById = (id: number) => {
     this.http.get<Documents>(`${this.apiURL}/?rota=listar-documentos-por-id&id=${id}`).subscribe((docs) => {
@@ -63,9 +70,10 @@ export class ApiService extends BaseService {
     });
   };
 
-  getDocumentByIdCategory = (id: string) => {
+  getDocumentByIdCategory = (id: string, page?: number) => {
     LoaderService.startLoading();
-    this.http.get<Documents>(`${this.apiURL}/?rota=listar-documentos-id-categoria&id=${id}`)
+    page == undefined ? 1 : page;
+    this.http.get<Documents>(`${this.apiURL}/?rota=listar-documentos-id-categoria&pagina=${page}&limite=${this.cardsPerPage}&id=${id}&usuario_id=${this.userToken.idusuario}&departamento_id=${this.userToken.iddepartamento}`)
       .subscribe((docs) => {
         this.documentsSubject.next(docs.data); // Atualiza os documentos observáveis
         this.currentPageSubject.next(docs.pagina_atual); // Reset para a primeira página
@@ -136,27 +144,28 @@ export class ApiService extends BaseService {
     })
   );
 
-  setPage(page: number) {
+  setPage(page: number, id?: any) {
     this.totalPages$.pipe(first()).subscribe((totalPages) => {
       const validPage = Math.max(1, Math.min(page, totalPages));
       this.currentPageSubject.pipe(first()).subscribe((currentPage) => {
         if (validPage !== currentPage) {
-          this.getDocuments(validPage)
+          this.getDocuments(validPage);
+          this.getDocumentByIdCategory(id, validPage);
           this.currentPageSubject.next(validPage);
         }
       });
     });
   }
 
-  nextPage() {
+  nextPage(id?: any) {
     this.currentPage$.pipe(first()).subscribe((page) => {
-      this.setPage(isNaN(page) ? 1 : page + 1);
+      this.setPage(isNaN(page) ? 1 : page + 1, id);
     });
   }
 
-  previousPage() {
+  previousPage(id?: any) {
     this.currentPage$.pipe(first()).subscribe((page) => {
-      this.setPage(isNaN(page) ? 1 : page - 1);
+      this.setPage(isNaN(page) ? 1 : page - 1, id);
     });
   }
 

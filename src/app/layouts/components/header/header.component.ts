@@ -64,13 +64,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private catService = inject(CategoryService);
   private apiService = inject(ApiService);
   private authService = inject(AuthService);
+  private fb = inject(FormBuilder);
+  private toastr = inject(ToastrService);
+  private shortcutService = inject(ShortcutService);
   department: Department_Data[] = [];
   userToken!: UserToken;
 
   constructor(
-    private fb: FormBuilder,
-    private toastr: ToastrService,
-    private shortcutService: ShortcutService
   ) {
     this.shortcutService.shortcut$.subscribe(() => this.toggleSearch());
   }
@@ -104,6 +104,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (dept) => {
           this.department = dept.data;
+
+          this.department = this.department
+            .map(dept => dept.id === this.userToken.iddepartamento ? { ...dept, descricao: "Interno" } : dept)
+            .sort((a, b) => (a.id === this.userToken.iddepartamento ? -1 : b.id === this.userToken.iddepartamento ? 1 : 0));
         },
       });
   }
@@ -151,7 +155,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.formData.append('idusuario', `${this.userToken?.idusuario}`);
     this.formData.append('idcategoria', this.formFile.value.category);
-    this.formData.append('iddepartamento', this.formFile.value.department);
+    this.formData.append('proveniencia', this.formFile.value.department);
+    this.formData.append('iddepartamento', `${this.userToken.iddepartamento}`);
     this.formData.append('titulo', this.formFile.value.subject);
     this.formData.append('tags', `${[...this.chips]}`);
 

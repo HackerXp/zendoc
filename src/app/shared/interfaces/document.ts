@@ -26,6 +26,7 @@ export interface Data {
   tags: string;
   tipo: string;
   usuario: string;
+  visibilidade: "public" | "private" | "department";
 }
 
 export interface Documents {

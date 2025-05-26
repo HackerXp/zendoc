@@ -5,5 +5,4 @@ export interface ShowHide {
     files?: boolean;
     privacy?: boolean;
     tagUser?: boolean;
-    tagDept?: boolean;
 }

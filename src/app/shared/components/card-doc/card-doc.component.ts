@@ -15,7 +15,7 @@ import prettyBytes from 'pretty-bytes';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { ModalInfoComponent } from "../modal-info/modal-info.component";
-import { DatePipe, NgFor, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ApiService } from '@core/services/api.service';
 import { PreviewDocComponent } from "../preview-doc/preview-doc.component";
 import { Modal } from '@shared/interfaces/modal';
@@ -29,10 +29,12 @@ import {
   PdfViewerComponent as Ng2PdfViewerComponent,
 } from 'ng2-pdf-viewer';
 import { FormsModule } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { User_Data } from '@shared/interfaces/user';
 
 import { getFirstAndLastName } from '@core/helper/utils';
+import { UserToken } from '@core/interfaces/user-token';
+import { LoaderService } from '@shared/services/loader.service';
 
 interface Delete {
   check?: boolean;
@@ -45,14 +47,12 @@ interface Delete {
   imports: [
     FontAwesomeModule,
     ModalInfoComponent,
-    DatePipe,
     PreviewDocComponent,
     PdfViewerModule,
-    NgIf,
     NgxDocViewerModule,
     NgxPermissionsModule,
-    NgFor,
-    FormsModule
+    FormsModule,
+    CommonModule
   ],
   templateUrl: './card-doc.component.html',
   styleUrl: './card-doc.component.scss',
@@ -85,7 +85,7 @@ export class CardDocComponent implements OnChanges {
   searchTerm: string = '';
 
   @Input() users: User_Data[] = [];
-  @Input() idLogged: number = 0;
+  @Input() userToken!: UserToken;
 
   filteredUsers: User_Data[] = [];
   selectedUsers: User_Data[] = [];
@@ -93,12 +93,12 @@ export class CardDocComponent implements OnChanges {
 
   zoom = 1.0;
   private apiService = inject(ApiService);
-
+  formData = new FormData();
 
   processUsers() {
     // Apenas um exemplo de processamento: ordenando os usuários pelo nome
     this.processedUsers = [...this.users].sort((a, b) => a.nome.localeCompare(b.nome));
-    this.idLogged = this.idLogged;
+    this.userToken = this.userToken;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -136,7 +136,7 @@ export class CardDocComponent implements OnChanges {
   }
 
   showHide = (
-    param: 'dialog' | 'options' | 'details' | 'files' | 'privacy' | 'tagUser' | 'tagDept',
+    param: 'dialog' | 'options' | 'details' | 'files' | 'privacy' | 'tagUser',
     id?: number
   ) => {
     this.openCardId = this.openCardId == id! ? null : id!;
@@ -161,9 +161,6 @@ export class CardDocComponent implements OnChanges {
       case 'tagUser':
         this.show = { tagUser: true }
         break;
-      case 'tagDept':
-        this.show = { tagDept: true }
-        break;
     }
   };
 
@@ -179,6 +176,9 @@ export class CardDocComponent implements OnChanges {
     this.show = {};
     this.isDelete = {};
     this.modal = {};
+    this.searchTerm = ''; // Limpa o input
+    this.filteredUsers = []; // Fecha a lista
+    this.selectedUsers = []; // Fecha a lista
   };
 
   removeDoc(id: number) {
@@ -258,9 +258,6 @@ export class CardDocComponent implements OnChanges {
       .catch(error => console.error('Erro ao baixar arquivo:', error));
   };
 
-  setPublic = (document: Data) => {
-    console.log(document);
-  }
 
   onSearch() {
     if (this.searchTerm.startsWith('@')) {
@@ -281,7 +278,7 @@ export class CardDocComponent implements OnChanges {
         id: u.id,
         iddepartamento: u.iddepartamento!,
         nome: u.nome,
-        idLogged: this.idLogged
+        idLogged: this.userToken.idusuario
       }));
 
       this.selectedUsers = users;
@@ -303,13 +300,31 @@ export class CardDocComponent implements OnChanges {
 
   getFirstAndLastName = (name: string) => getFirstAndLastName(name);
 
-  shareWithUser = () => {
-    this.searchTerm = ''; // Limpa o input
-    this.filteredUsers = []; // Fecha a lista
-    console.log(this.selectedUsers);
-    this.selectedUsers = []; // Fecha a lista
-    this.close();
+  shareWith = (idDoc: number, visibility: "private" | "public" | "department") => {
+    LoaderService.startLoading();
+    let receptor: any[] = [];
+    if (visibility == "private")
+      receptor = this.selectedUsers.map((u: User_Data) => (u.id));
+
+    this.formData.append('iddoc', `${idDoc}`);
+    this.formData.append('visibility', visibility);
+    this.formData.append('receptor', `${[receptor]}`);
+
+    this.apiService.shareWith(this.formData).pipe(takeUntil(this.unsubscribeSubject))
+      .subscribe({
+        next: (res) => {
+          if (res.codigo == '200') {
+            this.document.visibilidade = visibility;
+            this.formData = new FormData();
+            this.close();
+            LoaderService.stopLoading();
+          }
+        },
+        error: () => {
+          LoaderService.stopLoading();
+        }
+      });
   }
 
-  shareWithDepartament = () => { }
+
 }

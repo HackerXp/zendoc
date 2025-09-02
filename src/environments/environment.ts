@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
-    apiURL: 'http://localhost/api-zendoc',
-    authURL: 'http://localhost:4200',
-    redirectTimeout: 'http://localhost:4200',
+    apiURL: 'http://10.20.13.13/api-zendoc',
+    authURL: 'http://10.20.13.13:8083',
+    redirectTimeout: 'http://10.20.13.13:8083',
 };

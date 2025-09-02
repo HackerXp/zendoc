@@ -8,4 +8,11 @@ import { Component } from '@angular/core';
 })
 export class ProfileComponent {
 
+  label: string = 'Visualizar'
+  toggle: boolean = true;
+
+  toggleButton = () => {
+    this.toggle = !this.toggle;
+    this.toggle ? this.label = 'Visualizar' : this.label = 'Editar';
+  }
 }

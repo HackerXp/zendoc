@@ -15,6 +15,7 @@ export interface Document {
 export interface Data {
   categoria: string;
   data_criacao: string;
+  data_elaboracao: string;
   departamento: string;
   descricao: string;
   files: File[];

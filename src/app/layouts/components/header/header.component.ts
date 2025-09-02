@@ -75,7 +75,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.shortcutService.shortcut$.subscribe(() => this.toggleSearch());
   }
 
-  @ControlaSessionDecorator(300000, 'http://localhost:4200')
+  @ControlaSessionDecorator(300000, 'http://10.20.13.13:8083')
 
   ngOnInit(): void {
     this.toggleMenu();
@@ -93,6 +93,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       subject: ['', Validators.required],
       category: ['', Validators.required],
       department: ['', Validators.required],
+      draft_data: ['', Validators.required],
       dateAdd: [new Date()],
     });
   };
@@ -153,13 +154,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
       return;
     }
 
+    const formatDateToYMD = (dateString: string | Date): string => {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = `${date.getMonth() + 1}`.padStart(2, '0');
+      const day = `${date.getDate()}`.padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+    
     this.formData.append('idusuario', `${this.userToken?.idusuario}`);
     this.formData.append('idcategoria', this.formFile.value.category);
     this.formData.append('proveniencia', this.formFile.value.department);
     this.formData.append('iddepartamento', `${this.userToken.iddepartamento}`);
     this.formData.append('titulo', this.formFile.value.subject);
     this.formData.append('tags', `${[...this.chips]}`);
-
+    this.formData.append('data_elaboracao', formatDateToYMD(this.formFile.value.draft_data));
     this.categories.find((cat) => {
       if (cat.id == this.formFile.value.category) {
         this.formData.append('tipo', cat.categoria);
@@ -177,6 +186,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.closeModal();
     this.buildForm();
   }
+
+  today: string = this.getTodayDate();
+
+  private getTodayDate(): string {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
 
   setUser = () => {
     this.userToken = this.authService.decodeToken();

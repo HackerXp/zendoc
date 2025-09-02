@@ -15,6 +15,7 @@ export interface Document {
 export interface Data {
   categoria: string;
   data_criacao: string;
+  data_elaboracao: string;
   departamento: string;
   descricao: string;
   files: File[];
@@ -26,6 +27,7 @@ export interface Data {
   tags: string;
   tipo: string;
   usuario: string;
+  visibilidade: "public" | "private" | "department";
 }
 
 export interface Documents {

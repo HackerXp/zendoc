@@ -1,3 +1,57 @@
-<section class="flex flex-col">
-    <div class="flex justify-between"></div>
+<section class="flex items-center justify-center ">
+    <div class="bg-white w-full max-w-2xl shadow-md rounded-lg p-8 relative">
+        <!-- Título -->
+        <div class="flex justify-between items-center mb-8">
+            <div class="flex flex-col">
+                <h2 class="text-xl font-semibold text-primary">Meu Perfil</h2>
+                <span class="text-[#7A859B] text-sm font-normal">Visualize ou edite seus dados</span>
+            </div>
+            <button type="button" (click)="toggleButton()">{{label}}</button>
+        </div>
+        <!-- Formulário -->
+        <form class="space-y-4">
+            <!-- Nome completo -->
+            <div>
+                <label class="block text-sm font-medium text-[#7A859B] mb-1">Nome completo</label>
+                <input [disabled]="toggle" type="text" placeholder="Élvio de Sousa"
+                    class="block w-full rounded-md border border-[#76B3D1] bg-white px-4 py-2 text-sm text-[#7A859B] shadow-sm focus:border-[#3570EF] outline-none" />
+            </div>
+
+            <!-- E-mail e Repartição -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-[#7A859B] mb-1">E-mail</label>
+                    <input [disabled]="toggle" type="text" placeholder="elvio.sousa@usp.gov.ao"
+                        class="block w-full rounded-md border border-[#76B3D1] bg-white px-4 py-2 text-sm text-[#7A859B] shadow-sm focus:border-[#3570EF] outline-none" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-[#7A859B] mb-1">Repartição</label>
+                    <input [disabled]="toggle" type="text" placeholder="Élvio de Sousa"
+                        class="block w-full rounded-md border border-[#76B3D1] bg-white px-4 py-2 text-sm text-[#7A859B] shadow-sm focus:border-[#3570EF] outline-none" />
+                </div>
+            </div>
+
+            <!-- Username e Senha -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-[#7A859B] mb-1">Username</label>
+                    <input [disabled]="toggle" type="text" placeholder="elvio.sousa@usp.gov.ao"
+                        class="block w-full rounded-md border border-[#76B3D1] bg-white px-4 py-2 text-sm text-[#7A859B] shadow-sm focus:border-[#3570EF] outline-none" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-[#7A859B] mb-1">Senha</label>
+                    <input [disabled]="toggle" type="password" placeholder="Digite a nova senha"
+                        class="block w-full rounded-md border border-[#76B3D1] bg-white px-4 py-2 text-sm text-[#7A859B] shadow-sm focus:border-[#3570EF] outline-none" />
+                </div>
+            </div>
+
+            <!-- Botão Salvar -->
+            <div class="flex justify-end mt-6">
+                <button type="submit" [disabled]="toggle"
+                    class="bg-[#3570EF] text-white px-6 py-2 rounded-md text-sm font-medium hover:bg-[#2a5dcc] transition-colors shadow">
+                    Salvar Alterações
+                </button>
+            </div>
+        </form>
+    </div>
 </section>

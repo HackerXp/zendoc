@@ -2,6 +2,7 @@ export interface UserToken {
   idusuario?: number;
   nome?: string;
   email?: string;
+  iddepartamento?: number;
   permissoes?: Permissao[];
   sub?: string;
   iat?: string;

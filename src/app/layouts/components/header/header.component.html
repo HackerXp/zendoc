@@ -89,22 +89,29 @@
                 </label>
                 <select id="department" formControlName="department" name="department"
                     class="mt-1 block w-full rounded-md text-[12px] font-medium text-[#7A859B] border border-[#76B3D1] px-4 shadow-sm h-10 bg-white">
-                    <option value="" class="font-inter text-[12px] text-[#7A859B]" disabled>Selecione a repartição
-                    </option>
-                    @for (item of department; track item.descricao) {
-                    <option class="font-inter text-[12px] text-black font-medium" [value]="item.id">
-                        {{ item.descricao }}
-                    </option>
+                    <option value="" disabled>Selecione a repartição</option>
+                    @for (item of department; track item.id) {
+                    <option [value]="item.id">{{ item.descricao }}</option>
                     }
                 </select>
             </div>
+
         </div>
-        <div class="mt-6">
-            <label for="tags" class="block text-[12px] font-medium text-[#7A859B]">
-                Palavras-chave
-            </label>
-            <chips [chips]="chips" />
+        <div class="grid grid-cols-2 gap-2">
+            <div class="">
+                <label for="tags" class="block text-[12px] font-medium text-[#7A859B]">
+                    Palavras-chave
+                </label>
+                <chips [chips]="chips" />
+            </div>
+            <div class="">
+                <label for="tags" class="block text-[12px] font-medium text-[#7A859B]">
+                    Data de elaboração
+                </label>
+                <input formControlName="draft_data" [max]="today" name="draft_data" type="date" class="mt-1 block cursor-pointer focus:border-[#3570EF] w-full outline-none rounded-md text-[12px] font-medium text-[#7A859B] border border-[#76B3D1] px-4 shadow-sm h-10 bg-white"/>
+            </div>
         </div>
+
     </form>
 </app-modal>
 

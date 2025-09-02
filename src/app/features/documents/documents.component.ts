@@ -8,6 +8,11 @@ import { map, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { Empty } from '@shared/interfaces/empty';
 import { EmptyComponent } from '@shared/components/empty/empty.component';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '@core/services/auth.service';
+import { UserToken } from '@core/interfaces/user-token';
+import { UserService } from '@core/services/user/user.service';
+import { User_Data } from '@shared/interfaces/user';
+import { LoaderService } from '@shared/services/loader.service';
 
 @Component({
   selector: 'app-documents',
@@ -18,6 +23,8 @@ import { ActivatedRoute } from '@angular/router';
 export class DocumentsComponent implements OnInit, OnDestroy {
   private apiService = inject(ApiService);
   private route = inject(ActivatedRoute);
+  private authService = inject(AuthService);
+  private userService = inject(UserService);
 
   documents$ = this.apiService.documents$;
   unsubscribeSubject = new Subject();
@@ -35,8 +42,12 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   category: string | null = null;
   cod: string | null = null;
   title: string | null = null;
+  userToken!: UserToken;
+  users: User_Data[] = [];
 
   ngOnInit(): void {
+    this.userToken = this.authService.decodeToken();
+    this.getAllUsersByDept(this.userToken.idusuario!, this.userToken.iddepartamento!)
     this.updateCardsPerPage();
     this.id = null;
     this.category = null;
@@ -50,7 +61,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
           this.title = params.get('title');
 
           return this.id && this.cod == null
-            ? of(this.apiService.getDocumentByIdCategory(this.id))
+            ? of(this.apiService.getDocumentByIdCategory(this.id, 1))
             : this.cod && this.id == null
               ? of(this.apiService.getDocumentById(Number(this.cod)))
               : of(this.apiService.getDocuments(1));
@@ -58,12 +69,11 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribeSubject) // Cancela a inscrição ao destruir o componente
       )
       .subscribe({
-        next: (data) => {
-          console.log('Dados recebidos:', data);
-        },
-        error: (error) => {
-          console.error('Erro ao buscar documentos:', error);
-        }
+        next: (data) =>
+          LoaderService.stopLoading()
+        ,
+        error: (error) =>
+          console.error('Erro ao buscar documentos:', error)
       });
   }
 
@@ -98,11 +108,11 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   nextPage() {
-    this.apiService.nextPage();
+    this.apiService.nextPage(this.id);
   }
 
   previousPage() {
-    this.apiService.previousPage();
+    this.apiService.previousPage(this.id);
   }
 
   // Altera a página
@@ -137,6 +147,18 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
   sortDocuments() {
     this.apiService.sortByName();
+  }
+
+  //invoke api
+  getAllUsersByDept(id: number, dept: number) {
+    this.userService
+      .getAllUsersByDept(id, dept)
+      .pipe(takeUntil(this.unsubscribeSubject))
+      .subscribe({
+        next: (user) => {
+          this.users = user.data;
+        },
+      });
   }
 
   ngOnDestroy() {

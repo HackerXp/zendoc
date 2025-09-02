@@ -3,4 +3,6 @@ export interface ShowHide {
     details?: boolean;
     dialog?: boolean;
     files?: boolean;
+    privacy?: boolean;
+    tagUser?: boolean;
 }
